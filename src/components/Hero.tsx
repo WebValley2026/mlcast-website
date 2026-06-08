@@ -20,10 +20,12 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             <span className="bg-gradient-sky bg-clip-text text-transparent">
-              Deep Learning
+              MLCast Community
             </span>
             <br />
-            Nowcasting Collective
+            <span className="text-3xl md:text-5xl">
+              Deep Learning Nowcasting Collective
+            </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
