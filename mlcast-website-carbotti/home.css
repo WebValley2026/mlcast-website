@@ -1,0 +1,100 @@
+/* home.css */
+
+/* 1. Stili Base */
+html {
+    /* Abilita lo scroll fluido */
+    scroll-behavior: smooth;
+    /* Aggiunge uno spazio di offset di 90px quando si clicca su un link di sezione, 
+       evitando che il titolo venga nascosto dalla navbar fissa */
+    scroll-padding-top: 90px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #07122a; /* Corrisponde al tuo colore 'background' */
+}
+
+canvas {
+    display: block;
+}
+
+/* 2. Componenti Custom (Glassmorphism) */
+.glass-card {
+    background: rgba(17, 34, 64, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(133, 148, 142, 0.2);
+    border-radius: 0.5rem; /* Corrisponde a 'lg' nella config Tailwind */
+    transition: border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: #5ffbd6; /* Corrisponde a 'primary-fixed' */
+}
+
+/* 3. Utility per il testo */
+.text-glow {
+    text-shadow: 0 0 10px rgba(95, 251, 214, 0.5);
+}
+
+/* 4. Helper Layout e Font */
+.grid-gap-custom {
+    gap: 24px; /* Corrisponde a 'lg' nella config Tailwind */
+}
+
+.font-label-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+/* Aggiungilo nel tuo home.css */
+#shader-canvas {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* --- Stili personalizzati per MLCast Cards --- */
+
+/* Animazione di pressione (click) */
+.btn-press:active {
+    transform: scale(0.95);
+}
+
+/* Transizione per il cambio colore/icona */
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Rimuove il contorno di focus del browser */
+.no-focus-outline:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Bottone GitHub con effetto riempimento personalizzato */
+.github-btn {
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.github-btn:hover {
+    background-color: #5ffbd6; /* Il tuo colore personalizzato */
+    border-color: #5ffbd6;
+    color: #0a1a36; /* Testo scuro per leggibilità su fondo chiaro */
+}
+
+/* Assicura che l'icona segua il colore del testo al passaggio del mouse */
+.github-btn:hover svg {
+    fill: #0a1a36; 
+}
