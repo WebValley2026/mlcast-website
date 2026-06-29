@@ -60,9 +60,34 @@
         }
 
         .path-nav {
+            position: relative;
+            z-index: 1;
             scrollbar-width: none;
             min-height: 64px;
-            box-shadow: 0 0 18px rgba(255, 255, 255, 0.1);
+            box-shadow:
+                0 0 28px rgba(255, 255, 255, 0.08),
+                0 0 56px rgba(95, 251, 214, 0.045);
+        }
+
+        .path-nav-shell {
+            isolation: isolate;
+        }
+
+        .path-nav-shell::after {
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: -14px;
+            bottom: -34px;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 9999px;
+            background: rgba(7, 18, 42, 0.32);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, 0.75) 48%, transparent 78%);
+            mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, 0.75) 48%, transparent 78%);
         }
 
         .path-nav::-webkit-scrollbar {
@@ -134,7 +159,7 @@
     </header>
 
     <main class="flex-grow pt-[76px]">
-        <div class="sticky top-[76px] z-40 mt-4 px-margin-mobile md:px-margin-desktop pointer-events-none">
+        <div class="path-nav-shell sticky top-[76px] z-40 mt-4 px-margin-mobile md:px-margin-desktop pointer-events-none">
             <nav class="path-nav pointer-events-auto flex items-center md:justify-between gap-1.5 max-w-[1180px] mx-auto overflow-x-auto rounded-full border border-outline-variant/30 bg-[#0b1830]/90 px-2 py-2 backdrop-blur-xl" aria-label="Contribution paths">
                 <a class="path-link rounded-full px-5 text-[15px] md:text-base font-bold transition-[color,background-color,box-shadow]" href="#build-software" aria-current="true">Build software</a>
                 <a class="path-link rounded-full px-5 text-[15px] md:text-base font-bold transition-[color,background-color,box-shadow]" href="#improve-models">Improve models</a>
