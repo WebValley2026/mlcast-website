@@ -1,35 +1,35 @@
 # MLCast Website
 
-Website for the MLCast Community — an open-source collaboration developing machine learning "nowcasting" models for weather prediction.
+Website for the MLCast Community — an open-source collaboration developing
+machine learning "nowcasting" models for weather prediction.
 
-## Tech stack
+Two parts are deployed together to GitHub Pages:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Static marketing site** (`mlcast-website-carbotti/`) — plain HTML/CSS, served
+  at the site root.
+- **Documentation** (`docs/` + `myst.yml`) — a [Jupyter Book](https://next.jupyterbook.org/)
+  (MyST) site, served under `/docs`.
 
-## Local development
+The [deploy workflow](.github/workflows/deploy.yml) assembles both into one Pages
+artifact:
 
-Requires Node.js & npm ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
+- root → `https://webvalley2026.github.io/mlcast-website/`
+- docs → `https://webvalley2026.github.io/mlcast-website/docs/`
 
-```sh
-# Clone the repository
-git clone <YOUR_GIT_URL>
+## Static site
 
-# Navigate to the project directory
-cd mlcast-website
+Edit the HTML/CSS in `mlcast-website-carbotti/`. `home.html` is the landing page
+(published as `index.html`). Open the files directly in a browser to preview.
 
-# Install dependencies
-npm i
+## Documentation (Jupyter Book)
 
-# Start the dev server with auto-reload
-npm run dev
-```
-
-## Build
+Requires [uv](https://docs.astral.sh/uv/). The book content lives in `docs/`, with
+the table of contents and site config in `myst.yml`.
 
 ```sh
-npm run build
+# Live preview with hot-reload (http://localhost:3000)
+uv run jupyter book start
+
+# Static build -> _build/html/
+uv run jupyter book build --html
 ```

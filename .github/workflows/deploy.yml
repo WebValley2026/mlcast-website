@@ -21,12 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # --- React (Vite) site -> dist/ ---
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
+      # --- Static site (mlcast-website-carbotti) -> dist/ ---
+      - name: Assemble static site
+        run: |
+          mkdir -p dist
+          cp -r mlcast-website-carbotti/. dist/
+          # Site entry point: home.html is the landing page; the nav brand
+          # links to index.html, so publish home.html as index.html too.
+          cp dist/home.html dist/index.html
 
       # --- MyST / Jupyter Book docs -> dist/docs/ ---
       - uses: astral-sh/setup-uv@v5
