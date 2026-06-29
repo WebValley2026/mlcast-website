@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'gabriele_doc_web_fix']
   workflow_dispatch:
 
 permissions:
@@ -10,16 +10,38 @@ permissions:
   pages: write
   id-token: write
 
+# Allow one concurrent deployment, cancel in-progress runs for the same ref
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # --- React (Vite) site -> dist/ ---
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm ci
       - run: npm run build
+
+      # --- MyST / Jupyter Book docs -> dist/docs/ ---
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: '3.13'
+      - name: Build Jupyter Book
+        env:
+          # Served under <pages-url>/docs, so links must resolve against that subpath
+          BASE_URL: /mlcast-website/docs
+        run: uv run jupyter book build --html .
+      - name: Stage book into site
+        run: |
+          mkdir -p dist/docs
+          cp -r _build/html/. dist/docs/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
