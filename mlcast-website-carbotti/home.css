@@ -98,3 +98,70 @@ canvas {
 .github-btn:hover svg {
     fill: #0a1a36; 
 }
+
+/* Rimuove il bordo bianco/blu quando clicchi su "View Example" */
+summary:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Opzionale: rende il cursore sempre un puntatore per chiarire che è cliccabile */
+summary {
+    cursor: pointer;
+    user-select: none; /* Evita che il testo diventi blu se clicchi velocemente */
+}
+
+/* Aggiungi questo per la gestione del link hover nel footer */
+footer a {
+    transition: color 0.2s ease-in-out;
+}
+footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
+
+/* --- Aggiornamenti e Correzioni in home.css --- */
+
+/* 1. Forza la continuità dello sfondo su tutte le sezioni per eliminare stacchi */
+section {
+    background-color: #07122a;
+}
+
+/* 2. Migliora la visibilità del gradiente nella hero */
+.hero-gradient {
+    background: linear-gradient(to bottom, rgba(7, 18, 42, 0.4), rgba(7, 18, 42, 0.6), #07122a);
+}
+
+/* 3. Stile specifico per il contenitore video per evitare bordi bianchi/grigi */
+.video-container {
+    background-color: #07122a;
+    border: 1px solid rgba(60, 74, 69, 0.3); /* outline-variant con opacità */
+    overflow: hidden;
+}
+
+/* 4. HUD Overlay per il video (da applicare alla classe .hud-overlay) */
+.hud-overlay {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 10;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(95, 251, 214, 0.7);
+    background-color: rgba(7, 18, 42, 0.8);
+    backdrop-filter: blur(4px);
+    padding: 4px 8px;
+    border: 1px solid rgba(95, 251, 214, 0.2);
+}
+
+/* 5. Footer: Uniformato al colore di sfondo principale */
+footer {
+    background-color: #07122a !important;
+}
+
+/* 6. Fix per il Canvas (assicuriamoci che non copra elementi interattivi) */
+#shader-canvas {
+    z-index: -1; 
+}
