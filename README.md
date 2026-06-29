@@ -1,73 +1,35 @@
-# Welcome to your Lovable project
+# MLCast Website
 
-## Project info
+Website for the MLCast Community — an open-source collaboration developing
+machine learning "nowcasting" models for weather prediction.
 
-**URL**: https://lovable.dev/projects/0982f199-b626-4de6-be67-464d55bbd8a3
+Two parts are deployed together to GitHub Pages:
 
-## How can I edit this code?
+- **Static marketing site** (`mlcast-website-carbotti/`) — plain HTML/CSS, served
+  at the site root.
+- **Documentation** (`docs/` + `myst.yml`) — a [Jupyter Book](https://next.jupyterbook.org/)
+  (MyST) site, served under `/docs`.
 
-There are several ways of editing your application.
+The [deploy workflow](.github/workflows/deploy.yml) assembles both into one Pages
+artifact:
 
-**Use Lovable**
+- root → `https://webvalley2026.github.io/mlcast-website/`
+- docs → `https://webvalley2026.github.io/mlcast-website/docs/`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0982f199-b626-4de6-be67-464d55bbd8a3) and start prompting.
+## Static site
 
-Changes made via Lovable will be committed automatically to this repo.
+Edit the HTML/CSS in `mlcast-website-carbotti/`. `home.html` is the landing page
+(published as `index.html`). Open the files directly in a browser to preview.
 
-**Use your preferred IDE**
+## Documentation (Jupyter Book)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requires [uv](https://docs.astral.sh/uv/). The book content lives in `docs/`, with
+the table of contents and site config in `myst.yml`.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Live preview with hot-reload (http://localhost:3000)
+uv run jupyter book start
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Static build -> _build/html/
+uv run jupyter book build --html
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/0982f199-b626-4de6-be67-464d55bbd8a3) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
