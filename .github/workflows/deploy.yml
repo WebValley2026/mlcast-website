@@ -36,7 +36,7 @@ jobs:
         env:
           # Served under <pages-url>/docs, so links must resolve against that subpath
           BASE_URL: /mlcast-website/docs
-        run: uv run jupyter book build --html .
+        run: uv run jupyter book build --html
       - name: Stage book into site
         run: |
           mkdir -p dist/docs
