@@ -231,60 +231,70 @@
                                 <span class="rounded-full border border-primary-fixed/30 bg-primary-fixed/10 px-3 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed">Expanding</span>
                             </div>
 
-                            <div class="relative mt-5 aspect-[95/62] w-full rounded border border-outline-variant/25 bg-[#050f24]" style="background-image:radial-gradient(rgba(120,160,220,0.08) 1px,transparent 1px);background-size:16px 16px;">
-                                <img src="img/world.svg" alt="World map" class="absolute inset-0 h-full w-full rounded object-fill opacity-90" aria-hidden="true">
+                            <div id="contrib-coverage-viewport" class="relative mt-5 aspect-[95/62] w-full select-none overflow-hidden rounded border border-outline-variant/25 bg-[#050f24] touch-none cursor-grab" style="background-image:radial-gradient(rgba(120,160,220,0.08) 1px,transparent 1px);background-size:16px 16px;">
+                                <div id="contrib-coverage-map" class="absolute inset-0 origin-top-left will-change-transform" style="transform:translate(0px,0px) scale(1);">
+                                <img src="img/world.svg" alt="World map" class="absolute inset-0 h-full w-full rounded object-fill opacity-90" draggable="false" aria-hidden="true">
 
                                 <!-- Covered countries -->
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:45.5%;top:26.5%">
-                                    <span class="relative flex h-7 w-7 items-center justify-center">
+                                    <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40"></span>
-                                        <span class="relative inline-flex h-7 w-7 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/gb.svg" alt="UK" loading="lazy" class="h-full w-full object-cover"></span>
+                                        <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/gb.svg" alt="UK" loading="lazy" class="h-full w-full object-cover"></span>
                                     </span>
                                 </div>
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:50.5%;top:24.5%">
-                                    <span class="relative flex h-7 w-7 items-center justify-center">
+                                    <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.4s"></span>
-                                        <span class="relative inline-flex h-7 w-7 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/dk.svg" alt="Denmark" loading="lazy" class="h-full w-full object-cover"></span>
+                                        <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/dk.svg" alt="Denmark" loading="lazy" class="h-full w-full object-cover"></span>
                                     </span>
                                 </div>
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:47.8%;top:29.5%">
-                                    <span class="relative flex h-7 w-7 items-center justify-center">
+                                    <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.8s"></span>
-                                        <span class="relative inline-flex h-7 w-7 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/be.svg" alt="Belgium" loading="lazy" class="h-full w-full object-cover"></span>
+                                        <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/be.svg" alt="Belgium" loading="lazy" class="h-full w-full object-cover"></span>
                                     </span>
                                 </div>
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:51.0%;top:28.5%">
-                                    <span class="relative flex h-7 w-7 items-center justify-center">
+                                    <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.2s"></span>
-                                        <span class="relative inline-flex h-7 w-7 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/de.svg" alt="Germany" loading="lazy" class="h-full w-full object-cover"></span>
+                                        <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/de.svg" alt="Germany" loading="lazy" class="h-full w-full object-cover"></span>
                                     </span>
                                 </div>
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:51.8%;top:33.5%">
-                                    <span class="relative flex h-7 w-7 items-center justify-center">
+                                    <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.6s"></span>
-                                        <span class="relative inline-flex h-7 w-7 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/it.svg" alt="Italy" loading="lazy" class="h-full w-full object-cover"></span>
+                                        <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/it.svg" alt="Italy" loading="lazy" class="h-full w-full object-cover"></span>
                                     </span>
                                 </div>
 
                                 <!-- Expansion targets (global) -->
                                 <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:21.7%;top:33.6%">
                                     <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                                    <span class="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[14px]" aria-hidden="true">add</span></span>
+                                    <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                                 </div>
                                 <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:31.7%;top:61.6%">
                                     <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                                    <span class="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[14px]" aria-hidden="true">add</span></span>
+                                    <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                                 </div>
                                 <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:71.5%;top:43.6%">
                                     <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                                    <span class="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[14px]" aria-hidden="true">add</span></span>
+                                    <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                                 </div>
                                 <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:85.7%;top:70.1%">
                                     <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                                    <span class="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[14px]" aria-hidden="true">add</span></span>
+                                    <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                                 </div>
 
-                                <div class="absolute bottom-2 left-2 flex items-center gap-3 rounded bg-[#050f24]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
+                                </div>
+
+                                <!-- Zoom controls (fixed to viewport) -->
+                                <div class="absolute right-3 top-3 z-30 flex flex-col gap-1.5">
+                                    <button type="button" data-contrib-zoom="in" aria-label="Zoom in" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">add</span></button>
+                                    <button type="button" data-contrib-zoom="out" aria-label="Zoom out" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">remove</span></button>
+                                    <button type="button" data-contrib-zoom="reset" aria-label="Reset view" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">restart_alt</span></button>
+                                </div>
+
+                                <div class="pointer-events-none absolute bottom-2 left-2 z-30 flex items-center gap-3 rounded bg-[#050f24]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
                                     <span class="flex items-center gap-1.5 text-primary-fixed"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span>Live</span>
                                     <span class="flex items-center gap-1.5 text-on-surface-variant/60"><span class="h-2 w-2 rounded-full border border-dashed border-on-surface-variant/50"></span>Wanted</span>
                                 </div>
@@ -902,6 +912,91 @@
                 }).join("");
             })
             .catch(renderIssueFallback);
+    </script>
+    <script>
+        (function () {
+            const viewport = document.getElementById("contrib-coverage-viewport");
+            const map = document.getElementById("contrib-coverage-map");
+            if (!viewport || !map) return;
+
+            const MIN = 1, MAX = 6;
+            let scale = 1, tx = 0, ty = 0;
+            let dragging = false, moved = false, startX = 0, startY = 0, startTx = 0, startTy = 0;
+
+            function clamp() {
+                scale = Math.min(MAX, Math.max(MIN, scale));
+                const w = viewport.clientWidth, h = viewport.clientHeight;
+                const minTx = w - w * scale, minTy = h - h * scale;
+                tx = Math.min(0, Math.max(minTx, tx));
+                ty = Math.min(0, Math.max(minTy, ty));
+            }
+            function apply() {
+                clamp();
+                map.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
+            }
+            function zoomAt(cx, cy, factor) {
+                const prev = scale;
+                scale *= factor;
+                scale = Math.min(MAX, Math.max(MIN, scale));
+                const ratio = scale / prev;
+                tx = cx - (cx - tx) * ratio;
+                ty = cy - (cy - ty) * ratio;
+                apply();
+            }
+            // Default framing: zoom over Europe
+            const EU_FX = 0.487, EU_FY = 0.30, EU_SCALE = 2.6;
+            function focusEurope() {
+                const w = viewport.clientWidth, h = viewport.clientHeight;
+                scale = EU_SCALE;
+                tx = w / 2 - EU_FX * w * scale;
+                ty = h / 2 - EU_FY * h * scale;
+                apply();
+            }
+
+            viewport.addEventListener("wheel", function (e) {
+                e.preventDefault();
+                const r = viewport.getBoundingClientRect();
+                zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.15 : 1 / 1.15);
+            }, { passive: false });
+
+            viewport.addEventListener("pointerdown", function (e) {
+                if (e.target.closest("[data-contrib-zoom]")) return;
+                dragging = true; moved = false;
+                startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
+                viewport.setPointerCapture(e.pointerId);
+                viewport.classList.remove("cursor-grab");
+                viewport.classList.add("cursor-grabbing");
+            });
+            viewport.addEventListener("pointermove", function (e) {
+                if (!dragging) return;
+                const dx = e.clientX - startX, dy = e.clientY - startY;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+                tx = startTx + dx; ty = startTy + dy;
+                apply();
+            });
+            function endDrag() {
+                if (!dragging) return;
+                dragging = false;
+                viewport.classList.add("cursor-grab");
+                viewport.classList.remove("cursor-grabbing");
+            }
+            viewport.addEventListener("pointerup", endDrag);
+            viewport.addEventListener("pointercancel", endDrag);
+            map.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+            document.querySelectorAll("[data-contrib-zoom]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const cx = viewport.clientWidth / 2, cy = viewport.clientHeight / 2;
+                    const mode = btn.getAttribute("data-contrib-zoom");
+                    if (mode === "in") zoomAt(cx, cy, 1.4);
+                    else if (mode === "out") zoomAt(cx, cy, 1 / 1.4);
+                    else focusEurope();
+                });
+            });
+
+            window.addEventListener("resize", apply);
+            focusEurope();
+        })();
     </script>
 </body>
 </html>

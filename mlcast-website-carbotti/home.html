@@ -135,16 +135,214 @@
 <!-- Inizio contenitore -->
 <div id="about">
 
-    <!-- Sezione 1: What is MLCast -->
+    <!-- Sezione 1: What is MLCast (con mappa Data Coverage) -->
     <section class="py-24 px-margin-mobile md:px-margin-desktop w-full max-w-[1440px] mx-auto" id="get-started">
-        <div class="max-w-3xl">
-            <div class="font-label-tag text-label-tag text-primary-fixed mb-4 uppercase tracking-widest">[OVERVIEW]</div>
-            <h2 class="font-headline-xl text-4xl md:text-5xl font-bold text-primary mb-6">What is MLCast?</h2>
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                MLCast Community is a decentralized ecosystem of researchers, engineers, and meteorologists building open-source infrastructure for high-precision weather nowcasting. We leverage modern machine learning techniques to process vast amounts of radar data in real-time, providing critical lead time for severe weather events.
-            </p>
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[3fr_7fr] lg:items-start">
+            <!-- Colonna testo (30%) -->
+            <div class="min-w-0">
+                <div class="font-label-tag text-label-tag text-primary-fixed mb-4 uppercase tracking-widest">[OVERVIEW]</div>
+                <h2 class="font-headline-xl text-4xl md:text-5xl font-bold text-primary mb-6">What is MLCast?</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    MLCast Community is a decentralized ecosystem of researchers, engineers, and meteorologists building open-source infrastructure for high-precision weather nowcasting. We leverage modern machine learning techniques to process vast amounts of radar data in real-time, providing critical lead time for severe weather events.
+                </p>
+                <p class="mt-5 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    We currently gather <span class="font-semibold text-primary">radar precipitation</span> across Europe, growing country by country. Drag, scroll, or use the controls to explore where data is live — and where we still need your help.
+                </p>
+            </div>
+
+            <!-- Colonna mappa (70%) -->
+            <div class="min-w-0 rounded-lg border border-outline-variant/30 bg-[#0b1830] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
+            <div class="flex flex-wrap items-start justify-between gap-4 border-b border-outline-variant/20 pb-4">
+                <div>
+                    <p class="font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">Dataset Catalog</p>
+                    <h4 class="mt-2 text-xl font-bold text-primary">Radar precipitation</h4>
+                </div>
+                <span class="rounded-full border border-primary-fixed/30 bg-primary-fixed/10 px-3 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed">Expanding</span>
+            </div>
+
+            <!-- Interactive zoom/pan map -->
+            <div id="coverage-viewport" class="relative mt-5 aspect-[95/62] w-full select-none overflow-hidden rounded border border-outline-variant/25 bg-[#050f24] touch-none cursor-grab" style="background-image:radial-gradient(rgba(120,160,220,0.08) 1px,transparent 1px);background-size:18px 18px;">
+                <div id="coverage-map" class="absolute inset-0 origin-top-left will-change-transform" style="transform:translate(0px,0px) scale(1);">
+                    <img src="img/world.svg" alt="World map" class="absolute inset-0 h-full w-full object-fill opacity-90" draggable="false" aria-hidden="true">
+
+                    <!-- Covered countries -->
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:45.5%;top:26.5%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">United Kingdom</span>
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/gb.svg" alt="UK" loading="lazy" class="h-full w-full object-cover"></span>
+                        </span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:50.5%;top:24.5%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Denmark</span>
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.4s"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/dk.svg" alt="Denmark" loading="lazy" class="h-full w-full object-cover"></span>
+                        </span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:47.8%;top:29.5%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Belgium</span>
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.8s"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/be.svg" alt="Belgium" loading="lazy" class="h-full w-full object-cover"></span>
+                        </span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:51.0%;top:28.5%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Germany</span>
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.2s"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/de.svg" alt="Germany" loading="lazy" class="h-full w-full object-cover"></span>
+                        </span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:51.8%;top:33.5%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Italy</span>
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.6s"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/it.svg" alt="Italy" loading="lazy" class="h-full w-full object-cover"></span>
+                        </span>
+                    </div>
+
+                    <!-- Expansion targets (global) -->
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:21.7%;top:33.6%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:31.7%;top:61.6%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:71.5%;top:43.6%">
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                    </div>
+                    <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:85.7%;top:70.1%">
+                        <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                    </div>
+                </div>
+
+                <!-- Zoom controls (fixed to viewport) -->
+                <div class="absolute right-3 top-3 z-30 flex flex-col gap-1.5">
+                    <button type="button" data-coverage-zoom="in" aria-label="Zoom in" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">add</span></button>
+                    <button type="button" data-coverage-zoom="out" aria-label="Zoom out" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">remove</span></button>
+                    <button type="button" data-coverage-zoom="reset" aria-label="Reset view" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">restart_alt</span></button>
+                </div>
+
+                <!-- Legend -->
+                <div class="pointer-events-none absolute bottom-3 left-3 z-30 flex items-center gap-3 rounded bg-[#050f24]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
+                    <span class="flex items-center gap-1.5 text-primary-fixed"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span>Live</span>
+                    <span class="flex items-center gap-1.5 text-on-surface-variant/60"><span class="h-2 w-2 rounded-full border border-dashed border-on-surface-variant/50"></span>Wanted</span>
+                </div>
+
+                <!-- Stats overlay (fixed to viewport, bottom) -->
+                <div class="pointer-events-none absolute bottom-3 right-3 z-30 flex gap-2">
+                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                        <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Countries</p>
+                        <p class="mt-0.5 text-lg font-bold leading-none text-primary">5</p>
+                    </div>
+                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                        <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Years of rain</p>
+                        <p class="mt-0.5 text-lg font-bold leading-none text-primary-fixed">~70</p>
+                    </div>
+                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                        <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Cadence</p>
+                        <p class="mt-0.5 text-lg font-bold leading-none text-primary">5m</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-4 text-center text-sm text-on-surface-variant">Help us <span class="font-semibold text-primary">expand coverage</span> — is your country missing?</p>
+            </div>
         </div>
     </section>
+
+    <script>
+        (function () {
+            const viewport = document.getElementById("coverage-viewport");
+            const map = document.getElementById("coverage-map");
+            if (!viewport || !map) return;
+
+            const MIN = 1, MAX = 6;
+            let scale = 1, tx = 0, ty = 0;
+            let dragging = false, moved = false, startX = 0, startY = 0, startTx = 0, startTy = 0;
+
+            function clamp() {
+                scale = Math.min(MAX, Math.max(MIN, scale));
+                const w = viewport.clientWidth, h = viewport.clientHeight;
+                const minTx = w - w * scale, minTy = h - h * scale;
+                tx = Math.min(0, Math.max(minTx, tx));
+                ty = Math.min(0, Math.max(minTy, ty));
+            }
+            function apply() {
+                clamp();
+                map.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
+            }
+            function zoomAt(cx, cy, factor) {
+                const prev = scale;
+                scale *= factor;
+                scale = Math.min(MAX, Math.max(MIN, scale));
+                const ratio = scale / prev;
+                // keep point under cursor fixed
+                tx = cx - (cx - tx) * ratio;
+                ty = cy - (cy - ty) * ratio;
+                apply();
+            }
+            // Default framing: zoom over Europe
+            const EU_FX = 0.487, EU_FY = 0.30, EU_SCALE = 2.6;
+            function focusEurope() {
+                const w = viewport.clientWidth, h = viewport.clientHeight;
+                scale = EU_SCALE;
+                tx = w / 2 - EU_FX * w * scale;
+                ty = h / 2 - EU_FY * h * scale;
+                apply();
+            }
+
+            viewport.addEventListener("wheel", function (e) {
+                e.preventDefault();
+                const r = viewport.getBoundingClientRect();
+                zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.15 : 1 / 1.15);
+            }, { passive: false });
+
+            viewport.addEventListener("pointerdown", function (e) {
+                if (e.target.closest("[data-coverage-zoom]")) return; // let control buttons receive their click
+                dragging = true; moved = false;
+                startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
+                viewport.setPointerCapture(e.pointerId);
+                viewport.classList.remove("cursor-grab");
+                viewport.classList.add("cursor-grabbing");
+            });
+            viewport.addEventListener("pointermove", function (e) {
+                if (!dragging) return;
+                const dx = e.clientX - startX, dy = e.clientY - startY;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+                tx = startTx + dx; ty = startTy + dy;
+                apply();
+            });
+            function endDrag(e) {
+                if (!dragging) return;
+                dragging = false;
+                viewport.classList.add("cursor-grab");
+                viewport.classList.remove("cursor-grabbing");
+            }
+            viewport.addEventListener("pointerup", endDrag);
+            viewport.addEventListener("pointercancel", endDrag);
+            // block marker clicks that were actually drags
+            map.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+            document.querySelectorAll("[data-coverage-zoom]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const cx = viewport.clientWidth / 2, cy = viewport.clientHeight / 2;
+                    const mode = btn.getAttribute("data-coverage-zoom");
+                    if (mode === "in") zoomAt(cx, cy, 1.4);
+                    else if (mode === "out") zoomAt(cx, cy, 1 / 1.4);
+                    else focusEurope();
+                });
+            });
+
+            window.addEventListener("resize", apply);
+            focusEurope();
+        })();
+    </script>
 
     <!-- Sezione 2: MLCast Plan -->
     <section class="py-24 px-margin-mobile md:px-margin-desktop w-full max-w-[1440px] mx-auto" id="objectives">
@@ -238,13 +436,74 @@
             </ul>
         </div>
 
-        <!-- Immagine con Effetto Glass/HUD -->
+        <!-- Community Hub Card -->
         <div class="lg:w-1/2 w-full">
-            <div class="glass-card rounded-2xl p-1 overflow-hidden relative aspect-video shadow-2xl border border-outline-variant/30">
-                <div class="absolute inset-0 bg-background/20 z-10"></div>
-                <img class="w-full h-full object-cover rounded-xl opacity-80" 
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYVDcKY30EyLnCKk-JCinOwv50aO0uDKhwVdogbC8c_DXXc8SlOIMfjzWM3DKO3nnEwzi9XTJPhO85AxT9132X1Lywf5hu3qNEFNQrbVTs4b74U3Z4QIZW2txGhkA_qnN4PEJxahFFrY182RBlhce4myE39-Tg5mLbbOjSQ-E_NNmJACxmhnXGRWDelhQcXHR_uX51B8gO-F9unozyLz8tJZK39SAp6-8eNcwaTVKOq0E-MfiDyjJYTFwLEmE6jf1C7wzqqBZ-38TN" 
-                     alt="Meteorological Visualization">    
+            <div class="glass-card rounded-2xl p-6 md:p-8 relative shadow-2xl border border-outline-variant/30 overflow-hidden">
+
+                <!-- Header: live status + collaborator stack -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2 text-green-400">
+                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                        <span class="font-mono text-[11px] uppercase tracking-widest">Community Online</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="flex -space-x-3">
+                            <span class="w-8 h-8 rounded-full bg-primary-fixed/80 border-2 border-background flex items-center justify-center text-[11px] font-bold text-background">AK</span>
+                            <span class="w-8 h-8 rounded-full bg-blue-400/80 border-2 border-background flex items-center justify-center text-[11px] font-bold text-background">MV</span>
+                            <span class="w-8 h-8 rounded-full bg-purple-400/80 border-2 border-background flex items-center justify-center text-[11px] font-bold text-background">JR</span>
+                            <span class="w-8 h-8 rounded-full bg-amber-400/80 border-2 border-background flex items-center justify-center text-[11px] font-bold text-background">SL</span>
+                        </div>
+                        <span class="ml-3 font-mono text-xs text-on-surface-variant">+128 collaborators</span>
+                    </div>
+                </div>
+
+                <!-- Communication tool grid -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                        <span class="material-symbols-outlined text-primary-fixed">forum</span>
+                        <div class="leading-tight">
+                            <div class="font-bold text-sm text-on-surface">Slack</div>
+                            <div class="font-mono text-[10px] text-on-surface-variant">24 channels</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                        <span class="material-symbols-outlined text-primary-fixed">videocam</span>
+                        <div class="leading-tight">
+                            <div class="font-bold text-sm text-on-surface">Meet</div>
+                            <div class="font-mono text-[10px] text-on-surface-variant">Weekly sync</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                        <span class="material-symbols-outlined text-primary-fixed">description</span>
+                        <div class="leading-tight">
+                            <div class="font-bold text-sm text-on-surface">Google Docs</div>
+                            <div class="font-mono text-[10px] text-on-surface-variant">Shared RFCs</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                        <span class="material-symbols-outlined text-primary-fixed">code</span>
+                        <div class="leading-tight">
+                            <div class="font-bold text-sm text-on-surface">GitHub</div>
+                            <div class="font-mono text-[10px] text-on-surface-variant">Open repos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat strip -->
+                <div class="grid grid-cols-3 gap-3 border-t border-outline-variant/20 pt-5">
+                    <div class="text-center">
+                        <div class="font-headline-xl text-2xl font-bold text-primary">132</div>
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Contributors</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-headline-xl text-2xl font-bold text-primary">17</div>
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Countries</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-headline-xl text-2xl font-bold text-primary">2.4k</div>
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Commits</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
