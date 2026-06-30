@@ -590,7 +590,7 @@ $ kubectl rollout status deploy</code></pre>
             </p>
         </div>
     </div>
-</footer><
+</footer>
 
     <script>
         const pathNav = document.querySelector(".path-nav");
@@ -705,8 +705,6 @@ $ kubectl rollout status deploy</code></pre>
         });
         requestPathSync();
 
-        const issueList = document.getElementById("issue-list");
-        const issuesSearchUrl = "https://github.com/search?q=org%3Amlcast-community+label%3A%22good+first+issue%22+state%3Aopen&type=issues";
         const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
             "&": "&amp;",
             "<": "&lt;",
@@ -714,6 +712,9 @@ $ kubectl rollout status deploy</code></pre>
             "\"": "&quot;",
             "'": "&#039;"
         })[character]);
+
+        const issueList = document.getElementById("issue-list");
+        const issuesSearchUrl = "https://github.com/search?q=org%3Amlcast-community+label%3A%22good+first+issue%22+state%3Aopen&type=issues";
 
         const renderIssueFallback = () => {
             issueList.innerHTML = `
