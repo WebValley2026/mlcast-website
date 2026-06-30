@@ -63,6 +63,7 @@
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="https://webvalley2026.github.io/mlcast-website/docs/">Documentation</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="data.html">Data</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="contributing.html">Contributing</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#faq">FAQ</a>
     </nav>
 
@@ -104,18 +105,18 @@
             </div>
         </section>
 
-        <section id="dataset-repositories" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24" aria-labelledby="dataset-repositories-heading">
+        <section id="dataset-catalog" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24" aria-labelledby="dataset-catalog-heading">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <div class="font-label-tag text-[10px] text-primary-fixed mb-3 uppercase tracking-widest">[DATASET REPOSITORIES]</div>
-                    <h2 id="dataset-repositories-heading" class="font-headline-xl text-3xl md:text-4xl font-bold text-primary">Published dataset links</h2>
+                    <div class="font-label-tag text-[10px] text-primary-fixed mb-3 uppercase tracking-widest">[INTAKE CATALOG SOURCES]</div>
+                    <h2 id="dataset-catalog-heading" class="font-headline-xl text-3xl md:text-4xl font-bold text-primary">Available precipitation datasets</h2>
                     <p class="mt-4 max-w-2xl text-on-surface-variant">
-                        Public dataset repositories from the MLCast GitHub organization, exposed as a reusable link array and filtered live as you type.
+                        Dataset entries fetched from the live MLCast precipitation catalog, exposed as a reusable link array and filtered live as you type.
                     </p>
                 </div>
 
                 <div class="relative w-full lg:max-w-sm">
-                    <label for="dataset-search" class="sr-only">Search dataset repositories</label>
+                    <label for="dataset-search" class="sr-only">Search catalog datasets</label>
                     <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[20px] text-on-surface-variant/70" aria-hidden="true">search</span>
                     <input id="dataset-search" type="search" autocomplete="off" placeholder="Search datasets..." class="dataset-search-input w-full rounded-lg border border-outline-variant/40 bg-[#050f24] py-3 pl-12 pr-4 text-sm text-primary placeholder:text-on-surface-variant/55 transition-colors focus:border-primary-fixed focus:ring-primary-fixed/30"/>
                 </div>
@@ -123,19 +124,19 @@
 
             <div class="mt-8 overflow-hidden rounded-xl border border-outline-variant/30 bg-[#0b1830]/70 shadow-[0_24px_80px_rgba(0,0,0,0.18)]">
                 <div class="flex flex-col gap-2 border-b border-outline-variant/20 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                    <span id="dataset-repository-count" class="font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed">Loading repositories</span>
-                    <a href="https://github.com/mlcast-community?tab=repositories&q=mlcast-dataset-" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-fixed hover:text-primary transition-colors">
-                        Browse GitHub
+                    <span id="dataset-catalog-count" class="font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed">Loading catalog sources</span>
+                    <a href="https://github.com/mlcast-community/mlcast-datasets/blob/main/src/mlcast_datasets/catalog/precipitation/catalog.yml" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-primary-fixed hover:text-primary transition-colors">
+                        View catalog file
                         <span class="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
                     </a>
                 </div>
 
-                <div id="dataset-repository-list" class="divide-y divide-outline-variant/20" aria-live="polite">
+                <div id="dataset-catalog-list" class="divide-y divide-outline-variant/20" aria-live="polite">
                     <div class="p-5">
-                        <p class="text-sm text-on-surface-variant">Loading dataset repositories...</p>
+                        <p class="text-sm text-on-surface-variant">Loading catalog datasets...</p>
                     </div>
                 </div>
-                <p id="dataset-repository-status" class="sr-only" aria-live="polite">Loading dataset repositories.</p>
+                <p id="dataset-catalog-status" class="sr-only" aria-live="polite">Loading catalog datasets.</p>
             </div>
         </section>
 
@@ -272,127 +273,168 @@
         "'": "&#039;"
     })[character]);
 
-    const GITHUB_ORG = "mlcast-community";
-    const DATASET_REPO_PREFIX = "mlcast-dataset-";
-    const EXCLUDED_DATASET_REPOS = new Set(["mlcast-dataset-validator"]);
+    const CATALOG_RAW_URL = "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
+    const CATALOG_PAGE_URL = "https://github.com/mlcast-community/mlcast-datasets/blob/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
     const datasetSearch = document.getElementById("dataset-search");
-    const datasetRepositoryList = document.getElementById("dataset-repository-list");
-    const datasetRepositoryCount = document.getElementById("dataset-repository-count");
-    const datasetRepositoryStatus = document.getElementById("dataset-repository-status");
-    let datasetRepositoryLinks = [];
-    window.datasetRepositoryLinks = datasetRepositoryLinks;
+    const datasetCatalogList = document.getElementById("dataset-catalog-list");
+    const datasetCatalogCount = document.getElementById("dataset-catalog-count");
+    const datasetCatalogStatus = document.getElementById("dataset-catalog-status");
+    let datasetCatalogLinks = [];
+    window.datasetCatalogLinks = datasetCatalogLinks;
 
-    const isDatasetRepo = (repoName) => (
-        repoName.startsWith(DATASET_REPO_PREFIX)
-        && !EXCLUDED_DATASET_REPOS.has(repoName)
-    );
+    const stripYamlScalar = (value = "") => {
+        const trimmed = value.trim();
+        const hasDoubleQuotes = trimmed.startsWith("\"") && trimmed.endsWith("\"");
+        const hasSingleQuotes = trimmed.startsWith("'") && trimmed.endsWith("'");
+        const unquoted = hasDoubleQuotes || hasSingleQuotes ? trimmed.slice(1, -1) : trimmed;
 
-    const mapRepoToDatasetLink = (repo) => {
-        const name = repo.name.replace(DATASET_REPO_PREFIX, "");
-        const description = repo.description || "No description available.";
-
-        return {
-            name,
-            label: name,
-            repoName: repo.name,
-            description,
-            href: repo.html_url,
-            url: repo.html_url,
-            stars: repo.stargazers_count || 0,
-            forks: repo.forks_count || 0,
-            language: repo.language || null
-        };
+        return unquoted.replace(/\\"/g, "\"").replace(/\\'/g, "'");
     };
 
-    const fetchAllOrgRepos = async (org = GITHUB_ORG) => {
-        const repos = [];
-        let page = 1;
+    const formatDatasetName = (sourceName) => sourceName
+        .replace(/(\d+)min\b/g, "$1 min")
+        .split("_")
+        .filter(Boolean)
+        .map((part) => {
+            const normalized = part.toLowerCase();
+            const acronymParts = new Set(["be", "dmi", "dpc", "it", "mfb", "radclim", "radklim", "rmi", "sri", "uk"]);
 
-        while (true) {
-            const url = `https://api.github.com/orgs/${encodeURIComponent(org)}/repos?type=public&per_page=100&page=${page}`;
-            const response = await fetch(url, {
-                headers: {
-                    "Accept": "application/vnd.github+json"
-                }
-            });
+            if (acronymParts.has(normalized)) return normalized.toUpperCase();
+            if (normalized === "metoffice") return "Met Office";
+            if (normalized === "minutes") return "Minutes";
+            if (normalized === "hourly") return "Hourly";
+            if (/^\d+$/.test(normalized)) return normalized;
 
-            if (!response.ok) {
-                throw new Error(`GitHub repository request failed with status ${response.status}`);
+            return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+        })
+        .join(" ");
+
+    const parseCatalogSources = (catalogText) => {
+        const sources = [];
+        const lines = catalogText.replace(/\r\n/g, "\n").split("\n");
+        let inSources = false;
+        let currentSource = null;
+
+        lines.forEach((line) => {
+            if (/^sources:\s*$/.test(line)) {
+                inSources = true;
+                return;
             }
 
-            const pageRepos = await response.json();
-            if (!Array.isArray(pageRepos)) {
-                throw new Error("GitHub repository response was not an array");
+            if (!inSources) return;
+            if (line.trim() && !line.startsWith(" ") && !/^sources:\s*$/.test(line)) {
+                currentSource = null;
+                inSources = false;
+                return;
             }
 
-            if (!pageRepos.length) break;
+            const sourceMatch = line.match(/^ {2}([A-Za-z0-9_-]+):\s*$/);
+            if (sourceMatch) {
+                const sourceName = sourceMatch[1];
+                currentSource = {
+                    name: formatDatasetName(sourceName),
+                    label: formatDatasetName(sourceName),
+                    sourceName,
+                    description: "No description available.",
+                    driver: null,
+                    urlpath: null,
+                    endpointUrl: null,
+                    consolidated: null,
+                    href: CATALOG_PAGE_URL,
+                    url: CATALOG_PAGE_URL
+                };
+                sources.push(currentSource);
+                return;
+            }
 
-            repos.push(...pageRepos);
-            page += 1;
+            if (!currentSource) return;
+
+            const scalarMatch = line.match(/^ {4,}([A-Za-z_]+)\s*:\s*(.*)$/);
+            if (!scalarMatch) return;
+
+            const key = scalarMatch[1];
+            const value = stripYamlScalar(scalarMatch[2]);
+
+            if (key === "description") currentSource.description = value || currentSource.description;
+            if (key === "driver") currentSource.driver = value || null;
+            if (key === "urlpath") currentSource.urlpath = value || null;
+            if (key === "endpoint_url") currentSource.endpointUrl = value || null;
+            if (key === "consolidated") currentSource.consolidated = value === "true";
+        });
+
+        if (!sources.length) {
+            throw new Error("Catalog did not contain any sources");
         }
 
-        return repos;
+        return sources.sort((a, b) => a.name.localeCompare(b.name));
     };
 
-    const getDatasetRepositoryLinks = async () => {
-        const repos = await fetchAllOrgRepos(GITHUB_ORG);
+    const getDatasetCatalogLinks = async () => {
+        const response = await fetch(CATALOG_RAW_URL);
 
-        return repos
-            .filter((repo) => isDatasetRepo(repo.name))
-            .map(mapRepoToDatasetLink)
-            .sort((a, b) => a.name.localeCompare(b.name));
+        if (!response.ok) {
+            throw new Error(`Catalog request failed with status ${response.status}`);
+        }
+
+        return parseCatalogSources(await response.text());
     };
 
-    const getDatasetLinkSearchText = (link) => [
-        link.name,
-        link.repoName,
-        link.description,
-        link.language || ""
+    const getDatasetSearchText = (dataset) => [
+        dataset.name,
+        dataset.sourceName,
+        dataset.description,
+        dataset.driver || "",
+        dataset.urlpath || "",
+        dataset.endpointUrl || ""
     ].join(" ").toLowerCase();
 
     const getVisibleDatasetLinks = () => {
         const query = datasetSearch.value.trim().toLowerCase();
-        if (!query) return datasetRepositoryLinks;
+        if (!query) return datasetCatalogLinks;
 
-        return datasetRepositoryLinks.filter((link) => getDatasetLinkSearchText(link).includes(query));
+        return datasetCatalogLinks.filter((dataset) => getDatasetSearchText(dataset).includes(query));
     };
 
-    const updateDatasetCount = (visibleLinks) => {
-        const total = datasetRepositoryLinks.length;
-        const visible = visibleLinks.length;
-        const label = total === 1 ? "dataset link" : "dataset links";
-        datasetRepositoryCount.textContent = total ? `${visible} of ${total} ${label}` : "No dataset links";
-        datasetRepositoryStatus.textContent = total ? `${visible} dataset repositories shown.` : "No dataset repositories loaded.";
+    const updateDatasetCount = (visibleDatasets) => {
+        const total = datasetCatalogLinks.length;
+        const visible = visibleDatasets.length;
+        const label = total === 1 ? "catalog source" : "catalog sources";
+        datasetCatalogCount.textContent = total ? `${visible} of ${total} ${label}` : "No catalog sources";
+        datasetCatalogStatus.textContent = total ? `${visible} catalog datasets shown.` : "No catalog datasets loaded.";
     };
 
-    const renderDatasetRepositoryLinks = () => {
-        const visibleLinks = getVisibleDatasetLinks();
-        updateDatasetCount(visibleLinks);
+    const renderDatasetCatalogLinks = () => {
+        const visibleDatasets = getVisibleDatasetLinks();
+        updateDatasetCount(visibleDatasets);
 
-        if (!visibleLinks.length) {
+        if (!visibleDatasets.length) {
             const hasQuery = datasetSearch.value.trim().length > 0;
-            datasetRepositoryList.innerHTML = `
+            datasetCatalogList.innerHTML = `
                 <div class="p-5">
-                    <p class="text-sm text-on-surface-variant">${hasQuery ? "No dataset repositories match your search." : "No dataset repositories found."}</p>
+                    <p class="text-sm text-on-surface-variant">${hasQuery ? "No catalog datasets match your search." : "No catalog datasets found."}</p>
                 </div>`;
             return;
         }
 
-        datasetRepositoryList.innerHTML = visibleLinks.map((link) => {
-            const languageMeta = link.language ? `<span>${escapeHtml(link.language)}</span>` : "";
+        datasetCatalogList.innerHTML = visibleDatasets.map((dataset) => {
+            const driverMeta = dataset.driver ? `<span>${escapeHtml(dataset.driver)}</span>` : "";
+            const consolidatedMeta = dataset.consolidated === true ? "<span>Consolidated</span>" : "";
+            const endpointMeta = dataset.endpointUrl ? "<span>ECMWF S3</span>" : "";
+            const urlpath = dataset.urlpath || "No URL path listed.";
 
             return `
-                <a href="${encodeURI(link.href)}" target="_blank" rel="noreferrer" class="group flex items-center justify-between gap-4 p-5 transition-colors hover:bg-primary-fixed/[0.06]">
+                <a href="${encodeURI(dataset.href)}" target="_blank" rel="noreferrer" class="group flex items-center justify-between gap-4 p-5 transition-colors hover:bg-primary-fixed/[0.06]">
                     <span class="min-w-0">
                         <span class="flex flex-wrap items-center gap-2">
-                            <span class="text-lg font-bold text-primary break-words">${escapeHtml(link.label)}</span>
-                            <span class="rounded-full border border-outline-variant/40 px-2.5 py-1 font-label-tag text-[10px] text-on-surface-variant">${escapeHtml(link.repoName)}</span>
+                            <span class="text-lg font-bold text-primary break-words">${escapeHtml(dataset.label)}</span>
+                            <span class="rounded-full border border-outline-variant/40 px-2.5 py-1 font-label-tag text-[10px] text-on-surface-variant">${escapeHtml(dataset.sourceName)}</span>
                         </span>
-                        <span class="mt-2 block text-sm leading-relaxed text-on-surface-variant">${escapeHtml(link.description)}</span>
+                        <span class="mt-2 block text-sm leading-relaxed text-on-surface-variant">${escapeHtml(dataset.description)}</span>
+                        <span class="mt-4 block rounded border border-primary-fixed/10 bg-[#050f24] px-3 py-2 font-mono text-xs leading-relaxed text-primary-fixed/80 break-all">${escapeHtml(urlpath)}</span>
                         <span class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/70">
-                            ${languageMeta}
-                            <span>${escapeHtml(link.stars)} stars</span>
-                            <span>${escapeHtml(link.forks)} forks</span>
+                            ${driverMeta}
+                            ${consolidatedMeta}
+                            ${endpointMeta}
                         </span>
                     </span>
                     <span class="material-symbols-outlined shrink-0 text-[26px] text-primary-fixed transition-transform group-hover:translate-x-1" aria-hidden="true">chevron_right</span>
@@ -400,23 +442,23 @@
         }).join("");
     };
 
-    datasetSearch.addEventListener("input", renderDatasetRepositoryLinks);
+    datasetSearch.addEventListener("input", renderDatasetCatalogLinks);
 
-    getDatasetRepositoryLinks()
+    getDatasetCatalogLinks()
         .then((links) => {
-            datasetRepositoryLinks = links;
-            window.datasetRepositoryLinks = datasetRepositoryLinks;
-            renderDatasetRepositoryLinks();
+            datasetCatalogLinks = links;
+            window.datasetCatalogLinks = datasetCatalogLinks;
+            renderDatasetCatalogLinks();
         })
         .catch((error) => {
             console.error(error);
-            datasetRepositoryLinks = [];
-            window.datasetRepositoryLinks = datasetRepositoryLinks;
-            datasetRepositoryCount.textContent = "Unable to load repositories";
-            datasetRepositoryStatus.textContent = "Unable to load dataset repositories right now.";
-            datasetRepositoryList.innerHTML = `
+            datasetCatalogLinks = [];
+            window.datasetCatalogLinks = datasetCatalogLinks;
+            datasetCatalogCount.textContent = "Unable to load catalog";
+            datasetCatalogStatus.textContent = "Unable to load catalog datasets right now.";
+            datasetCatalogList.innerHTML = `
                 <div class="p-5">
-                    <p class="text-sm text-on-surface-variant">Unable to load dataset repositories right now.</p>
+                    <p class="text-sm text-on-surface-variant">Unable to load catalog datasets right now.</p>
                 </div>`;
         });
 </script>
