@@ -1,14 +1,9 @@
-Mi scuso per aver eliminato il contenuto del footer. È stato un errore.
-
-Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colonne che avevi in precedenza e ho mantenuto la logica della sidebar.
-
-```html
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>MLCast Community - ML Meteorological Nowcasting</title>
+    <title>Software and Data — MLCast Community</title>
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -42,6 +37,49 @@ Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colon
         #sidebar { background-color: #0d1b37 !important; z-index: 100 !important; }
         #overlay { z-index: 99 !important; }
         .transition-transform { transition-duration: 300ms; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .path-nav-shell {
+            isolation: isolate;
+        }
+        .path-nav-shell::after {
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: -14px;
+            bottom: -34px;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 9999px;
+            background: rgba(7, 18, 42, 0.32);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, 0.75) 48%, transparent 78%);
+            mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, 0.75) 48%, transparent 78%);
+        }
+        .path-link {
+            align-items: center;
+            display: inline-flex;
+            justify-content: center;
+            min-height: 44px;
+            color: #bacac3;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .path-link:hover {
+            color: #ffffff;
+        }
+        .path-link[aria-current="true"] {
+            color: #002019;
+            background: #5ffbd6;
+            box-shadow: 0 0 24px rgba(95, 251, 214, 0.16);
+        }
+        .path-link[aria-current="true"] .path-icon {
+            color: #002019;
+        }
+        .path-link:hover .path-icon {
+            color: #5ffbd6;
+        }
     </style>
 </head>
 <body class="bg-background text-on-surface antialiased font-sans min-h-screen flex flex-col">
@@ -57,26 +95,24 @@ Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colon
         <nav class="flex flex-col gap-8">
             <div>
                 <a href="datasets_overview.html" class="block text-primary font-bold mb-2 hover:text-primary-fixed">MLCast Datasets</a>
-                <p class="text-sm text-white/70">Archivi di dati meteorologici ad alta risoluzione, pronti per l'addestramento di modelli di Deep Learning.</p>
+                <p class="text-sm text-white/70">High-resolution meteorological data archives, ready for Deep Learning model training.</p>
             </div>
             <div>
                 <a href="software_overview.html" class="block text-primary font-bold mb-2 hover:text-primary-fixed">MLCast Software</a>
-                <p class="text-sm text-white/70">Framework Python, pipeline di validazione e strumenti per il nowcasting meteorologico.</p>
+                <p class="text-sm text-white/70">Python frameworks, validation pipelines, and tools for meteorological nowcasting.</p>
             </div>
         </nav>
     </aside>
 
     <div id="overlay" class="fixed inset-0 bg-black/60 hidden"></div>
 
-   <header class="fixed top-0 z-50 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
+<header class="fixed top-0 z-50 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
     <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-md w-full max-w-[1440px] mx-auto">
-        <!-- Logo: punta sempre alla radice della Home -->
         <a href="home.html" class="text-2xl font-bold text-primary-fixed tracking-tight hover:opacity-80 transition-opacity">
             MLCast Community
         </a>
         
         <nav class="hidden md:flex items-center gap-lg">
-    <!-- Usa home.html#id per assicurarti che funzioni correttamente -->
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#get-started">About</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software_and_data.html">Software and Data</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
@@ -100,63 +136,59 @@ Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colon
     </div>
 </header>
  
-<!-- SIDEBAR: Solo Menu -->
-<aside id="sidebar" class="fixed top-24 left-6 z-[60] w-64 hidden md:flex flex-col">
-    <nav class="flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-[#0b1830]/90 p-4 backdrop-blur-xl shadow-2xl">
-        <h3 class="px-3 py-2 text-[11px] font-bold uppercase tracking-widest text-on-surface-variant/60">Main Menu</h3>
-        
-        <a href="datasets_overview.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-primary hover:bg-white/5 transition-colors">
-            <span class="material-symbols-outlined text-[18px]">database</span>
+<!-- Path-nav verticale (desktop) -->
+<aside class="fixed top-28 left-6 z-[60] hidden md:flex flex-col path-nav-shell">
+    <nav class="relative z-10 flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-[#0b1830]/90 p-2 backdrop-blur-xl shadow-2xl" aria-label="Software and Data paths">
+        <a href="datasets_overview.html" class="path-link gap-3 rounded-full px-5 py-3 text-[15px] font-bold transition-[color,background-color,box-shadow]">
+            <span class="material-symbols-outlined text-[18px] path-icon transition-colors">database</span>
             MLCast Datasets
         </a>
-        
-        <a href="software_overview.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-primary hover:bg-white/5 transition-colors">
-            <span class="material-symbols-outlined text-[18px]">code</span>
+        <a href="software_overview.html" class="path-link gap-3 rounded-full px-5 py-3 text-[15px] font-bold transition-[color,background-color,box-shadow]">
+            <span class="material-symbols-outlined text-[18px] path-icon transition-colors">code</span>
             MLCast Software
         </a>
     </nav>
 </aside>
 
-<!-- MAIN CONTENT: Le due box stanno qui -->
+<!-- MAIN CONTENT -->
 <main class="flex-grow pt-24 md:pl-72 px-margin-mobile md:px-margin-desktop">
     
-    <!-- Sezione Box Utilizzo (Ora correttamente nel main) -->
     <section class="max-w-[1180px] mx-auto py-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <!-- Box Datasets -->
-            <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
-                <!-- Contenuto box 1 -->
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
-                        <span class="material-symbols-outlined text-3xl">database</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-primary">When to choose Datasets</h3>
+        
+        <!-- Riga 1: Datasets -->
+        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300 mb-8">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
+                    <span class="material-symbols-outlined text-3xl">database</span>
                 </div>
-                <div class="space-y-4 text-on-surface-variant leading-relaxed">
-                    <p>Scegli la nostra collezione di <strong>MLCast Datasets</strong> se il tuo obiettivo principale è la ricerca accademica o lo sviluppo di nuove architetture di Deep Learning nel dominio meteorologico.</p>
-                </div>
+                <h3 class="text-2xl font-bold text-primary">When to choose MLCast Datasets</h3>
             </div>
-
-            <!-- Box Software -->
-            <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
-                <!-- Contenuto box 2 -->
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
-                        <span class="material-symbols-outlined text-3xl">code</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-primary">When to choose Software</h3>
-                </div>
-                <div class="space-y-4 text-on-surface-variant leading-relaxed">
-                    <p>Scegli la suite <strong>MLCast Software</strong> se sei un ingegnere o uno sviluppatore focalizzato sulla costruzione di pipeline di produzione robuste e sistemi di inferenza in tempo reale.</p>
-                </div>
+            <div class="space-y-4 text-on-surface-variant leading-relaxed">
+                <p>Choose the <strong>MLCast Datasets</strong> collection when your primary goal is academic research or developing new Deep Learning architectures in the meteorological domain. Our datasets provide high-resolution, curated meteorological data that eliminates the overhead of data collection and preprocessing.</p>
+                <p>You'll benefit from standardized formats, comprehensive metadata, and pre-split train/validation/test sets that enable reproducible experiments. Whether you are benchmarking a new model architecture, training a foundation model for weather prediction, or exploring novel approaches to precipitation nowcasting, MLCast Datasets gives you a solid, ready-to-use foundation.</p>
+                <p>This path is ideal for <strong>researchers, data scientists, and ML practitioners</strong> who want to focus on model innovation rather than data engineering, with the confidence that the underlying data is consistent, documented, and scientifically validated.</p>
             </div>
-
         </div>
+
+        <!-- Riga 2: Software -->
+        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
+                    <span class="material-symbols-outlined text-3xl">code</span>
+                </div>
+                <h3 class="text-2xl font-bold text-primary">When to choose MLCast Software</h3>
+            </div>
+            <div class="space-y-4 text-on-surface-variant leading-relaxed">
+                <p>Reach for the <strong>MLCast Software</strong> suite when you are an engineer or developer focused on building robust production pipelines, real-time inference systems, or custom data processing workflows for meteorological nowcasting.</p>
+                <p>Our software stack includes Python frameworks for model deployment, validation pipelines for ensuring prediction quality, and tools for ingesting, transforming, and visualizing meteorological data at scale. If you need to integrate nowcasting capabilities into an existing system, deploy models in operational environments, or build custom benchmarks and evaluation suites, MLCast Software provides the building blocks you need.</p>
+                <p>This path is designed for <strong>software engineers, ML engineers, and infrastructure teams</strong> who prioritize reliability, performance, and maintainability in production environments, with well-documented APIs and modular components that adapt to your specific use case.</p>
+            </div>
+        </div>
+
     </section>
 </main>
 
-    <!-- FOOTER RIPRISTINATO -->
+    <!-- FOOTER -->
     <footer class="border-t border-outline-variant/20 bg-[#050f24] py-xl mt-24">
         <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-lg text-sm">
             <div class="col-span-2 md:col-span-1">
@@ -187,7 +219,7 @@ Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colon
                     <span class="w-2 h-2 rounded-full bg-green-400"></span>
                     <span>Systems Operational</span>
                 </div>
-                <p class="text-on-surface-variant mt-4 text-xs italic">© 2026 MLCast Community. Released under MIT License.</p>
+                <p class="text-on-surface-variant mt-4 text-xs italic">&copy; 2026 MLCast Community. Released under MIT License.</p>
             </div>
         </div>
     </footer>
@@ -209,5 +241,3 @@ Ecco il codice corretto. Ho ripristinato il footer completo con le quattro colon
     </script>
 </body>
 </html>
-
-```
