@@ -403,40 +403,22 @@
                                 <li class="flex items-center gap-2.5 rounded-lg border border-outline-variant/25 bg-surface-container/40 px-3 py-2.5 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-primary-fixed" aria-hidden="true">conversion_path</span>Build data pipelines</li>
                             </ul>
                         </div>
-                        <div class="w-full min-w-0 rounded-lg bg-surface-creme border border-outline-variant/30 overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.22)] lg:justify-self-end">
-                            <div class="flex items-center gap-2 px-3 py-2 bg-surface-creme border-b border-outline-variant/20">
-                                <svg viewBox="0 0 128 128" class="h-4 w-4" aria-hidden="true">
-                                    <linearGradient id="pyBlue" x1="70.252" y1="1237.476" x2="170.659" y2="1151.089" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0" stop-color="#5A9FD4"/><stop offset="1" stop-color="#306998"/>
-                                    </linearGradient>
-                                    <linearGradient id="pyYel" x1="209.474" y1="1098.811" x2="173.62" y2="1149.537" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0" stop-color="#FFD43B"/><stop offset="1" stop-color="#FFE873"/>
-                                    </linearGradient>
-                                    <path fill="url(#pyBlue)" d="M63.4 1.5c-5.2 0-10.2.4-14.6 1.2C36 4.9 33.7 9.4 33.7 17.7v11h30.3v3.8H22.4c-8.3 0-15.6 5-17.9 14.5-2.6 10.9-2.7 17.7 0 29.1 2 8.5 6.9 14.5 15.2 14.5h10.4V91c0-9.5 8.2-17.8 17.9-17.8h30.2c8 0 14.3-6.6 14.3-14.6V17.7c0-7.8-6.6-13.6-14.3-14.9-4.9-.8-10-1.2-15-1.3zM47 11.7c3.1 0 5.7 2.6 5.7 5.8 0 3.2-2.6 5.7-5.7 5.7-3.2 0-5.7-2.5-5.7-5.7-.1-3.3 2.5-5.8 5.7-5.8z"/>
-                                    <path fill="url(#pyYel)" d="M94 32.5v10.7c0 9.9-8.4 18.2-17.9 18.2H45.9c-7.8 0-14.3 6.7-14.3 14.6v27.4c0 7.8 6.8 12.4 14.3 14.6 9 2.6 17.6 3.1 30.2 0 7.2-2.1 14.3-6.3 14.3-14.6v-11H60.3v-3.8h45.3c8.3 0 11.4-5.8 14.3-14.5 3-9 2.9-17.6 0-29.1-2.1-8.3-6-14.5-14.3-14.5H94zm-17 73c3.2 0 5.7 2.5 5.7 5.7 0 3.2-2.5 5.8-5.7 5.8-3.1 0-5.7-2.6-5.7-5.8 0-3.2 2.5-5.7 5.7-5.7z"/>
-                                </svg>
-                                <span class="text-[11px] text-on-surface-variant/70 font-label-tag">nowcast_model.py</span>
-                                <span class="ml-auto rounded border border-primary-fixed/30 bg-primary-fixed/10 px-2 py-0.5 text-[10px] font-label-tag uppercase tracking-widest text-primary-fixed">Fill the blanks</span>
-                            </div>
-                            <pre class="p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto font-label-tag"><code><span class="text-[#5A9FD4]">import</span> <span class="text-on-surface-variant">torch</span>
-<span class="text-[#5A9FD4]">import</span> <span class="text-on-surface-variant">torch.nn</span> <span class="text-[#5A9FD4]">as</span> <span class="text-on-surface-variant">nn</span>
+                        <div class="w-full min-w-0 rounded-lg overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.22)] lg:justify-self-end terminal-window" style="padding:42px 18px 18px!important;background:#0D2D31!important;border:1px solid rgba(255,255,255,0.06)!important;border-radius:12px!important">
+                            <pre class="text-xs sm:text-sm leading-relaxed overflow-x-auto font-label-tag text-[#C8D6D8]"><code><span class="text-[#569CD6]">import</span> <span class="text-[#8A9CA6]">torch</span>
+<span class="text-[#569CD6]">import</span> <span class="text-[#8A9CA6]">torch.nn</span> <span class="text-[#569CD6]">as</span> <span class="text-[#8A9CA6]">nn</span>
 
 
-<span class="text-[#5A9FD4]">class</span> <span class="text-primary-fixed">NowcastModel</span>(nn.Module):
-    <span class="text-[#FFD43B]">"""Your nowcasting model goes here."""</span>
+<span class="text-[#569CD6]">class</span> <span class="text-[#EE964B]">NowcastModel</span>(nn.Module):
+    <span class="text-[#6B969B]">"""Your nowcasting model goes here."""</span>
 
-    <span class="text-[#5A9FD4]">def</span> <span class="text-primary">__init__</span>(self, in_channels=<span class="text-[#FFD43B]">1</span>):
+    <span class="text-[#569CD6]">def</span> <span class="text-[#4EC9B0]">__init__</span>(self, in_channels=<span class="text-[#EE964B]">1</span>):
         super().__init__()
-        <span class="text-on-surface-variant/45"># TODO: build your architecture</span>
-        self.net = <span class="rounded bg-primary-fixed/15 px-1 text-primary-fixed">...</span>
+        <span class="text-[#6B969B]"># TODO: build your architecture</span>
+        self.net = <span class="rounded bg-[#EE964B]/15 px-1 text-[#EE964B]">...</span>
 
-    <span class="text-[#5A9FD4]">def</span> <span class="text-primary">forward</span>(self, x):
-        <span class="text-on-surface-variant/45"># TODO: your idea here 💡</span>
-        <span class="text-[#5A9FD4]">raise</span> <span class="text-primary">NotImplementedError</span></code></pre>
-                            <div class="flex items-center gap-2.5 border-t border-outline-variant/20 px-4 py-3">
-                                <span class="material-symbols-outlined text-primary-fixed" aria-hidden="true">lightbulb</span>
-                                <p class="text-xs sm:text-sm text-on-surface-variant">Got an idea? Fill in the blanks and open a pull request.</p>
-                            </div>
+    <span class="text-[#569CD6]">def</span> <span class="text-[#4EC9B0]">forward</span>(self, x):
+        <span class="text-[#6B969B]"># TODO: your idea here 💡</span>
+        <span class="text-[#569CD6]">raise</span> <span class="text-[#4EC9B0]">NotImplementedError</span></code></pre>
                         </div>
                     </div>
 
