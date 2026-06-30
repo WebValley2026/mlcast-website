@@ -24,6 +24,11 @@ project:
     - title: Datasets
       children:
         - file: docs/documentation/data.md
+        - file: docs/documentation/datasets/radklim_precipitation.ipynb
+        - file: docs/documentation/datasets/dmi_precipitation.ipynb
+        - file: docs/documentation/datasets/it_dpc_precipitation.ipynb
+        - file: docs/documentation/datasets/uk_metoffice_precipitation.ipynb
+        - file: docs/documentation/datasets/be_rmi_precipitation.ipynb
     - title: Validator
       children:
         - file: docs/documentation/validator.md
