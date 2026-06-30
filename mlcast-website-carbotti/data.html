@@ -168,10 +168,10 @@
                     <h3 class="text-xl font-bold text-primary">Option A: Direct GitHub Access</h3>
                 </div>
                 <p class="text-on-surface-variant text-sm mb-6">Use the most recent version of the catalog directly from our source repository.</p>
-                <div class="bg-[#F0E8DE] p-4 rounded-lg font-mono text-xs overflow-x-auto text-on-surface-variant/90 border border-primary/10">
-                    pip install intake intake-xarray zarr jinja2<br><br>
-                    import intake<br>
-                    cat = intake.open_catalog("https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml")
+                <div class="terminal-window font-mono text-xs">
+                    <span class="terminal-prompt">$</span> pip install intake intake-xarray zarr jinja2<br><br>
+                    <span class="terminal-keyword">import</span> intake<br>
+                    cat = intake.open_catalog(<span class="terminal-string">"https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml"</span>)
                 </div>
             </div>
 
@@ -181,9 +181,9 @@
                     <h3 class="text-xl font-bold text-primary">Option B: Python Package</h3>
                 </div>
                 <p class="text-on-surface-variant text-sm mb-6">Install our stable <code class="text-primary-fixed">mlcast-datasets</code> package from PyPI for consistent versioning.</p>
-                <div class="bg-[#F0E8DE] p-4 rounded-lg font-mono text-xs overflow-x-auto text-on-surface-variant/90 border border-primary/10">
-                    pip install mlcast-datasets<br><br>
-                    import mlcast_datasets<br>
+                <div class="terminal-window font-mono text-xs">
+                    <span class="terminal-prompt">$</span> pip install mlcast-datasets<br><br>
+                    <span class="terminal-keyword">import</span> mlcast_datasets<br>
                     cat = mlcast_datasets.open_catalog()
                 </div>
             </div>
@@ -196,11 +196,11 @@
                 <div class="space-y-6">
                     <p class="text-on-surface-variant">Once you have the catalog open, you can start exploring the data instantly:</p>
                     <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <div class="bg-[#F0E8DE] p-6 rounded-xl font-mono text-xs text-on-surface-variant/90 border border-primary/10">
-                            # List available sources<br>
+                        <div class="terminal-window font-mono text-xs">
+                            <span class="terminal-comment"># List available sources</span><br>
                             print(list(cat))<br>
-                            # -> ['precipitation']<br><br>
-                            # Access a specific radar dataset<br>
+                            <span class="terminal-output"># -&gt; ['precipitation']</span><br><br>
+                            <span class="terminal-comment"># Access a specific radar dataset</span><br>
                             ds = cat.precipitation.radklim_5_minutes.to_dask()
                         </div>
                         <ul class="space-y-4 text-sm text-on-surface-variant">
@@ -253,12 +253,12 @@
         <h2 class="text-3xl font-bold text-primary mb-6">Transparency & Metadata</h2>
         <p class="text-on-surface-variant mb-8">Every dataset in our catalog includes rich provenance metadata (Author, Conventions, Creation Date), ensuring full scientific traceability:</p>
         
-        <div class="bg-[#F0E8DE] p-6 rounded-xl border border-primary/10 font-mono text-xs text-on-surface-variant/90 overflow-x-auto">
-            # Full dataset attributes available instantly<br>
+        <div class="terminal-window font-mono text-xs">
+            <span class="terminal-comment"># Full dataset attributes available instantly</span><br>
             print(ds.attrs['reference'])<br>
-            # -> '10.5676/DWD/RADKLIM_YW_V2017.002'<br><br>
+            <span class="terminal-output"># -&gt; '10.5676/DWD/RADKLIM_YW_V2017.002'</span><br><br>
             print(ds.attrs['mlcast_dataset_identifier'])<br>
-            # -> 'DE-DWD-radar_precipitation-RADKLIM'
+            <span class="terminal-output"># -&gt; 'DE-DWD-radar_precipitation-RADKLIM'</span>
         </div>
     </div>
 </section>

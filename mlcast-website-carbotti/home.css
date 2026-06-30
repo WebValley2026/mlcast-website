@@ -313,6 +313,95 @@ footer {
     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
 }
 
+.terminal-window {
+    position: relative;
+    overflow-x: auto;
+    padding: 44px 18px 18px !important;
+    border: 1px solid #293142 !important;
+    border-radius: 12px !important;
+    background: #333333 !important;
+    color: #e6edf3 !important;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.7;
+    white-space: nowrap;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 14px 34px rgba(0, 0, 0, 0.2) !important;
+    scrollbar-color: #465064 #333333;
+}
+
+.terminal-window--card {
+    display: flex;
+    min-height: 224px;
+    flex-direction: column;
+}
+
+.terminal-window--card .terminal-code {
+    width: max-content;
+    min-width: 100%;
+    margin: auto 0;
+}
+
+.terminal-window::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ff5f57;
+    box-shadow:
+        19px 0 #febc2e,
+        38px 0 #28c840;
+}
+
+.terminal-window::after {
+    content: "";
+    position: absolute;
+    top: 37px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: #202633;
+}
+
+.terminal-window [class*="text-primary-fixed/50"],
+.terminal-window .terminal-comment {
+    color: #7dd3fc !important;
+}
+
+.terminal-window [class*="text-primary-fixed/90"],
+.terminal-window .terminal-highlight,
+.terminal-window .terminal-string {
+    color: #fbbf24 !important;
+}
+
+.terminal-window [class*="text-green-400"],
+.terminal-window .terminal-prompt {
+    color: #5ffbd6 !important;
+}
+
+.terminal-window [class*="text-on-surface-variant"],
+.terminal-window .terminal-output {
+    color: #a8b3c4 !important;
+}
+
+.terminal-window .terminal-keyword {
+    color: #c4a7e7 !important;
+}
+
+.terminal-control {
+    color: #a8b3c4 !important;
+    background: #151922 !important;
+    border: 1px solid #303849;
+}
+
+.terminal-control:hover {
+    color: #ffffff !important;
+    border-color: #5ffbd6;
+}
+
 .text-primary-fixed {
     color: #EE964B !important;
 }
