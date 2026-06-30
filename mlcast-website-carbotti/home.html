@@ -116,14 +116,13 @@
 <!-- VIDEO A DESTRA: Aggiornato per compatibilità -->
 <div class="w-full lg:w-1/2 flex justify-center">
     <div class="relative w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden border border-outline-variant/30 bg-background shadow-2xl">
-        <video id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto" class="w-full h-full object-cover">
-            <source src="Recording 2026-06-29 173741.mp4" type="video/mp4">
-            Il tuo browser non supporta il tag video.
-        </video>
+        <video id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto" 
+       class="w-full h-full object-cover scale-110">
+    <!-- scale-110 ingrandisce leggermente il video per tagliare eventuali bordi residui -->
+    <source src="Recording.mp4" type="video/mp4">
+</video>
         <!-- Overlay HUD decorativo -->
-        <div class="absolute bottom-4 left-4 z-10 font-mono text-[10px] text-primary-fixed/70 bg-background/80 backdrop-blur px-2 py-1 border border-primary-fixed/20">
-            SCAN_REF: 04.2026_MLC
-        </div>
+        
     </div>
 </div>
         
@@ -406,6 +405,11 @@
             }, 2000);
         });
     }
+
+    
+  const video = document.getElementById('hero-video');
+  // Imposta la velocità: 0.5 è metà velocità, 0.75 è più fluido
+  video.playbackRate = 0.5; 
 
 
 </script>
