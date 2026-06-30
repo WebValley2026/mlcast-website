@@ -175,3 +175,45 @@ footer {
 #shader-canvas {
     z-index: -1; 
 }
+
+/* Stile base per le nuove sezioni */
+#datasets .glass-card {
+    background: rgba(17, 34, 64, 0.4) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(95, 251, 214, 0.1);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#datasets .glass-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(95, 251, 214, 0.4);
+}
+
+/* Stile per il widget di codice */
+.code-container {
+    background: #020712 !important;
+    border: 1px solid rgba(95, 251, 214, 0.15);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+}
+
+/* Enfasi per le parole chiave */
+.text-primary-fixed {
+    color: #5ffbd6 !important; /* Il colore "accent" che dà luce al sito */
+}
+
+/* Card moderne con effetto hover profondo */
+.glass-card {
+    background: linear-gradient(180deg, rgba(17, 34, 64, 0.6) 0%, rgba(7, 18, 42, 0.4) 100%);
+    backdrop-filter: blur(20px);
+    transition: all 0.5s ease;
+}
+
+/* Ombra sottile che appare al passaggio del mouse */
+.glass-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Rendi il testo più leggibile */
+.text-gray-400 {
+    color: #94a3b8;
+}

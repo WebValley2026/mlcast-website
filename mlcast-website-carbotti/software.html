@@ -41,18 +41,18 @@
 <body class="bg-background text-on-surface antialiased font-sans min-h-screen flex flex-col">
 <header class="fixed top-0 z-50 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
     <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-md w-full max-w-[1440px] mx-auto">
-        <a href="index.html" class="text-2xl font-bold text-primary-fixed tracking-tight hover:opacity-80 transition-opacity">
+        <a href="home.html" class="text-2xl font-bold text-primary-fixed tracking-tight hover:opacity-80 transition-opacity">
             MLCast Community
         </a>
 
         <nav class="hidden md:flex items-center gap-lg">
             <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#get-started">About</a>
-            <a class="text-primary-fixed text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software.html">Software</a>
-            <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
-            <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#documentation">Documentation</a>
-            <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#news">News</a>
-            <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#faq">FAQ</a>
-        </nav>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software.html">Software</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="https://webvalley2026.github.io/mlcast-website/docs/">Documentation</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="data.html">Data</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#faq">FAQ</a>
+    </nav>
     </div>
 </header>
 
@@ -239,6 +239,53 @@
     </section>
 </main>
 
+    <!-- Footer: Elegante e professionale -->
+<footer class="border-t border-outline-variant/20 bg-[#050f24] py-xl mt-24">
+    <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-lg text-sm">
+        
+        <!-- Colonna 1: Info Progetto -->
+        <div class="col-span-2 md:col-span-1">
+            <h4 class="font-bold text-primary mb-md">MLCast Community</h4>
+            <p class="text-on-surface-variant leading-relaxed">
+                Advancing meteorological intelligence through open-source collaboration and high-resolution data.
+            </p>
+        </div>
+
+        <!-- Colonna 2: Risorse -->
+        <div>
+            <h4 class="font-bold text-primary mb-md">Resources</h4>
+            <ul class="space-y-sm text-on-surface-variant">
+                <li><a href="#" class="hover:text-primary-fixed">Documentation</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">API Reference</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">Dataset Catalog</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">Validation Tool</a></li>
+            </ul>
+        </div>
+
+        <!-- Colonna 3: Community -->
+        <div>
+            <h4 class="font-bold text-primary mb-md">Community</h4>
+            <ul class="space-y-sm text-on-surface-variant">
+                <li><a href="#" class="hover:text-primary-fixed">GitHub</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">Discussions</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">Code of Conduct</a></li>
+                <li><a href="#" class="hover:text-primary-fixed">Contributors</a></li>
+            </ul>
+        </div>
+
+        <!-- Colonna 4: Legal/Status -->
+        <div>
+            <h4 class="font-bold text-primary mb-md">Status</h4>
+            <div class="flex items-center gap-2 text-green-400">
+                <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                <span>Systems Operational</span>
+            </div>
+            <p class="text-on-surface-variant mt-4 text-xs italic">
+                © 2026 MLCast Community. Released under MIT License.
+            </p>
+        </div>
+    </div>
+</footer><
 <script>
     function copySnippet(elementId, btn) {
         const snippet = document.getElementById(elementId);
