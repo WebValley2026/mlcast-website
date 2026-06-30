@@ -128,7 +128,7 @@ canvas {
     max-width: 230px;
     /* sideline delimitatrice */
     border-right: 2px solid rgba(60, 74, 69, 0.35);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.12s linear, transform 0.12s linear;
 }
 
 @media (min-width: 1280px) {
