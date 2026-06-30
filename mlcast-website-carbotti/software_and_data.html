@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -18,13 +18,15 @@
           theme: {
             extend: {
               colors: {
-                  "primary": "#ffffff",
-                  "primary-fixed": "#5ffbd6",
-                  "background": "#07122a",
-                  "on-surface": "#d9e2ff",
-                  "on-surface-variant": "#bacac3",
-                  "on-primary-fixed": "#002019",
-                  "outline-variant": "#3c4a45"
+                  "primary": "#005B63",
+                  "primary-fixed": "#EE964B",
+                  "background": "#FFFFFF",
+                  "on-surface": "#005B63",
+                  "on-surface-variant": "#6B7F82",
+                  "on-primary-fixed": "#FFFFFF",
+                  "outline-variant": "#E8DDD4",
+                  "accent-2": "#F4D35E",
+                  "surface-creme": "#F7EDE2"
               },
               borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
               spacing: { "md": "16px", "lg": "24px", "xl": "40px", "sm": "8px", "margin-mobile": "16px", "margin-desktop": "48px" },
@@ -51,7 +53,7 @@
             z-index: 0;
             pointer-events: none;
             border-radius: 9999px;
-            background: rgba(7, 18, 42, 0.32);
+            background: rgba(238, 150, 75, 0.12);
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, 0.75) 48%, transparent 78%);
@@ -62,30 +64,30 @@
             display: inline-flex;
             justify-content: center;
             min-height: 44px;
-            color: #bacac3;
+            color: #6B7F82;
             line-height: 1;
             white-space: nowrap;
         }
         .path-link:hover {
-            color: #ffffff;
+            color: #005B63;
         }
         .path-link[aria-current="true"] {
-            color: #002019;
-            background: #5ffbd6;
-            box-shadow: 0 0 24px rgba(95, 251, 214, 0.16);
+            color: #FFFFFF;
+            background: #EE964B;
+            box-shadow: 0 0 24px rgba(238, 150, 75, 0.16);
         }
         .path-link[aria-current="true"] .path-icon {
-            color: #002019;
+            color: #FFFFFF;
         }
         .path-link:hover .path-icon {
-            color: #5ffbd6;
+            color: #EE964B;
         }
     </style>
 </head>
 <body class="bg-background text-on-surface antialiased font-sans min-h-screen flex flex-col">
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 border-r border-outline-variant transform -translate-x-full shadow-2xl p-6 transition-transform">
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 border-r border-outline-variant/30 bg-surface-creme/90 transform -translate-x-full shadow-lg p-6 transition-transform">
         <div class="flex justify-between items-center mb-10">
             <h2 class="text-primary font-bold tracking-wider uppercase">Menu</h2>
             <button id="close-btn" class="text-on-surface-variant hover:text-primary transition-colors">
@@ -95,11 +97,11 @@
         <nav class="flex flex-col gap-8">
             <div>
                 <a href="data.html" class="block text-primary font-bold mb-2 hover:text-primary-fixed">MLCast Datasets</a>
-                <p class="text-sm text-white/70">High-resolution meteorological data archives, ready for Deep Learning model training.</p>
+                <p class="text-sm text-on-surface-variant/70">High-resolution meteorological data archives, ready for Deep Learning model training.</p>
             </div>
             <div>
                 <a href="software.html" class="block text-primary font-bold mb-2 hover:text-primary-fixed">MLCast Software</a>
-                <p class="text-sm text-white/70">Python frameworks, validation pipelines, and tools for meteorological nowcasting.</p>
+                <p class="text-sm text-on-surface-variant/70">Python frameworks, validation pipelines, and tools for meteorological nowcasting.</p>
             </div>
         </nav>
     </aside>
@@ -137,7 +139,7 @@
  
 <!-- Path-nav verticale (desktop) -->
 <aside class="fixed top-28 left-6 z-[60] hidden md:flex flex-col path-nav-shell">
-    <nav class="relative z-10 flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-[#0b1830]/90 p-2 backdrop-blur-xl shadow-2xl" aria-label="Software and Data paths">
+    <nav class="relative z-10 flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-surface-creme/90 p-2 backdrop-blur-xl shadow-lg" aria-label="Software and Data paths">
         <a href="data.html" class="path-link gap-3 rounded-full px-5 py-3 text-[15px] font-bold transition-[color,background-color,box-shadow]">
             <span class="material-symbols-outlined text-[18px] path-icon transition-colors">database</span>
             MLCast Datasets
@@ -155,7 +157,7 @@
     <section class="max-w-[1180px] mx-auto py-16">
         
         <!-- Riga 1: Datasets -->
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300 mb-8">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300 mb-8">
             <div class="flex items-center gap-4 mb-6">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">database</span>
@@ -170,7 +172,7 @@
         </div>
 
         <!-- Riga 2: Software -->
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-6">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">code</span>
@@ -188,7 +190,7 @@
 </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-outline-variant/20 bg-[#050f24] py-xl mt-24">
+    <footer class="border-t border-outline-variant/20 bg-surface-creme py-xl mt-24">
         <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-lg text-sm">
             <div class="col-span-2 md:col-span-1">
                 <h4 class="font-bold text-primary mb-md">MLCast Community</h4>

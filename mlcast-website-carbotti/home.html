@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -25,13 +25,15 @@
           theme: {
             extend: {
               colors: {
-                  "primary": "#ffffff",
-                  "primary-fixed": "#5ffbd6",
-                  "background": "#07122a",
-                  "on-surface": "#d9e2ff",
-                  "on-surface-variant": "#bacac3",
-                  "on-primary-fixed": "#002019",
-                  "outline-variant": "#3c4a45"
+                  "primary": "#005B63",
+                  "primary-fixed": "#EE964B",
+                  "background": "#FFFFFF",
+                  "on-surface": "#005B63",
+                  "on-surface-variant": "#6B7F82",
+                  "on-primary-fixed": "#FFFFFF",
+                  "outline-variant": "#E8DDD4",
+                  "accent-2": "#F4D35E",
+                  "surface-creme": "#F7EDE2"
               },
               borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
               spacing: { "md": "16px", "lg": "24px", "xl": "40px", "sm": "8px", "margin-mobile": "16px", "margin-desktop": "48px" },
@@ -89,7 +91,7 @@
 <section class="relative min-h-screen flex items-center pt-24 px-margin-mobile md:px-margin-desktop">
     
     <!-- Canvas Background rimane fisso -->
-    <div class="absolute inset-0 w-full h-full opacity-60 mix-blend-screen -z-10">
+    <div class="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply -z-10">
         <canvas id="shader-canvas" class="w-full h-full"></canvas>
     </div>
 
@@ -122,7 +124,7 @@
         </div>
 <!-- VIDEO A DESTRA: Aggiornato per compatibilità -->
 <div class="w-full lg:w-1/2 flex justify-center">
-    <div class="relative w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden border border-outline-variant/30 bg-background shadow-2xl">
+    <div class="relative w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden border border-outline-variant/20">
         <video id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto" 
        class="w-full h-full object-cover scale-110">
     <!-- scale-110 ingrandisce leggermente il video per tagliare eventuali bordi residui -->
@@ -158,7 +160,7 @@
             </div>
 
             <!-- Colonna mappa (70%) -->
-            <div class="min-w-0 rounded-lg border border-outline-variant/30 bg-[#0b1830] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
+            <div class="min-w-0 rounded-lg border border-outline-variant/30 bg-surface-creme p-4 shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
             <div class="flex flex-wrap items-start justify-between gap-4 border-b border-outline-variant/20 pb-4">
                 <div>
                     <p class="font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">Dataset Catalog</p>
@@ -168,122 +170,122 @@
             </div>
 
             <!-- Interactive zoom/pan map -->
-            <div id="coverage-viewport" class="relative mt-5 aspect-[95/62] w-full select-none overflow-hidden rounded border border-outline-variant/25 bg-[#050f24] touch-none cursor-grab" style="background-image:radial-gradient(rgba(120,160,220,0.08) 1px,transparent 1px);background-size:18px 18px;">
+            <div id="coverage-viewport" class="relative mt-5 aspect-[95/62] w-full select-none overflow-hidden rounded border border-outline-variant/25 bg-[#F0E8DE] touch-none cursor-grab" style="background-image:radial-gradient(rgba(120,160,220,0.08) 1px,transparent 1px);background-size:18px 18px;">
                 <div id="coverage-map" class="absolute inset-0 origin-top-left will-change-transform" style="transform:translate(0px,0px) scale(1);">
                     <img src="img/world.svg" alt="World map" class="absolute inset-0 h-full w-full object-fill opacity-90" draggable="false" aria-hidden="true">
 
                     <!-- Covered countries -->
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:45.5%;top:26.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-[#0b1830] px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall rate</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2005–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-surface-creme px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall rate</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2005–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
                         <span class="relative flex h-4 w-4 items-center justify-center">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40"></span>
-                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/gb.svg" alt="UK" loading="lazy" class="h-full w-full object-cover"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-surface-creme shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/gb.svg" alt="UK" loading="lazy" class="h-full w-full object-cover"></span>
                         </span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:50.5%;top:24.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-[#0b1830] px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> reflectivity (dBZ)</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2016–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 10 min</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-surface-creme px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> reflectivity (dBZ)</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2016–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 10 min</span></span>
                         <span class="relative flex h-4 w-4 items-center justify-center">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.4s"></span>
-                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/dk.svg" alt="Denmark" loading="lazy" class="h-full w-full object-cover"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-surface-creme shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/dk.svg" alt="Denmark" loading="lazy" class="h-full w-full object-cover"></span>
                         </span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:47.8%;top:29.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-[#0b1830] px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rain rate (mm/h)</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2017–2023</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-surface-creme px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rain rate (mm/h)</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2017–2023</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
                         <span class="relative flex h-4 w-4 items-center justify-center">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:.8s"></span>
-                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/be.svg" alt="Belgium" loading="lazy" class="h-full w-full object-cover"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-surface-creme shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/be.svg" alt="Belgium" loading="lazy" class="h-full w-full object-cover"></span>
                         </span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:51.0%;top:28.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-[#0b1830] px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall amount</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2001–2023</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-surface-creme px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall amount</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2001–2023</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
                         <span class="relative flex h-4 w-4 items-center justify-center">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.2s"></span>
-                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/de.svg" alt="Germany" loading="lazy" class="h-full w-full object-cover"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-surface-creme shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/de.svg" alt="Germany" loading="lazy" class="h-full w-full object-cover"></span>
                         </span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-20" style="left:51.8%;top:33.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-[#0b1830] px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall rate</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2010–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 z-30 w-max rounded border border-primary-fixed/40 bg-surface-creme px-2 py-1 text-left opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100"><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Variable:</span> rainfall rate</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Data range:</span> 2010–2025</span><span class="block text-[10px] leading-snug text-on-surface-variant"><span class="text-primary-fixed font-semibold">Sampling rate:</span> 5 min</span></span>
                         <span class="relative flex h-4 w-4 items-center justify-center">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40" style="animation-delay:1.6s"></span>
-                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-[#0b1830] shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/it.svg" alt="Italy" loading="lazy" class="h-full w-full object-cover"></span>
+                            <span class="relative inline-flex h-4 w-4 overflow-hidden rounded-full border border-primary-fixed/60 bg-surface-creme shadow-[0_4px_16px_rgba(0,0,0,0.5)]"><img src="https://flagcdn.com/it.svg" alt="Italy" loading="lazy" class="h-full w-full object-cover"></span>
                         </span>
                     </div>
 
                     <!-- Expansion targets (global) -->
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:21.7%;top:33.6%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:31.7%;top:61.6%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:71.5%;top:43.6%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:85.7%;top:70.1%">
-                        <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:16.5%;top:36.0%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:21.5%;top:24.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:48.5%;top:52.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:53.0%;top:77.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:58.0%;top:42.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:67.5%;top:46.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:78.5%;top:38.5%">
-                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                     <div class="group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:z-20" style="left:84.0%;top:37.0%">
-                        <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-[#0b1830] px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
-                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-background/30 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
+                        <span class="pointer-events-none absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-md border border-primary-fixed/40 bg-surface-creme px-2.5 py-1 text-xs font-semibold text-primary opacity-0 shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition-opacity duration-150 group-hover:opacity-100">Help us with your data!</span>
+                        <span class="flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-on-surface-variant/50 bg-white/80 text-on-surface-variant/70 transition group-hover:scale-110 group-hover:border-primary-fixed group-hover:bg-primary-fixed/10 group-hover:text-primary-fixed"><span class="material-symbols-outlined text-[10px]" aria-hidden="true">add</span></span>
                     </div>
                 </div>
 
                 <!-- Zoom controls (fixed to viewport) -->
                 <div class="absolute right-3 top-3 z-30 flex flex-col gap-1.5">
-                    <button type="button" data-coverage-zoom="in" aria-label="Zoom in" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">add</span></button>
-                    <button type="button" data-coverage-zoom="out" aria-label="Zoom out" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">remove</span></button>
-                    <button type="button" data-coverage-zoom="reset" aria-label="Reset view" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-[#0b1830]/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">restart_alt</span></button>
+                    <button type="button" data-coverage-zoom="in" aria-label="Zoom in" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-surface-creme/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">add</span></button>
+                    <button type="button" data-coverage-zoom="out" aria-label="Zoom out" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-surface-creme/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[20px]" aria-hidden="true">remove</span></button>
+                    <button type="button" data-coverage-zoom="reset" aria-label="Reset view" class="flex h-9 w-9 items-center justify-center rounded border border-outline-variant/30 bg-surface-creme/90 text-primary shadow-[0_6px_20px_rgba(0,0,0,0.5)] transition hover:border-primary-fixed/60 hover:text-primary-fixed"><span class="material-symbols-outlined text-[18px]" aria-hidden="true">restart_alt</span></button>
                 </div>
 
                 <!-- Legend -->
-                <div class="pointer-events-none absolute bottom-3 left-3 z-30 flex items-center gap-3 rounded bg-[#050f24]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
+                <div class="pointer-events-none absolute bottom-3 left-3 z-30 flex items-center gap-3 rounded bg-[#F0E8DE]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
                     <span class="flex items-center gap-1.5 text-primary-fixed"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span>Live</span>
                     <span class="flex items-center gap-1.5 text-on-surface-variant/60"><span class="h-2 w-2 rounded-full border border-dashed border-on-surface-variant/50"></span>Wanted</span>
                 </div>
 
                 <!-- Stats overlay (fixed to viewport, bottom) -->
                 <div class="pointer-events-none absolute bottom-3 right-3 z-30 flex gap-2">
-                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                    <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-3 py-1.5 backdrop-blur-sm">
                         <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Countries</p>
                         <p class="mt-0.5 text-lg font-bold leading-none text-primary">5</p>
                     </div>
-                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                    <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-3 py-1.5 backdrop-blur-sm">
                         <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Years of rain</p>
                         <p class="mt-0.5 text-lg font-bold leading-none text-primary-fixed">~70</p>
                     </div>
-                    <div class="rounded border border-outline-variant/25 bg-[#050f24]/85 px-3 py-1.5 backdrop-blur-sm">
+                    <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-3 py-1.5 backdrop-blur-sm">
                         <p class="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/60">Cadence</p>
                         <p class="mt-0.5 text-lg font-bold leading-none text-primary">5m</p>
                     </div>
@@ -495,28 +497,28 @@
 
                 <!-- Communication tool grid -->
                 <div class="grid grid-cols-2 gap-3 mb-6">
-                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-white/80 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
                         <span class="material-symbols-outlined text-primary-fixed">forum</span>
                         <div class="leading-tight">
                             <div class="font-bold text-sm text-on-surface">Slack</div>
                             <div class="font-mono text-[10px] text-on-surface-variant">24 channels</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-white/80 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
                         <span class="material-symbols-outlined text-primary-fixed">videocam</span>
                         <div class="leading-tight">
                             <div class="font-bold text-sm text-on-surface">Meet</div>
                             <div class="font-mono text-[10px] text-on-surface-variant">Weekly sync</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-white/80 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
                         <span class="material-symbols-outlined text-primary-fixed">description</span>
                         <div class="leading-tight">
                             <div class="font-bold text-sm text-on-surface">Google Docs</div>
                             <div class="font-mono text-[10px] text-on-surface-variant">Shared RFCs</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-background/30 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
+                    <div class="flex items-center gap-3 rounded-xl border border-outline-variant/30 bg-white/80 px-4 py-3 hover:border-primary-fixed/50 transition-colors">
                         <span class="material-symbols-outlined text-primary-fixed">code</span>
                         <div class="leading-tight">
                             <div class="font-bold text-sm text-on-surface">GitHub</div>
@@ -546,7 +548,7 @@
 </section>
 
 <!-- Footer: Elegante e professionale -->
-<footer class="border-t border-outline-variant/20 bg-[#050f24] py-xl mt-24">
+<footer class="border-t border-outline-variant/20 bg-surface-creme py-xl mt-24">
     <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-lg text-sm">
         
         <!-- Colonna 1: Info Progetto -->
@@ -612,10 +614,10 @@
     }
 
     function draw() {
-        ctx.fillStyle = 'rgba(7, 18, 42, 0.2)'; 
+        ctx.fillStyle = 'rgba(247, 237, 226, 0.3)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        ctx.strokeStyle = 'rgba(95, 251, 214, 0.2)';
+        ctx.strokeStyle = 'rgba(238, 150, 75, 0.25)';
         ctx.lineWidth = 1;
 
         particles.forEach((p, i) => {

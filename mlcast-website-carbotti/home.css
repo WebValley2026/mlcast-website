@@ -1,33 +1,29 @@
-/* home.css */
+/* home.css — Light theme (teal/orange/creme) */
 
-/* 1. Stili Base */
 html {
-    /* Abilita lo scroll fluido */
     scroll-behavior: smooth;
-    /* Aggiunge uno spazio di offset di 90px quando si clicca su un link di sezione, 
-       evitando che il titolo venga nascosto dalla navbar fissa */
     scroll-padding-top: 90px;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: #07122a; /* Corrisponde al tuo colore 'background' */
+    background-color: #FFFFFF;
 }
 
 canvas {
     display: block;
 }
 
-/* 2. Componenti Custom (Glassmorphism) */
+/* Glass card — light variant */
 .glass-card {
     position: relative;
     z-index: 0;
-    background: rgba(17, 34, 64, 0.4);
+    background: rgba(247, 237, 226, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(133, 148, 142, 0.2);
-    border-radius: 0.5rem; /* Corrisponde a 'lg' nella config Tailwind */
+    border: 1px solid rgba(232, 221, 212, 0.5);
+    border-radius: 0.5rem;
     transition: border-color 0.3s ease;
 }
 
@@ -40,17 +36,15 @@ canvas {
 }
 
 .glass-card:hover {
-    border-color: #5ffbd6; /* Corrisponde a 'primary-fixed' */
+    border-color: #EE964B;
 }
 
-/* 3. Utility per il testo */
 .text-glow {
-    text-shadow: 0 0 10px rgba(95, 251, 214, 0.5);
+    text-shadow: 0 0 10px rgba(238, 150, 75, 0.3);
 }
 
-/* 4. Helper Layout e Font */
 .grid-gap-custom {
-    gap: 24px; /* Corrisponde a 'lg' nella config Tailwind */
+    gap: 24px;
 }
 
 .font-label-code {
@@ -65,7 +59,7 @@ canvas {
     align-items: center;
     gap: 8px;
     padding-left: 16px;
-    border-left: 1px solid rgba(60, 74, 69, 0.45);
+    border-left: 1px solid rgba(232, 221, 212, 0.6);
 }
 
 .navbar-icon-link {
@@ -74,17 +68,17 @@ canvas {
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid rgba(60, 74, 69, 0.75);
+    border: 1px solid rgba(232, 221, 212, 0.8);
     border-radius: 9999px;
-    color: #bacac3;
-    background: rgba(11, 24, 48, 0.48);
+    color: #6B7F82;
+    background: rgba(247, 237, 226, 0.6);
     transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .navbar-icon-link:hover {
-    color: #5ffbd6;
-    border-color: #5ffbd6;
-    background-color: rgba(95, 251, 214, 0.1);
+    color: #EE964B;
+    border-color: #EE964B;
+    background-color: rgba(238, 150, 75, 0.1);
 }
 
 .navbar-icon-link svg {
@@ -98,7 +92,6 @@ canvas {
     line-height: 1;
 }
 
-/* Variante con etichetta testuale accanto all'icona */
 .navbar-icon-link--labeled {
     width: auto;
     gap: 8px;
@@ -112,8 +105,7 @@ canvas {
     white-space: nowrap;
 }
 
-/* --- Section nav (indice di pagina, lato sinistro) --- */
-/* Nessun box: solo una linea verticale a destra che separa la nav dalla pagina */
+/* Section nav (indice laterale) */
 .section-nav {
     position: fixed;
     top: 50%;
@@ -126,8 +118,7 @@ canvas {
     gap: 2px;
     padding: 4px 0;
     max-width: 230px;
-    /* sideline delimitatrice */
-    border-right: 2px solid rgba(60, 74, 69, 0.35);
+    border-right: 2px solid rgba(232, 221, 212, 0.6);
     transition: opacity 0.12s linear, transform 0.12s linear;
 }
 
@@ -144,7 +135,7 @@ canvas {
     letter-spacing: 0.18em;
     text-transform: uppercase;
     text-align: right;
-    color: rgba(95, 251, 214, 0.55);
+    color: rgba(238, 150, 75, 0.55);
     padding: 0 22px 10px 0;
 }
 
@@ -156,13 +147,12 @@ canvas {
     font-size: 15px;
     font-weight: 500;
     line-height: 1.2;
-    color: #8b9aa6;
+    color: #6B7F82;
     text-decoration: none;
     transform-origin: right center;
     transition: color 0.25s ease, transform 0.25s ease, font-size 0.25s ease, opacity 0.25s ease;
 }
 
-/* segmento luminoso che si accende sulla sideline */
 .section-nav a::after {
     content: "";
     position: absolute;
@@ -170,13 +160,13 @@ canvas {
     top: 50%;
     width: 2px;
     height: 0;
-    background: #5ffbd6;
+    background: #EE964B;
     transform: translateY(-50%);
     transition: height 0.25s ease, box-shadow 0.25s ease;
 }
 
 .section-nav a:hover {
-    color: #ffffff;
+    color: #005B63;
     transform: translateX(-4px);
 }
 
@@ -185,15 +175,15 @@ canvas {
 }
 
 .section-nav a.is-active {
-    color: #5ffbd6;
+    color: #EE964B;
     font-weight: 700;
     font-size: 18px;
-    text-shadow: 0 0 14px rgba(95, 251, 214, 0.45);
+    text-shadow: 0 0 14px rgba(238, 150, 75, 0.45);
 }
 
 .section-nav a.is-active::after {
     height: 80%;
-    box-shadow: 0 0 10px rgba(95, 251, 214, 0.9);
+    box-shadow: 0 0 10px rgba(238, 150, 75, 0.9);
 }
 
 @media (max-width: 767px) {
@@ -208,7 +198,6 @@ canvas {
     }
 }
 
-/* Aggiungilo nel tuo home.css */
 #shader-canvas {
     display: block !important;
     position: absolute;
@@ -220,56 +209,47 @@ canvas {
     z-index: 0;
 }
 
-/* --- Stili personalizzati per MLCast Cards --- */
-
-/* Animazione di pressione (click) */
+/* Pulsanti */
 .btn-press:active {
     transform: scale(0.95);
 }
 
-/* Transizione per il cambio colore/icona */
 .transition-all {
     transition: all 0.2s ease-in-out;
 }
 
-/* Rimuove il contorno di focus del browser */
 .no-focus-outline:focus {
     outline: none !important;
     box-shadow: none !important;
 }
 
-/* Bottone GitHub con effetto riempimento personalizzato */
 .github-btn {
     transition: all 0.3s ease-in-out;
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    border: 1px solid rgba(0, 91, 99, 0.2);
+    color: #005B63;
 }
 
 .github-btn:hover {
-    background-color: #5ffbd6; /* Il tuo colore personalizzato */
-    border-color: #5ffbd6;
-    color: #0a1a36; /* Testo scuro per leggibilità su fondo chiaro */
+    background-color: #EE964B;
+    border-color: #EE964B;
+    color: #FFFFFF;
 }
 
-/* Assicura che l'icona segua il colore del testo al passaggio del mouse */
 .github-btn:hover svg {
-    fill: #0a1a36; 
+    fill: #FFFFFF;
 }
 
-/* Rimuove il bordo bianco/blu quando clicchi su "View Example" */
 summary:focus {
     outline: none !important;
     box-shadow: none !important;
 }
 
-/* Opzionale: rende il cursore sempre un puntatore per chiarire che è cliccabile */
 summary {
     cursor: pointer;
-    user-select: none; /* Evita che il testo diventi blu se clicchi velocemente */
+    user-select: none;
 }
 
-/* Aggiungi questo per la gestione del link hover nel footer */
 footer a {
     transition: color 0.2s ease-in-out;
 }
@@ -278,28 +258,21 @@ footer a:hover {
     text-underline-offset: 4px;
 }
 
-
-
-/* --- Aggiornamenti e Correzioni in home.css --- */
-
-/* 1. Forza la continuità dello sfondo su tutte le sezioni per eliminare stacchi */
+/* Sections */
 section {
-    background-color: #07122a;
+    background-color: #FFFFFF;
 }
 
-/* 2. Migliora la visibilità del gradiente nella hero */
 .hero-gradient {
-    background: linear-gradient(to bottom, rgba(7, 18, 42, 0.4), rgba(7, 18, 42, 0.6), #07122a);
+    background: linear-gradient(to bottom, rgba(247, 237, 226, 0.3), rgba(255, 255, 255, 0.6), #FFFFFF);
 }
 
-/* 3. Stile specifico per il contenitore video per evitare bordi bianchi/grigi */
 .video-container {
-    background-color: #07122a;
-    border: 1px solid rgba(60, 74, 69, 0.3); /* outline-variant con opacità */
+    background-color: #F7EDE2;
+    border: 1px solid rgba(232, 221, 212, 0.5);
     overflow: hidden;
 }
 
-/* 4. HUD Overlay per il video (da applicare alla classe .hud-overlay) */
 .hud-overlay {
     position: absolute;
     bottom: 16px;
@@ -307,63 +280,53 @@ section {
     z-index: 10;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    color: rgba(95, 251, 214, 0.7);
-    background-color: rgba(7, 18, 42, 0.8);
+    color: rgba(238, 150, 75, 0.7);
+    background-color: rgba(247, 237, 226, 0.8);
     backdrop-filter: blur(4px);
     padding: 4px 8px;
-    border: 1px solid rgba(95, 251, 214, 0.2);
+    border: 1px solid rgba(238, 150, 75, 0.2);
 }
 
-/* 5. Footer: Uniformato al colore di sfondo principale */
 footer {
-    background-color: #07122a !important;
+    background-color: #F7EDE2 !important;
 }
 
-/* 6. Fix per il Canvas (assicuriamoci che non copra elementi interattivi) */
 #shader-canvas {
-    z-index: -1; 
+    z-index: -1;
 }
 
-/* Stile base per le nuove sezioni */
 #datasets .glass-card {
-    background: rgba(17, 34, 64, 0.4) !important;
+    background: rgba(247, 237, 226, 0.6) !important;
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(95, 251, 214, 0.1);
+    border: 1px solid rgba(238, 150, 75, 0.15);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #datasets .glass-card:hover {
     transform: translateY(-10px);
-    border-color: rgba(95, 251, 214, 0.4);
+    border-color: rgba(238, 150, 75, 0.4);
 }
 
-/* Stile per il widget di codice */
 .code-container {
-    background: #020712 !important;
-    border: 1px solid rgba(95, 251, 214, 0.15);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    background: #F0E8DE !important;
+    border: 1px solid rgba(238, 150, 75, 0.2);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
 }
 
-/* Enfasi per le parole chiave */
 .text-primary-fixed {
-    color: #5ffbd6 !important; /* Il colore "accent" che dà luce al sito */
+    color: #EE964B !important;
 }
 
-/* Card moderne con effetto hover profondo */
 .glass-card {
-    background: linear-gradient(180deg, rgba(17, 34, 64, 0.6) 0%, rgba(7, 18, 42, 0.4) 100%);
+    background: linear-gradient(180deg, rgba(247, 237, 226, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%);
     backdrop-filter: blur(20px);
     transition: all 0.5s ease;
 }
 
-/* Ombra sottile che appare al passaggio del mouse */
 .glass-card:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* Rendi il testo più leggibile */
 .text-gray-400 {
-    color: #94a3b8;
+    color: #6B7F82;
 }
-
-

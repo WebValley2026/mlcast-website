@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -25,14 +25,16 @@
           theme: {
             extend: {
               colors: {
-                  "primary": "#ffffff",
-                  "primary-fixed": "#5ffbd6",
-                  "background": "#07122a",
-                  "on-surface": "#d9e2ff",
-                  "on-surface-variant": "#bacac3",
-                  "on-primary-fixed": "#002019",
-                  "outline-variant": "#3c4a45",
-                  "surface-container-high": "#0b1830"
+                  "primary": "#005B63",
+                  "primary-fixed": "#EE964B",
+                  "background": "#FFFFFF",
+                  "on-surface": "#005B63",
+                  "on-surface-variant": "#6B7F82",
+                  "on-primary-fixed": "#FFFFFF",
+                  "outline-variant": "#E8DDD4",
+                  "accent-2": "#F4D35E",
+                  "surface-creme": "#F7EDE2",
+                  "surface-container-high": "#F0E8DE"
               },
               borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
               spacing: { "md": "16px", "lg": "24px", "xl": "40px", "sm": "8px", "margin-mobile": "16px", "margin-desktop": "48px" },
@@ -43,12 +45,12 @@
     </script>
     <style>
       .card-icon-box {
-        background-color: #0b1830;
-        border: 1px solid #3c4a45;
+        background-color: #F7EDE2;
+        border: 1px solid #E8DDD4;
       }
       .card-btn-secondary {
-        background-color: #0b1830;
-        border: 1px solid #3c4a45;
+        background-color: #F7EDE2;
+        border: 1px solid #E8DDD4;
       }
       .font-headline-md { font-size: 1.25rem; font-weight: 700; }
       .font-body-sm { font-size: 0.875rem; }
@@ -117,7 +119,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="dataset-code" class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
+                    <div id="dataset-code" class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
                         <span class="text-primary-fixed/50"># Install the catalog package</span><br>
                         pip install mlcast-datasets<br><br>
                         <span class="text-primary-fixed/50"># Open and list available sources</span><br>
@@ -157,7 +159,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="validator-code" class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
+                    <div id="validator-code" class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
                         <span class="text-primary-fixed/50"># Validate local Zarr via uvx</span><br>
                         uvx --from mlcast-dataset-validator \<br>
                         mlcast.validate_dataset source_data \<br>
@@ -195,7 +197,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="code-block" class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
+                    <div id="code-block" class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
                         <span class="text-primary-fixed/50"># 1. Create venv & install</span><br>
                         uv venv && source .venv/bin/activate<br>
                         uv pip install mlcast<br><br>
@@ -221,7 +223,7 @@
 
     <!-- Model Architectures -->
     <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-8">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">layers</span>
@@ -249,7 +251,7 @@
 
     <!-- CLI & Configuration -->
     <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-8">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">terminal</span>
@@ -260,7 +262,7 @@
                 <div>
                     <h3 class="text-xl font-bold text-primary mb-2">Single Command</h3>
                     <p class="text-sm text-on-surface-variant leading-relaxed mb-3">All training functionality is accessible via the <code class="text-primary-fixed text-xs">mlcast train</code> CLI. Configuration uses Google Fiddle for composable, reproducible experiments.</p>
-                    <div class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
+                    <div class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner">
                         <span class="text-primary-fixed/50"># Train with defaults</span><br>
                         mlcast train<br><br>
                         <span class="text-primary-fixed/50"># Override parameters inline</span><br>
@@ -307,7 +309,7 @@
 
     <!-- Training Pipeline & Losses -->
     <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-8">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">speed</span>
@@ -351,7 +353,7 @@
 
     <!-- Interactive Training Walkthrough -->
     <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-8">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">play_circle</span>
@@ -362,9 +364,9 @@
             <!-- Step indicators -->
             <div id="step-indicators" class="flex gap-2 mb-8">
                 <button data-step="1" class="step-btn active-step flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-primary-fixed text-on-primary-fixed">1. Install</button>
-                <button data-step="2" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-[#0b1830] border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">2. Prepare Data</button>
-                <button data-step="3" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-[#0b1830] border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">3. Configure</button>
-                <button data-step="4" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-[#0b1830] border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">4. Train</button>
+                <button data-step="2" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-surface-creme border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">2. Prepare Data</button>
+                <button data-step="3" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-surface-creme border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">3. Configure</button>
+                <button data-step="4" class="step-btn flex-1 py-3 rounded-lg text-center text-sm font-bold transition-all bg-surface-creme border border-outline-variant/40 text-on-surface-variant hover:border-primary-fixed/40">4. Train</button>
             </div>
 
             <!-- Step content -->
@@ -373,13 +375,13 @@
                     <h3 class="text-xl font-bold text-primary mb-3">Set up your environment</h3>
                     <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Create a virtual environment and install the core MLCast package along with its dependencies.</p>
                     <div class="relative">
-                        <div class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
+                        <div class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
                             <span class="text-green-400/70">$</span> uv venv<br>
                             <span class="text-green-400/70">$</span> source .venv/bin/activate<br>
                             <span class="text-green-400/70">$</span> uv pip install mlcast<br>
                             <span class="text-green-400/70">$</span> uv pip install mlcast-datasets
                         </div>
-                        <button onclick="copySnippet('step1-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-[#0b1830]/80 px-2 py-1 rounded">
+                        <button onclick="copySnippet('step1-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-surface-creme/80 px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
@@ -389,7 +391,7 @@
                     <h3 class="text-xl font-bold text-primary mb-3">Prepare your data</h3>
                     <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Use the dataset sampler to create a training-ready Zarr store from one of the available Intake catalog sources.</p>
                     <div class="relative">
-                        <div class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
+                        <div class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
                             <span class="text-green-400/70">$</span> <span class="text-primary-fixed/50"># List available sources</span><br>
                             <span class="text-green-400/70">$</span> python -c "import mlcast_datasets; print(list(mlcast_datasets.open_catalog()))"<br><br>
                             <span class="text-green-400/70">$</span> <span class="text-primary-fixed/50"># Sample a dataset to Zarr</span><br>
@@ -398,7 +400,7 @@
                             &nbsp;&nbsp;--output ./data/radar.zarr \<br>
                             &nbsp;&nbsp;--time-range 2020-2024
                         </div>
-                        <button onclick="copySnippet('step2-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-[#0b1830]/80 px-2 py-1 rounded">
+                        <button onclick="copySnippet('step2-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-surface-creme/80 px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
@@ -410,15 +412,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-4">
                         <div>
                             <label class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Batch Size</label>
-                            <input id="cfg-batch" type="number" value="16" min="1" max="256" class="w-full p-2 bg-[#050f24] border border-outline-variant/40 rounded text-sm text-primary font-mono">
+                            <input id="cfg-batch" type="number" value="16" min="1" max="256" class="w-full p-2 bg-[#F0E8DE] border border-outline-variant/40 rounded text-sm text-primary font-mono">
                         </div>
                         <div>
                             <label class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Max Epochs</label>
-                            <input id="cfg-epochs" type="number" value="50" min="1" max="500" class="w-full p-2 bg-[#050f24] border border-outline-variant/40 rounded text-sm text-primary font-mono">
+                            <input id="cfg-epochs" type="number" value="50" min="1" max="500" class="w-full p-2 bg-[#F0E8DE] border border-outline-variant/40 rounded text-sm text-primary font-mono">
                         </div>
                         <div>
                             <label class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Loss Function</label>
-                            <select id="cfg-loss" class="w-full p-2 bg-[#050f24] border border-outline-variant/40 rounded text-sm text-primary font-mono">
+                            <select id="cfg-loss" class="w-full p-2 bg-[#F0E8DE] border border-outline-variant/40 rounded text-sm text-primary font-mono">
                                 <option value="crps">CRPS</option>
                                 <option value="mse">MSE</option>
                                 <option value="mae">MAE</option>
@@ -427,21 +429,21 @@
                         </div>
                         <div>
                             <label class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Sampler</label>
-                            <select id="cfg-sampler" class="w-full p-2 bg-[#050f24] border border-outline-variant/40 rounded text-sm text-primary font-mono">
+                            <select id="cfg-sampler" class="w-full p-2 bg-[#F0E8DE] border border-outline-variant/40 rounded text-sm text-primary font-mono">
                                 <option value="">Precomputed (CSV)</option>
                                 <option value="fiddler:use_random_sampler">Random (on-the-fly)</option>
                             </select>
                         </div>
                     </div>
                     <div class="relative">
-                        <div id="cfg-preview" class="p-4 bg-[#050f24] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
+                        <div id="cfg-preview" class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner">
                             mlcast train \<br>
                             &nbsp;&nbsp;--config set:data.batch_size=16 \<br>
                             &nbsp;&nbsp;--config set:trainer.max_epochs=50 \<br>
                             &nbsp;&nbsp;--config set:pl_module.loss_class=crps \<br>
                             &nbsp;&nbsp;--config fiddler:use_random_sampler
                         </div>
-                        <button onclick="copySnippet('step3-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-[#0b1830]/80 px-2 py-1 rounded">
+                        <button onclick="copySnippet('step3-code', this)" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-surface-creme/80 px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
@@ -451,21 +453,21 @@
                     <h3 class="text-xl font-bold text-primary mb-3">Launch training</h3>
                     <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Run your experiment. The CLI will validate config consistency, log metrics to your chosen tracker, and save the best checkpoint.</p>
                     <div class="relative">
-                        <div id="terminal-output" class="p-4 bg-[#000000] rounded-lg border border-primary/20 font-mono text-[12px] text-primary-fixed/90 shadow-inner overflow-x-auto" style="max-height: 320px; overflow-y: auto;">
+                        <div id="terminal-output" class="p-4 bg-[#F0E8DE] rounded-lg border border-primary/20 font-mono text-[13px] text-primary-fixed/90 shadow-inner overflow-x-auto" style="max-height: 320px; overflow-y: auto;">
                             <div class="text-green-400/70">$ mlcast train --config fiddler:use_random_sampler</div>
-                            <div class="text-on-surface-variant/50 mt-1">[INFO] Config consistency check passed ✓</div>
-                            <div class="text-on-surface-variant/50">[INFO] Using random sampler (on-the-fly)</div>
-                            <div class="text-on-surface-variant/50">[INFO] Logger: TensorBoard</div>
-                            <div class="text-primary-fixed/70 mt-1">Epoch 1/100 ━━━━━━━━━━━━━━ 156/156 0:32 • loss: 0.2841 • val_loss: 0.2612</div>
-                            <div class="text-primary-fixed/70">Epoch 2/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2453 • val_loss: 0.2387</div>
-                            <div class="text-primary-fixed/70">Epoch 3/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2218 • val_loss: 0.2145</div>
-                            <div class="text-primary-fixed/70">Epoch 4/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2012 • val_loss: 0.1978</div>
-                            <div class="text-primary-fixed/70">Epoch 5/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.1876 • val_loss: 0.1832</div>
-                            <div class="text-on-surface-variant/50 mt-1">[INFO] Early stopping triggered (patience=100)</div>
-                            <div class="text-on-surface-variant/50">[INFO] Best checkpoint saved (epoch 5, val_loss: 0.1832)</div>
+                            <div class="text-on-surface-variant/70 mt-1">[INFO] Config consistency check passed ✓</div>
+                            <div class="text-on-surface-variant/70">[INFO] Using random sampler (on-the-fly)</div>
+                            <div class="text-on-surface-variant/70">[INFO] Logger: TensorBoard</div>
+                            <div class="text-primary-fixed/90 mt-1">Epoch 1/100 ━━━━━━━━━━━━━━ 156/156 0:32 • loss: 0.2841 • val_loss: 0.2612</div>
+                            <div class="text-primary-fixed/90">Epoch 2/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2453 • val_loss: 0.2387</div>
+                            <div class="text-primary-fixed/90">Epoch 3/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2218 • val_loss: 0.2145</div>
+                            <div class="text-primary-fixed/90">Epoch 4/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.2012 • val_loss: 0.1978</div>
+                            <div class="text-primary-fixed/90">Epoch 5/100 ━━━━━━━━━━━━━━ 156/156 0:31 • loss: 0.1876 • val_loss: 0.1832</div>
+                            <div class="text-on-surface-variant/70 mt-1">[INFO] Early stopping triggered (patience=100)</div>
+                            <div class="text-on-surface-variant/70">[INFO] Best checkpoint saved (epoch 5, val_loss: 0.1832)</div>
                             <div class="text-green-400/70 mt-1">✓ Training complete. Config saved to: logs/tb/2026-06-30/config.yaml</div>
                         </div>
-                        <button onclick="document.getElementById('terminal-output').classList.toggle('max-h-[320px]'); this.querySelector('span').textContent = this.querySelector('span').textContent === 'expand_more' ? 'expand_less' : 'expand_more'" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-[#000000]/80 px-2 py-1 rounded">
+                        <button onclick="document.getElementById('terminal-output').classList.toggle('max-h-[320px]'); this.querySelector('span').textContent = this.querySelector('span').textContent === 'expand_more' ? 'expand_less' : 'expand_more'" class="btn-press no-focus-outline absolute top-2 right-2 flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all bg-surface-creme/80 px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-[14px]">expand_more</span>
                         </button>
                     </div>
@@ -481,7 +483,7 @@
 
     <!-- Ecosystem Overview -->
     <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-        <div class="rounded-3xl border border-outline-variant/30 bg-[#0b1830]/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
+        <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300">
             <div class="flex items-center gap-4 mb-8">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">widgets</span>
@@ -538,7 +540,7 @@
 </main>
 
 <!-- FOOTER -->
-<footer class="border-t border-outline-variant/20 bg-[#050f24] py-xl mt-24">
+<footer class="border-t border-outline-variant/20 bg-[#F0E8DE] py-xl mt-24">
     <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-lg text-sm">
         <div class="col-span-2 md:col-span-1">
             <h4 class="font-bold text-primary mb-md">MLCast Community</h4>
@@ -597,10 +599,10 @@
             const step = btn.dataset.step;
             stepBtns.forEach(b => {
                 b.classList.remove('active-step', 'bg-primary-fixed', 'text-on-primary-fixed');
-                b.classList.add('bg-[#0b1830]', 'border', 'border-outline-variant/40', 'text-on-surface-variant');
+                b.classList.add('bg-surface-creme', 'border', 'border-outline-variant/40', 'text-on-surface-variant');
             });
             btn.classList.add('active-step', 'bg-primary-fixed', 'text-on-primary-fixed');
-            btn.classList.remove('bg-[#0b1830]', 'border', 'border-outline-variant/40', 'text-on-surface-variant');
+            btn.classList.remove('bg-surface-creme', 'border', 'border-outline-variant/40', 'text-on-surface-variant');
             stepPanels.forEach(p => p.classList.add('hidden'));
             document.querySelector(`.step-panel[data-step="${step}"]`).classList.remove('hidden');
         });
