@@ -61,7 +61,7 @@
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software_and_data.html">Software and Data</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="contributing.html">Contributing</a>
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#faq">FAQ</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="faq.html">FAQ</a>
     </nav>
 
         <div class="navbar-actions" aria-label="Project links">
@@ -185,62 +185,37 @@
         </section>
 
         <!-- Access Methods -->
-        <section id="access" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="material-symbols-outlined text-primary-fixed text-2xl">cloud</span>
-                    <h3 class="text-xl font-bold text-primary">Option A: Direct GitHub Access</h3>
-                </div>
-                <p class="text-on-surface-variant text-sm mb-6">Use the most recent version of the catalog directly from our source repository.</p>
-                <div class="terminal-window font-mono text-xs">
-                    <span class="terminal-prompt">$</span> pip install intake intake-xarray zarr jinja2<br><br>
-                    <span class="terminal-keyword">import</span> intake<br>
-                    cat = intake.open_catalog(<span class="terminal-string">"https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml"</span>)
-                </div>
-            </div>
-
-            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
+        <section id="access" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto grid md:grid-cols-2 items-stretch gap-12">
+            <div class="glass-card flex flex-col p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
                 <div class="flex items-center gap-3 mb-4">
                     <span class="material-symbols-outlined text-primary-fixed text-2xl">package_2</span>
-                    <h3 class="text-xl font-bold text-primary">Option B: Python Package</h3>
+                    <h3 class="text-xl font-bold text-primary">Option A: Python Package</h3>
                 </div>
                 <p class="text-on-surface-variant text-sm mb-6">Install our stable <code class="text-primary-fixed">mlcast-datasets</code> package from PyPI for consistent versioning.</p>
-                <div class="terminal-window font-mono text-xs">
-                    <span class="terminal-prompt">$</span> pip install mlcast-datasets<br><br>
-                    <span class="terminal-keyword">import</span> mlcast_datasets<br>
+                <div class="mt-auto bg-[#F0E8DE] p-4 rounded-lg font-mono text-xs overflow-x-auto text-on-surface-variant/90 border border-primary/10">
+                    pip install mlcast-datasets<br><br>
+                    import mlcast_datasets<br>
                     cat = mlcast_datasets.open_catalog()
                 </div>
             </div>
-        </section>
 
-        <!-- Example Dataset Exploration -->
-        <section id="quick-exploration" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-            <div class="bg-[#F0E8DE] p-8 md:p-12 rounded-3xl border border-outline-variant/30">
-                <h2 class="text-3xl font-bold text-primary mb-8">Quick Exploration</h2>
-                <div class="space-y-6">
-                    <p class="text-on-surface-variant">Once you have the catalog open, you can start exploring the data instantly:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="terminal-window font-mono text-xs overflow-x-auto">
-                            <span class="terminal-comment"># List available sources</span><br>
-                            print(list(cat))<br>
-                            <span class="terminal-output"># -&gt; ['precipitation']</span><br><br>
-                            <span class="terminal-comment"># Access a specific radar dataset</span><br>
-                            ds = cat.precipitation.radklim_5_minutes.to_dask()
-                        </div>
-                        <ul class="space-y-4 text-sm text-on-surface-variant">
-                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary-fixed">check</span> Dask-backed xarray datasets</li>
-                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary-fixed">check</span> CF-1.6 Convention compliant</li>
-                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary-fixed">check</span> Cloud-native Zarr format</li>
-                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary-fixed">check</span> EWC hosted for low latency</li>
-                        </ul>
-                    </div>
+            <div class="glass-card flex flex-col p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary-fixed text-2xl">cloud</span>
+                    <h3 class="text-xl font-bold text-primary">Option B: Direct Access</h3>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-6">Use the most recent version of the catalog directly from our source repository.</p>
+                <div class="mt-auto bg-[#F0E8DE] p-4 rounded-lg font-mono text-xs overflow-x-auto text-on-surface-variant/90 border border-primary/10">
+                    pip install intake intake-xarray zarr jinja2<br><br>
+                    import intake<br>
+                    cat = intake.open_catalog("https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml")
                 </div>
             </div>
         </section>
 
         <!-- Why MLCast Data Section -->
-<section class="py-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<section class="pt-8 pb-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
+    <div class="grid md:grid-cols-3 gap-8">
         <div class="glass-card p-8 rounded-2xl border border-primary-fixed/20">
             <h3 class="text-primary font-bold mb-3 flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary-fixed">cloud_upload</span> ARCO Standard
@@ -258,31 +233,6 @@
                 <span class="material-symbols-outlined text-primary-fixed">code</span> Code-Addressable
             </h3>
             <p class="text-sm text-on-surface-variant">Data is not a static file; it's an object in your Python pipeline. Using <code>intake</code>, every dataset is queryable, version-controlled, and ready for training.</p>
-        </div>
-    </div>
-</section>
-<section id="architecture" class="py-10 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-    <div class="border-l-4 border-primary-fixed pl-8">
-        <h2 class="text-3xl font-bold text-primary mb-4">The Catalog Architecture</h2>
-        <p class="text-on-surface-variant max-w-3xl">
-            The MLCast Intake Catalog serves as the <strong>single source of truth</strong> for all community-curated data. 
-            By centralizing metadata and access paths, we ensure that every researcher uses the exact same data versioning, coordinate systems, and schema, 
-            eliminating the "data cleaning" bottleneck in machine learning experiments.
-        </p>
-    </div>
-</section>
-<!-- Aggiornamento sezione Quick Exploration -->
-<section id="metadata" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-24">
-    <div class="bg-[#F0E8DE] p-8 md:p-12 rounded-3xl border border-outline-variant/30">
-        <h2 class="text-3xl font-bold text-primary mb-6">Transparency & Metadata</h2>
-        <p class="text-on-surface-variant mb-8">Every dataset in our catalog includes rich provenance metadata (Author, Conventions, Creation Date), ensuring full scientific traceability:</p>
-        
-        <div class="terminal-window font-mono text-xs">
-            <span class="terminal-comment"># Full dataset attributes available instantly</span><br>
-            print(ds.attrs['reference'])<br>
-            <span class="terminal-output"># -&gt; '10.5676/DWD/RADKLIM_YW_V2017.002'</span><br><br>
-            print(ds.attrs['mlcast_dataset_identifier'])<br>
-            <span class="terminal-output"># -&gt; 'DE-DWD-radar_precipitation-RADKLIM'</span>
         </div>
     </div>
 </section>

@@ -118,7 +118,7 @@
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software_and_data.html">Software and Data</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
     <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="contributing.html">Contributing</a>
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="home.html#faq">FAQ</a>
+    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="faq.html">FAQ</a>
     </nav>
 
         <div class="navbar-actions" aria-label="Project links">
@@ -141,58 +141,34 @@
     </div>
 </header>
 
-<div id="mobile-menu-overlay" class="mobile-menu-overlay" aria-hidden="true"></div>
-<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
-    <a href="software_and_data.html">Software and Data</a>
-    <a href="community.html">Community</a>
-    <a href="contributing.html">Contributing</a>
-    <a href="home.html#faq">FAQ</a>
-    <div class="mobile-menu-actions">
-        <a href="https://github.com/mlcast-community" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;fill:currentColor">
-                <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.38 6.84 9.74.5.09.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.33 9.33 0 0 1 12 7.01c.85 0 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.08 10.08 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
-            </svg>
-            GitHub
-        </a>
-        <a href="https://webvalley2026.github.io/mlcast-website/docs/" target="_blank" rel="noreferrer" aria-label="Documentation">
-            <span class="material-symbols-outlined" style="font-size:16px">description</span>
-            Docs
-        </a>
-    </div>
-</nav>
- 
-<!-- Path-nav verticale (desktop) -->
-<aside class="fixed top-28 left-6 z-[60] hidden md:flex flex-col path-nav-shell">
-    <nav class="relative z-10 flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-surface-creme/90 p-2 backdrop-blur-xl shadow-lg" aria-label="Software and Data paths">
-        <a href="data.html" class="path-link gap-3 rounded-full px-5 py-3 text-[15px] font-bold transition-[color,background-color,box-shadow]">
-            <span class="material-symbols-outlined text-[18px] path-icon transition-colors">database</span>
-            MLCast Datasets
-        </a>
-        <a href="software.html" class="path-link gap-3 rounded-full px-5 py-3 text-[15px] font-bold transition-[color,background-color,box-shadow]">
-            <span class="material-symbols-outlined text-[18px] path-icon transition-colors">code</span>
-            MLCast Software
-        </a>
-    </nav>
-</aside>
-
 <!-- MAIN CONTENT -->
-<main class="flex-grow pt-24 md:pl-72 px-margin-mobile md:px-margin-desktop">
+<main class="flex-grow pt-24 px-margin-mobile md:px-margin-desktop">
     
     <section class="max-w-[1180px] mx-auto py-16">
         
+        <!-- Page title -->
+        <div class="max-w-3xl mb-12 text-center mx-auto">
+            <span class="inline-block font-label-tag text-xs uppercase tracking-[0.2em] text-primary-fixed mb-4">Software &amp; Data</span>
+            <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">MLCast Assets</h1>
+            <p class="text-lg text-on-surface-variant leading-relaxed">Open, validated datasets and the software to turn them into models — everything you need to build weather nowcasting, in one place.</p>
+        </div>
         <!-- Riga 1: Datasets -->
         <div class="rounded-3xl border border-outline-variant/30 bg-surface-creme/50 p-6 md:p-10 backdrop-blur-md hover:border-primary-fixed/30 transition-all duration-300 mb-8">
             <div class="flex items-center gap-4 mb-6">
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">database</span>
                 </div>
-                <h3 class="text-2xl font-bold text-primary">When to choose MLCast Datasets</h3>
+                <h3 class="text-2xl font-bold text-primary">MLCast Datasets</h3>
             </div>
             <div class="space-y-4 text-on-surface-variant leading-relaxed">
-                <p>Choose the <strong>MLCast Datasets</strong> collection when your primary goal is academic research or developing new Deep Learning architectures in the meteorological domain. Our datasets provide high-resolution, curated meteorological data that eliminates the overhead of data collection and preprocessing.</p>
-                <p>You'll benefit from standardized formats, comprehensive metadata, and pre-split train/validation/test sets that enable reproducible experiments. Whether you are benchmarking a new model architecture, training a foundation model for weather prediction, or exploring novel approaches to precipitation nowcasting, MLCast Datasets gives you a solid, ready-to-use foundation.</p>
-                <p>This path is ideal for <strong>researchers, data scientists, and ML practitioners</strong> who want to focus on model innovation rather than data engineering, with the confidence that the underlying data is consistent, documented, and scientifically validated.</p>
+                <p><strong>MLCast Datasets</strong> is the home for <strong>ARCO meteorological data</strong> — <em>Analysis-Ready, Cloud-Optimized</em>. ARCO means the data arrives in chunked, cloud-native formats (like Zarr) that you can stream and slice directly into a training loop — no downloading terabytes, no reformatting, no preprocessing overhead. Just open it and train.</p>
+                <p>Every dataset is <strong>curated through our catalog</strong>, so you get standardized variables, consistent grids, and rich metadata you can trust. And every dataset is <strong>checked by the MLCast validator</strong> before it ships, guaranteeing that what you load is complete, well-formed, and reproducible.</p>
+                <p>We already cover <strong>several countries across Europe</strong> — and this is just the start. The catalog is open, and we actively <strong>encourage you to contribute</strong> data from your own region. More coverage means better models for everyone.</p>
             </div>
+            <a href="data.html" class="inline-flex items-center gap-2 mt-8 rounded-full bg-primary-fixed px-7 py-3 text-on-primary-fixed font-bold shadow-lg hover:opacity-90 transition-opacity">
+                Get Started
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </a>
         </div>
 
         <!-- Riga 2: Software -->
@@ -201,13 +177,17 @@
                 <div class="p-3 rounded-xl bg-primary-fixed/10 text-primary-fixed">
                     <span class="material-symbols-outlined text-3xl">code</span>
                 </div>
-                <h3 class="text-2xl font-bold text-primary">When to choose MLCast Software</h3>
+                <h3 class="text-2xl font-bold text-primary">MLCast Software</h3>
             </div>
             <div class="space-y-4 text-on-surface-variant leading-relaxed">
-                <p>Reach for the <strong>MLCast Software</strong> suite when you are an engineer or developer focused on building robust production pipelines, real-time inference systems, or custom data processing workflows for meteorological nowcasting.</p>
-                <p>Our software stack includes Python frameworks for model deployment, validation pipelines for ensuring prediction quality, and tools for ingesting, transforming, and visualizing meteorological data at scale. If you need to integrate nowcasting capabilities into an existing system, deploy models in operational environments, or build custom benchmarks and evaluation suites, MLCast Software provides the building blocks you need.</p>
-                <p>This path is designed for <strong>software engineers, ML engineers, and infrastructure teams</strong> who prioritize reliability, performance, and maintainability in production environments, with well-documented APIs and modular components that adapt to your specific use case.</p>
+                <p><strong>MLCast Software</strong> is the toolkit that turns those datasets into working nowcasting models. It ships with a growing catalog of <strong>pre-trained models, ready to use out of the box</strong> — load one and start forecasting in minutes. And when you want to go further, a unified <strong>training pipeline</strong> lets you retrain or fine-tune any model on your own data, so going from raw data to a trained model is a matter of configuration, not boilerplate.</p>
+                <p>We ship <strong>benchmarks and baselines</strong> out of the box: standardized evaluation suites and reference implementations that let you measure any new architecture against established results on the same data, the same way, every time.</p>
+                <p>Our goal is an <strong>end-to-end workflow</strong> — data ingestion, training, validation, and evaluation all stitched together in one open, reproducible stack. Whether you want to reproduce a baseline, push a new model onto the leaderboard, or wire MLCast into your own system, the building blocks are here.</p>
             </div>
+            <a href="software.html" class="inline-flex items-center gap-2 mt-8 rounded-full bg-primary-fixed px-7 py-3 text-on-primary-fixed font-bold shadow-lg hover:opacity-90 transition-opacity">
+                Get Started
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </a>
         </div>
 
     </section>
