@@ -328,6 +328,24 @@
         "'": "&#039;"
     })[character]);
 
+    function copySnippet(elementId, btn) {
+        const textElement = document.getElementById(elementId);
+        if (!textElement) return;
+
+        const text = textElement.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span> Copied';
+            btn.classList.remove('text-primary');
+            btn.classList.add('text-green-500');
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.remove('text-green-500');
+                btn.classList.add('text-primary');
+            }, 2000);
+        });
+    }
+
     const CATALOG_RAW_URL = "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
     const CATALOG_PAGE_URL = "https://github.com/mlcast-community/mlcast-datasets/blob/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
     const datasetSearch = document.getElementById("dataset-search");
@@ -481,28 +499,40 @@
     const getDatasetImpacts = (sourceName) => {
         const s = sourceName.toLowerCase();
         if (s.includes("radklim") && s.includes("hourly")) return [
+            { label: "Provider", value: "DWD" },
             { label: "Range", value: "2001–2023" },
-            { label: "Steps", value: "2.4M" }
+            { label: "Cadence", value: "Hourly" },
+            { label: "Variable", value: "Rainfall" }
         ];
         if (s.includes("radklim")) return [
-            { label: "Range", value: "2005–2025" },
-            { label: "Steps", value: "2M" }
+            { label: "Provider", value: "DWD" },
+            { label: "Range", value: "2001–2023" },
+            { label: "Cadence", value: "5 min" },
+            { label: "Variable", value: "Rainfall" }
         ];
         if (s.includes("dmi")) return [
-            { label: "Range", value: "2016–2024" },
-            { label: "Steps", value: "0.5M" }
+            { label: "Provider", value: "DMI" },
+            { label: "Range", value: "2016–2025" },
+            { label: "Cadence", value: "10 min" },
+            { label: "Variable", value: "Reflectivity" }
         ];
         if (s.includes("dpc") || s.includes("it")) return [
+            { label: "Provider", value: "DPC" },
             { label: "Range", value: "2010–2025" },
-            { label: "Steps", value: "1M" }
+            { label: "Cadence", value: "5 min" },
+            { label: "Variable", value: "Rain rate" }
         ];
         if (s.includes("metoffice") || s.includes("uk")) return [
-            { label: "Range", value: "2015–2025" },
-            { label: "Steps", value: "1M+" }
+            { label: "Provider", value: "Met Office" },
+            { label: "Range", value: "2005–2025" },
+            { label: "Cadence", value: "5 min" },
+            { label: "Variable", value: "Rain rate" }
         ];
         if (s.includes("rmi") || s.includes("be")) return [
-            { label: "Range", value: "Recent" },
-            { label: "Status", value: "Just Added" }
+            { label: "Provider", value: "RMI" },
+            { label: "Range", value: "2017–2023" },
+            { label: "Cadence", value: "5 min" },
+            { label: "Variable", value: "Rain rate" }
         ];
         return [
             { label: "Range", value: "Varies" }
@@ -531,9 +561,29 @@
             const consolidatedMeta = dataset.consolidated === true ? "Consolidated" : "";
             const endpointMeta = dataset.endpointUrl ? "ECMWF S3" : "";
             const urlpath = dataset.urlpath || "";
+            const codeId = `xr-code-${dataset.sourceName}`;
+            const IND = "&nbsp;&nbsp;&nbsp;&nbsp;";
+            const codeLines = ["import xarray as xr", ""];
+            if (urlpath && dataset.endpointUrl) {
+                codeLines.push(
+                    "ds = xr.open_dataset(",
+                    `${IND}"${escapeHtml(urlpath)}",`,
+                    `${IND}engine="zarr",`,
+                    `${IND}storage_options={`,
+                    `${IND}${IND}"anon": True,`,
+                    `${IND}${IND}"client_kwargs": {"endpoint_url": "${escapeHtml(dataset.endpointUrl)}"},`,
+                    `${IND}},`,
+                    ")"
+                );
+            } else if (urlpath) {
+                codeLines.push(`ds = xr.open_dataset("${escapeHtml(urlpath)}", engine="zarr")`);
+            } else {
+                codeLines.push("ds = xr.open_dataset(...)  # see catalog for path");
+            }
+            const codeHtml = codeLines.join("<br>");
 
             return `
-                <a href="${encodeURI(dataset.href)}" target="_blank" rel="noreferrer" class="group block p-5 transition-colors hover:bg-primary-fixed/[0.04]">
+                <div class="block p-5">
                     <div class="flex items-start gap-4">
                         <div class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-fixed/10 text-primary-fixed">
                             <span class="material-symbols-outlined text-2xl">${icon}</span>
@@ -541,14 +591,19 @@
                         <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-2">
                                 ${flagCode ? `<span class="flex h-5 w-7 overflow-hidden rounded-sm border border-outline-variant/30 shrink-0"><img src="https://flagcdn.com/${flagCode}.svg" alt="" loading="lazy" class="h-full w-full object-cover"></span>` : ""}
-                                <span class="text-lg font-bold text-primary group-hover:text-primary-fixed transition-colors">${escapeHtml(dataset.label)}</span>
+                                <span class="text-lg font-bold text-primary">${escapeHtml(dataset.label)}</span>
                                 <span class="rounded-full border border-outline-variant/40 px-2.5 py-0.5 font-label-tag text-[10px] text-on-surface-variant">${escapeHtml(dataset.sourceName)}</span>
                             </div>
                             <p class="mt-1.5 text-sm leading-relaxed text-on-surface-variant/80">${escapeHtml(dataset.description)}</p>
-                            ${urlpath ? `<div class="mt-3 flex items-center gap-2 rounded-lg bg-[#F0E8DE] px-3 py-2 font-mono text-xs text-primary-fixed/70 break-all border border-outline-variant/20">
-                                <span class="material-symbols-outlined text-[14px] text-on-surface-variant/50">link</span>
-                                ${escapeHtml(urlpath)}
-                            </div>` : ""}
+                            <div class="mt-3">
+                                <div class="flex justify-between items-center mb-1 px-1">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Open</span>
+                                    <button onclick="copySnippet('${codeId}', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                                        <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                                    </button>
+                                </div>
+                                <div id="${codeId}" class="terminal-window font-mono text-[12px]">${codeHtml}</div>
+                            </div>
                             <div class="mt-3 flex flex-wrap items-center gap-3">
                                 ${impacts.map(imp => `
                                     <span class="inline-flex items-center gap-1.5 rounded-md border border-outline-variant/20 bg-background/40 px-2.5 py-1">
@@ -556,14 +611,15 @@
                                         <span class="text-xs font-semibold text-primary">${imp.value}</span>
                                     </span>
                                 `).join("")}
+                                <span class="inline-flex items-center gap-1 rounded-md border border-primary-fixed/20 bg-primary-fixed/5 px-2.5 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">GeoZarr</span>
+                                <span class="inline-flex items-center gap-1 rounded-md border border-primary-fixed/20 bg-primary-fixed/5 px-2.5 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">ARCO</span>
                                 ${driverMeta ? `<span class="inline-flex items-center gap-1 rounded-md border border-primary-fixed/20 bg-primary-fixed/5 px-2.5 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">${driverMeta}</span>` : ""}
                                 ${consolidatedMeta ? `<span class="inline-flex items-center gap-1 rounded-md border border-primary-fixed/20 bg-primary-fixed/5 px-2.5 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">${consolidatedMeta}</span>` : ""}
                                 ${endpointMeta ? `<span class="inline-flex items-center gap-1 rounded-md border border-primary-fixed/20 bg-primary-fixed/5 px-2.5 py-1 font-label-tag text-[10px] uppercase tracking-widest text-primary-fixed/80">${endpointMeta}</span>` : ""}
                             </div>
                         </div>
-                        <span class="material-symbols-outlined shrink-0 mt-2 text-[22px] text-on-surface-variant/40 group-hover:text-primary-fixed group-hover:translate-x-1 transition-all" aria-hidden="true">chevron_right</span>
                     </div>
-                </a>`;
+                </div>`;
         }).join("");
     };
 
