@@ -1,0 +1,102 @@
+// Shared site header + mobile menu.
+// Usage: put <div id="site-header"></div> where the header should render,
+// then load this file with <script src="header.js" defer></script>.
+// Injecting markup here (instead of fetch) keeps it working on file:// too.
+(function () {
+    "use strict";
+
+    var GITHUB_ICON =
+        '<path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.38 6.84 9.74.5.09.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.33 9.33 0 0 1 12 7.01c.85 0 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.08 10.08 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>';
+
+    var GITHUB_URL = "https://github.com/mlcast-community";
+    var DOCS_URL = "https://webvalley2026.github.io/mlcast-website/docs/";
+
+    // Single source of truth for the primary nav.
+    var NAV_LINKS = [
+        { href: "software_and_data.html", label: "Software and Data" },
+        { href: "community.html", label: "Community" },
+        { href: "contributing.html", label: "Contributing" },
+        { href: "faq.html", label: "FAQ" }
+    ];
+
+    var current = (location.pathname.split("/").pop() || "home.html").toLowerCase();
+
+    function isActive(href) {
+        return href.split("#")[0].toLowerCase() === current;
+    }
+
+    var desktopLinks = NAV_LINKS.map(function (l) {
+        return (
+            '<a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors' +
+            (isActive(l.href) ? " text-primary" : "") +
+            '" href="' + l.href + '">' + l.label + "</a>"
+        );
+    }).join("\n");
+
+    var mobileLinks = NAV_LINKS.map(function (l) {
+        return '<a href="' + l.href + '">' + l.label + "</a>";
+    }).join("\n");
+
+    var markup =
+        '<header class="fixed top-0 z-50 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">' +
+        '  <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-md w-full max-w-[1440px] mx-auto">' +
+        '    <a href="home.html" class="text-2xl font-bold text-primary-fixed tracking-tight hover:opacity-80 transition-opacity">MLCast Community</a>' +
+        '    <nav class="hidden md:flex items-center gap-lg">' + desktopLinks + "</nav>" +
+        '    <div class="navbar-actions" aria-label="Project links">' +
+        '      <a class="navbar-icon-link navbar-icon-link--labeled" href="' + GITHUB_URL + '" target="_blank" rel="noreferrer" aria-label="MLCast GitHub community" title="GitHub community">' +
+        '        <svg viewBox="0 0 24 24" aria-hidden="true">' + GITHUB_ICON + "</svg>" +
+        '        <span class="max-sm:hidden">GitHub</span>' +
+        "      </a>" +
+        '      <a class="navbar-icon-link navbar-icon-link--labeled" href="' + DOCS_URL + '" target="_blank" rel="noreferrer" aria-label="MLCast documentation" title="Documentation">' +
+        '        <span class="material-symbols-outlined" aria-hidden="true">description</span>' +
+        '        <span class="max-sm:hidden">Docs</span>' +
+        "      </a>" +
+        "    </div>" +
+        '    <button id="hamburger-btn" class="hamburger-btn md:hidden" aria-label="Menu" aria-expanded="false">' +
+        '      <span class="material-symbols-outlined">menu</span>' +
+        "    </button>" +
+        "  </div>" +
+        "</header>" +
+        '<div id="mobile-menu-overlay" class="mobile-menu-overlay" aria-hidden="true"></div>' +
+        '<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">' +
+        mobileLinks +
+        '  <div class="mobile-menu-actions">' +
+        '    <a href="' + GITHUB_URL + '" target="_blank" rel="noreferrer" aria-label="GitHub">' +
+        '      <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;fill:currentColor">' + GITHUB_ICON + "</svg>GitHub</a>" +
+        '    <a href="' + DOCS_URL + '" target="_blank" rel="noreferrer" aria-label="Documentation">' +
+        '      <span class="material-symbols-outlined" style="font-size:16px">description</span>Docs</a>' +
+        "  </div>" +
+        "</nav>";
+
+    var mount = document.getElementById("site-header");
+    if (!mount) return;
+    mount.outerHTML = markup;
+
+    // Hamburger menu
+    var btn = document.getElementById("hamburger-btn");
+    var menu = document.getElementById("mobile-menu");
+    var overlay = document.getElementById("mobile-menu-overlay");
+    if (!btn || !menu || !overlay) return;
+
+    function open() {
+        menu.classList.add("open");
+        overlay.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        btn.querySelector(".material-symbols-outlined").textContent = "close";
+        document.body.style.overflow = "hidden";
+    }
+    function close() {
+        menu.classList.remove("open");
+        overlay.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+        btn.querySelector(".material-symbols-outlined").textContent = "menu";
+        document.body.style.overflow = "";
+    }
+    btn.addEventListener("click", function () {
+        menu.classList.contains("open") ? close() : open();
+    });
+    overlay.addEventListener("click", close);
+    menu.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", close);
+    });
+})();

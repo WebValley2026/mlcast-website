@@ -11,6 +11,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="home.css">
+    <script src="header.js" defer></script>
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -112,40 +113,7 @@
 
     <div id="overlay" class="fixed inset-0 bg-black/60 hidden"></div>
 
-<header class="fixed top-0 z-50 w-full border-b border-outline-variant/20 bg-background/80 backdrop-blur-xl">
-    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-md w-full max-w-[1440px] mx-auto">
-        <a href="home.html" class="text-2xl font-bold text-primary-fixed tracking-tight hover:opacity-80 transition-opacity">
-            MLCast Community
-        </a>
-        
-        <nav class="hidden md:flex items-center gap-lg">
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="software_and_data.html">Software and Data</a>
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="community.html">Community</a>
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="contributing.html">Contributing</a>
-    <a class="text-on-surface-variant text-sm uppercase tracking-wider hover:text-primary transition-colors" href="faq.html">FAQ</a>
-    </nav>
-
-        <div class="navbar-actions" aria-label="Project links">
-            <a class="navbar-icon-link navbar-icon-link--labeled" href="https://github.com/mlcast-community" target="_blank" rel="noreferrer" aria-label="MLCast GitHub community" title="GitHub community">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.53 2.87 8.38 6.84 9.74.5.09.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.33 9.33 0 0 1 12 7.01c.85 0 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.08 10.08 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
-                </svg>
-                <span class="max-sm:hidden">GitHub</span>
-            </a>
-            <a class="navbar-icon-link navbar-icon-link--labeled" href="https://webvalley2026.github.io/mlcast-website/docs/" target="_blank" rel="noreferrer" aria-label="MLCast documentation" title="Documentation">
-                <span class="material-symbols-outlined" aria-hidden="true">description</span>
-                <span class="max-sm:hidden">Docs</span>
-            </a>
-        </div>
-
-        <button id="hamburger-btn" class="hamburger-btn md:hidden" aria-label="Menu" aria-expanded="false">
-            <span class="material-symbols-outlined">menu</span>
-        </button>
-
-    </div>
-</header>
-
-<!-- MAIN CONTENT -->
+<div id="site-header"></div><!-- MAIN CONTENT -->
 <main class="flex-grow pt-24 px-margin-mobile md:px-margin-desktop">
     
     <section class="max-w-[1180px] mx-auto py-16">
@@ -245,33 +213,6 @@
         overlay.addEventListener('click', toggleMenu);
     </script>
 <script>
-    (function() {
-        const btn = document.getElementById('hamburger-btn');
-        const menu = document.getElementById('mobile-menu');
-        const overlay = document.getElementById('mobile-menu-overlay');
-        if (!btn || !menu || !overlay) return;
-        function open() {
-            menu.classList.add('open');
-            overlay.classList.add('open');
-            btn.setAttribute('aria-expanded', 'true');
-            btn.querySelector('.material-symbols-outlined').textContent = 'close';
-            document.body.style.overflow = 'hidden';
-        }
-        function close() {
-            menu.classList.remove('open');
-            overlay.classList.remove('open');
-            btn.setAttribute('aria-expanded', 'false');
-            btn.querySelector('.material-symbols-outlined').textContent = 'menu';
-            document.body.style.overflow = '';
-        }
-        btn.addEventListener('click', function() {
-            menu.classList.contains('open') ? close() : open();
-        });
-        overlay.addEventListener('click', close);
-        menu.querySelectorAll('a').forEach(function(a) {
-            a.addEventListener('click', close);
-        });
-    })();
 </script>
 </body>
 </html>
