@@ -27,7 +27,7 @@
 6. Monitor training progress and evaluate the resulting model.
 - Detailed training guides for each model are available in the model documentation.
 # Where does the data come from?
-- The data comes from verified weather radar scans. Righ now, there are only 5 countries from Europe contributing to this collection, but more are soon to come. Similarly, satellite imagery will soon be avilible for more analysis. Before they are implemented, all datasets should be converted to zarr format and validated.
+- The data comes from verified weather radar scans. Righ now, there are only 5 countries from Europe contributing to this collection, but more are soon to come. Similarly, satellite imagery will soon be available for more analysis. Before they are implemented, all datasets should be converted to zarr format and validated.
 # How are models evaluated?
 - Models are evaluated using separate validation and test datasets that were not used during training. Performance is measured using standard machine learning and meteorological metrics, allowing fair comparisons between models and ensuring they generalize well to new weather events.
 # How do I use a pretrained model?
@@ -37,7 +37,7 @@
   - Browse the project documentation.
   - Search existing GitHub Issues and Discussions.
   - Open a new issue if you've found a bug.
-  - Ask questions in the community discussion channels, such as Slack, or during monthly MicrosoftTeams meetings
+  - Ask questions in the community discussion channels, such as [Slack](https://mlcast.slack.com/join/shared_invite/zt-42iu8odsi-lim6KkEULzZt_KbcxoiTZg#/shared-invite/email), or during monthly MicrosoftTeams meetings
 -The community is always happy to help new contributors get started.
 
 
