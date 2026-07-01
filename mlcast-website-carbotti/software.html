@@ -108,20 +108,31 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dataset</span>
                 </div>
                 <h3 class="font-headline-md text-headline-md text-primary mt-2">Datasets</h3>
-                <p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Standardized, high-res radar archives for ML. Access data streams via our Python interface with dask-backed xarray support.
                 </p>
 
                 <div class="mt-4">
                     <div class="flex justify-between items-center mb-1 px-1">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">Quick Access</span>
-                        <button onclick="copySnippet('dataset-code', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Install</span>
+                        <button onclick="copySnippet('dataset-install', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="dataset-code" class="terminal-window font-mono text-[12px]">
+                    <div id="dataset-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
                         <span class="text-primary-fixed/50"># Install the catalog package</span><br>
-                        pip install mlcast-datasets<br><br>
+                        pip install mlcast-datasets
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div class="flex justify-between items-center mb-1 px-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Use</span>
+                        <button onclick="copySnippet('dataset-use', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                            <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                        </button>
+                    </div>
+                    <div id="dataset-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
                         <span class="text-primary-fixed/50"># Open and list available sources</span><br>
                         import mlcast_datasets<br>
                         cat = mlcast_datasets.open_catalog()<br>
@@ -129,7 +140,7 @@
                     </div>
                 </div>
 
-                <div class="flex gap-sm pt-2">
+                <div class="flex gap-sm pt-2 mt-auto">
                     <a href="data.html" class="flex-1 flex items-center justify-center gap-2 py-2 bg-surface-container-high border border-outline-variant rounded text-[11px] font-bold uppercase tracking-wider hover:border-primary-fixed transition-colors">
                         <span class="material-symbols-outlined text-[14px]">menu_book</span> Catalog
                     </a>
@@ -148,26 +159,38 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
                 </div>
                 <h3 class="font-headline-md text-headline-md text-primary mt-2">Validator</h3>
-                <p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Verify dataset compliance. Automated checks for Zarr specs, metadata integrity, and geospatial tool-chain interoperability.
                 </p>
 
                 <div class="mt-4">
                     <div class="flex justify-between items-center mb-1 px-1">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">Execution</span>
-                        <button onclick="copySnippet('validator-code', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Install</span>
+                        <button onclick="copySnippet('validator-install', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="validator-code" class="terminal-window font-mono text-[12px]">
-                        <span class="text-primary-fixed/50"># Validate local Zarr via uvx</span><br>
-                        uvx --from mlcast-dataset-validator \<br>
+                    <div id="validator-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
+                        <span class="text-primary-fixed/50"># Install the validator tool</span><br>
+                        uv tool install mlcast-dataset-validator
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div class="flex justify-between items-center mb-1 px-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Use</span>
+                        <button onclick="copySnippet('validator-use', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                            <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                        </button>
+                    </div>
+                    <div id="validator-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
+                        <span class="text-primary-fixed/50"># Validate a local Zarr dataset</span><br>
                         mlcast.validate_dataset source_data \<br>
                         radar_precipitation path/to/dataset.zarr
                     </div>
                 </div>
 
-                <div class="flex gap-sm pt-2">
+                <div class="flex gap-sm pt-2 mt-auto">
                     <a href="https://mlcast-community.github.io/mlcast-dataset-validator/specs/source_data/radar_precipitation/" target="_blank" class="flex-1 flex items-center justify-center gap-2 py-2 bg-surface-container-high border border-outline-variant rounded text-[11px] font-bold uppercase tracking-wider hover:border-primary-fixed transition-colors">
                         <span class="material-symbols-outlined text-[14px]">menu_book</span> Specs
                     </a>
@@ -186,27 +209,38 @@
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
                 </div>
                 <h3 class="font-headline-md text-headline-md text-primary mt-2">Machine Learning</h3>
-                <p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Unified Python framework for AI nowcasting. Build experiments using Fiddle-based configurations, from baseline ConvGRU to custom SOTA architectures.
                 </p>
 
                 <div class="mt-4">
                     <div class="flex justify-between items-center mb-1 px-1">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">Quick Setup</span>
-                        <button onclick="copySnippet('code-block', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Install</span>
+                        <button onclick="copySnippet('ml-install', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="code-block" class="terminal-window font-mono text-[12px]">
-                        <span class="text-primary-fixed/50"># 1. Create venv & install</span><br>
-                        uv venv && source .venv/bin/activate<br>
-                        uv pip install mlcast<br><br>
-                        <span class="text-primary-fixed/50"># 2. Run initial test</span><br>
+                    <div id="ml-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
+                        <span class="text-primary-fixed/50"># Create venv &amp; install</span><br>
+                        uv venv &amp;&amp; source .venv/bin/activate<br>
+                        uv pip install mlcast
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div class="flex justify-between items-center mb-1 px-1">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">How to Use</span>
+                        <button onclick="copySnippet('ml-use', this)" class="btn-press no-focus-outline flex items-center gap-1 text-[10px] text-primary hover:text-primary-fixed transition-all">
+                            <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                        </button>
+                    </div>
+                    <div id="ml-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
+                        <span class="text-primary-fixed/50"># Run initial training test</span><br>
                         mlcast train --config fiddler:use_random_sampler
                     </div>
                 </div>
 
-                <div class="flex gap-sm pt-2">
+                <div class="flex gap-sm pt-2 mt-auto">
                     <a href="https://github.com/mlcast-community/mlcast" target="_blank" class="flex-1 flex items-center justify-center gap-2 py-2 bg-surface-container-high border border-outline-variant rounded text-[11px] font-bold uppercase tracking-wider hover:border-primary-fixed transition-colors">
                         <span class="material-symbols-outlined text-[14px]">menu_book</span> Docs
                     </a>
