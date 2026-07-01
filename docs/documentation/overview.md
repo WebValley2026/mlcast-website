@@ -178,7 +178,6 @@ Whether you are developing new forecasting models, contributing code, or learnin
 Use the navigation links below to explore the project further.
 
 - [Getting Started](get-started.md)
-- Installation Guide
 - [Dataset Documentation](data.md)
 - [Model Architecture](model-architecture.md)
 - [Training Guide](how-it-works.md)
