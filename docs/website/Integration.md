@@ -2,261 +2,190 @@
 
 ## Integration model
 
-The site has no private backend. Inline browser scripts call public endpoints and
-write results into existing HTML. Therefore:
+The site uses two data-delivery patterns:
 
-- requests are anonymous and subject to browser, CORS, availability, and
-  provider rate limits;
-- no secret or API token can be safely embedded;
-- initial HTML must remain useful when JavaScript or a remote service fails;
-- remote strings must be escaped before insertion through `innerHTML`.
+- GitHub community statistics and starter issues are fetched during GitHub Pages
+  deployment and served to browsers as same-origin JSON.
+- The precipitation catalog is fetched directly by `data.html` from raw GitHub
+  content.
 
-## Home-page community summary
+Secrets are allowed only in the deployment environment. Never put a token in
+HTML, `header.js`, `tailwind-config.js`, or other published JavaScript.
+
+## Community statistics
 
 ### Purpose
 
-Show current MLCast organization activity in the community card near the bottom
-of `home.html`, without maintaining a separate site backend or manually updating
-repository, contributor, and contribution totals.
+Keep the community card in `home.html` current without making many anonymous
+GitHub API requests from every visitor's browser.
 
-### Location
+### Locations
 
-- Page: `home.html`
-- Script: final inline script containing `const ORG = "mlcast-community"`
+- Producer: `scripts/fetch-gh-stats.sh`
+- Deployment call: `.github/workflows/deploy.yml`
+- Generated artifact: `dist/gh-stats.json`
+- Consumer: final data-loading script in `home.html`
 - DOM targets: `#gh-contributors`, `#gh-repos`, `#gh-commits`,
   `#gh-collab-count`, and `#gh-avatars`
-- Cache: `sessionStorage["mlcast_gh_stats"]`
 
 ### How it works
 
-1. Read and parse the session cache. If valid, update the card and stop.
-2. Request up to 100 public organization repositories from
-   `GET https://api.github.com/orgs/mlcast-community/repos?per_page=100`.
-3. For every returned repository, request up to 100 contributors from
-   `GET /repos/{org}/{repo}/contributors?per_page=100`.
-4. Exclude bot accounts, aggregate each login's `contributions`, sum the values,
-   sort contributors, and keep four top logins for avatars.
-5. Update the card and cache `{repos, contributors, commits, top}` for the
-   current browser session.
+1. The workflow passes its `GITHUB_TOKEN` to the shell script.
+2. The script paginates through all public repositories in
+   `mlcast-community`.
+3. It paginates through each repository's contributors, excludes bots, sums
+   GitHub's `contributions` values per login, and selects the top four.
+4. It writes `{repos, contributors, commits, top, generated}` to
+   `dist/gh-stats.json`.
+5. `home.html` fetches `gh-stats.json` with `cache: "no-cache"` and updates the
+   card. Avatar images still load from
+   `https://github.com/{login}.png?size=64`.
 
-The displayed “commits” value is the sum of the GitHub contributor endpoint's
-`contributions` values. It is not a full paginated audit of organization commit
-history.
-
-### Dependencies and connections
-
-- GitHub REST API v3 JSON responses.
-- GitHub profile images at `https://github.com/{login}.png?size=64`.
-- The contributor avatar group links to the GitHub organization people page.
-- `contributing.html` reads the same cache key to display a contributor count.
+“Commits” is the sum of values returned by GitHub's contributor endpoint, not an
+independent commit-history audit.
 
 ### Failure handling
 
-Errors are swallowed and the static HTML values remain visible. The script does
-not show an explicit error state. A failed per-repository contributor request
-increments its completion counter but does not run the final completion check,
-so one partial failure can prevent all fresh values from rendering.
+If no repositories can be fetched, the build script exits successfully without
+writing a zero-valued file. Because each `dist/` is assembled fresh, the client
+then receives a missing/non-OK JSON response and keeps `home.html`'s hard-coded
+fallback values. Per-repository contributor failures are treated as empty
+contributor lists, so a JSON file may contain partial contribution totals.
 
 ### Safe modification notes
 
-- Handle `response.ok`, pagination, empty organizations, and partial completion.
-- Avoid the current N+1 request pattern if repository count grows.
-- Preserve bot filtering and deduplication when changing aggregation.
-- Version the cache key if the stored object shape changes.
-- Do not label a value “commits” unless its calculation still supports that
-  meaning.
+- Preserve API pagination, bot filtering, and JSON field names.
+- Keep the token confined to the workflow process environment.
+- Version the consumer and producer together if the schema changes.
+- Keep fallback values honest and periodically reviewed.
+- Remember that the workflow's daily schedule controls data freshness.
 
 ### Testing checklist
 
-- Test with and without `mlcast_gh_stats` in session storage.
-- Verify all five DOM targets and the four generated avatars.
-- Simulate the repository request failing and one contributor request failing.
-- Check GitHub rate-limit responses and an empty repository array.
-- Navigate from `home.html` to `contributing.html` in the same tab and verify
-  cache reuse.
+- Run the producer with and without `GITHUB_TOKEN` where network access permits.
+- Validate generated JSON with `jq`.
+- Test `home.html` with valid, missing, malformed, and partial `gh-stats.json`.
+- Verify all counters and four optional avatars.
 
-## Contributing-page good-first issues
+## Good-first issues
 
 ### Purpose
 
-Populate the “Current good first issues” section with up to three current,
-low-friction tasks from MLCast repositories.
+Populate the contributor page with a small current set of open issues while
+avoiding anonymous browser requests to GitHub's Search API.
 
-### Location
+### Locations
 
-- Page: `contributing.html`
-- Script: inline block that defines `issueList` and `issuesSearchUrl`
+- Producer: `scripts/fetch-gh-issues.sh`
+- Deployment call: `.github/workflows/deploy.yml`
+- Generated artifact: `dist/gh-issues.json`
+- Consumer: issue-loading script in `contributing.html`
 - DOM target: `#issue-list`
 
 ### How it works
 
-1. Request GitHub's issue search endpoint with organization
-   `mlcast-community`, label `good first issue`, state `open`, update sorting,
-   and `per_page=3`.
-2. Expect a JSON object with an `items` array.
-3. Derive the repository name from `repository_url`.
-4. Escape repository name, title, and number before generating issue cards.
-5. Link each card to the issue's `html_url`.
-
-### Dependencies and connections
-
-- GitHub Search API.
-- The fallback and “View all” action use the equivalent GitHub web search URL.
-- No cache is used.
+1. The producer searches GitHub for open `good first issue` items in the
+   `mlcast-community` organization, sorted by recent updates.
+2. The default limit is six issues.
+3. `jq` reduces each result to `{repo, title, number, url}` and adds a
+   `generated` timestamp.
+4. `contributing.html` fetches `gh-issues.json`, escapes remote text, and renders
+   cards linking to the issue URLs.
 
 ### Failure handling
 
-Non-OK responses, network errors, and empty results render one full-width card
-linking to the GitHub search page. The section remains actionable even without
-API data.
+If GitHub returns no usable `items` payload, the producer leaves the output file
+unwritten. A missing, non-OK, malformed, or empty JSON response makes the page
+render one actionable link to the equivalent GitHub web search.
 
 ### Safe modification notes
 
-- Keep `escapeHtml` around every remote text field.
-- Validate any new URL field before assigning it to `href`.
-- Search API limits differ from other GitHub REST limits; keep request volume
-  low.
-- Keep the fallback usable and visible.
+- Keep remote text escaped before assigning generated markup to `innerHTML`.
+- Validate issue URLs before changing their use in `href`.
+- Change the producer limit and page layout together.
+- Preserve the fallback search link.
 
 ### Testing checklist
 
-- Test populated, empty, malformed, rate-limited, and offline responses.
-- Verify long titles wrap and repository/issue links open correctly.
-- Confirm the `aria-live` region changes without disruptive focus movement.
-
-## Contributing-page community counts
-
-### Purpose
-
-Show lightweight repository and dataset-repository counts without fabricating
-statistics.
-
-### Location
-
-- Page: `contributing.html`
-- Script: inline block labeled “Support-the-community stats”
-- DOM targets: `#gh-dataset-count`, `#gh-repo-count`, `#gh-contrib-count`
-
-### How it works
-
-1. Try to read the home page's `mlcast_gh_stats` session cache and use its
-   `contributors` value.
-2. Fetch up to 100 organization repositories.
-3. Display the array length as repository count.
-4. Count repository names beginning with `mlcast-dataset-` as “Datasets.”
-
-### Dependencies and connections
-
-- GitHub organization repositories endpoint.
-- Cross-page dependency on the cache populated by `home.html`.
-- “Datasets” means repositories matching a naming convention, not entries in
-  the Intake catalog shown by `data.html`.
-
-### Failure handling
-
-Errors are swallowed. Existing em-dash placeholders remain. Direct visits to
-`contributing.html` do not fetch contributor details, so the contributor count
-can stay blank when no session cache exists.
-
-### Safe modification notes
-
-- Keep the repository naming rule synchronized with actual organization naming.
-- If direct-entry accuracy matters, remove the implicit home-page dependency or
-  provide an intentional fallback request.
-- Check `response.ok` before parsing and add pagination if the organization can
-  exceed 100 repositories.
-
-### Testing checklist
-
-- Test direct entry and navigation from `home.html`.
-- Test missing, malformed, and stale cache data.
-- Test repository names that do and do not match `^mlcast-dataset-`.
-- Verify failure leaves an honest placeholder rather than a misleading number.
+- Validate populated, empty, malformed, missing, and offline JSON behavior.
+- Check long titles and repository names at mobile and desktop widths.
+- Confirm issue links and the fallback search URL.
 
 ## Dataset catalog
 
 ### Purpose
 
-Render the current public precipitation catalog in `data.html` from its source
-repository, so website dataset cards track upstream catalog changes without
-manual duplication.
+Render the current public precipitation catalog from its source repository so
+dataset cards track upstream catalog changes without manual duplication.
 
-### Location
+### Locations
 
-- Page: `data.html`
+- Consumer and parser: `data.html`
 - Remote source:
   `https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml`
 - DOM targets: `#dataset-search`, `#dataset-catalog-list`,
   `#dataset-catalog-count`, and `#dataset-catalog-status`
-- Global debug/state hook: `window.datasetCatalogLinks`
+- Debug/state hook: `window.datasetCatalogLinks`
 
 ### How it works
 
-1. Fetch the raw YAML as text and require an OK response.
-2. Use a small indentation-based parser to find the top-level `sources` mapping.
-3. For each source, read only `description`, `driver`, `urlpath`,
-   `endpoint_url`, and `consolidated`.
-4. Normalize source names, infer a country flag, and add hard-coded provider,
-   range, cadence, and variable metadata based on source-name patterns.
-5. Generate escaped HTML, including an `xarray.open_dataset` example.
-6. Filter the in-memory result as the visitor types in the search input.
+1. Fetch raw YAML in the visitor's browser and require an OK response.
+2. Use an indentation-based parser to find `sources`.
+3. Read `description`, `driver`, `urlpath`, `endpoint_url`, and `consolidated`.
+4. Normalize names and add hard-coded flag/provider/range/cadence metadata based
+   on source-name patterns.
+5. Escape upstream values and generate dataset cards and `xarray` examples.
+6. Filter the in-memory results as the user types.
 
-This is not a general YAML parser. Nested structures, multiline scalars, aliases,
-changed indentation, or renamed keys may not parse correctly.
+The parser is not a general YAML implementation. Multiline scalars, aliases,
+changed indentation, nested structures, or renamed fields can break it.
 
 ### Dependencies and connections
 
-- Raw GitHub content for catalog YAML.
-- GitHub catalog page URL as a stored fallback/reference.
-- FlagCDN country SVGs generated from inferred country codes.
-- The visible “View catalog file” link currently points to the published
-  `mlcast-datasets` site, not `CATALOG_PAGE_URL`.
-- The static Intake example elsewhere in `data.html` references
-  `catalog/catalog.yml`, while the live browser uses
-  `catalog/precipitation/catalog.yml`; verify both when paths change.
-- The dataset count is independent from the repository-prefix count on
-  `contributing.html`.
+- Raw GitHub content and its CORS behavior.
+- FlagCDN SVGs inferred from source names.
+- The visible catalog link targets the published `mlcast-datasets` site.
+- A static Intake example in `data.html` references `catalog/catalog.yml`,
+  whereas the live UI fetches `catalog/precipitation/catalog.yml`; verify both
+  paths when upstream changes.
+- Provider/range/cadence details are hard-coded presentation data, not read from
+  YAML.
 
 ### Failure handling
 
-Fetch, HTTP, or parser errors are logged to the console. The count, screen-reader
-status, and list are replaced with a visible “Unable to load” state. There is no
-cache or retry, so every page load makes a fresh request.
+Fetch, HTTP, or parser errors are logged. The count, accessible status, and list
+change to an explicit “Unable to load” state. There is no retry or cache.
 
 ### Safe modification notes
 
-- Prefer a real parser or prebuilt JSON if the upstream schema becomes complex.
-- Keep `escapeHtml` for every upstream value inserted into markup or code.
-- Treat hard-coded impact metadata as a second data source and update it when
-  catalog naming changes.
-- Keep loading, empty-search, empty-catalog, and error states distinct.
-- Verify generated code examples against the actual driver and storage options.
+- Prefer prebuilt JSON or a real parser if the YAML schema becomes complex.
+- Keep `escapeHtml` around all upstream values used in HTML/code.
+- Update the hard-coded source-name metadata with upstream naming changes.
+- Keep loading, empty search, empty catalog, and error states distinct.
 
 ### Testing checklist
 
-- Test a valid catalog, non-OK response, empty `sources`, schema change, and
-  malformed YAML.
-- Search by name, description, driver, URL path, and endpoint.
-- Check flags and hard-coded metadata for every known source.
-- Copy every generated code example and verify HTML entities become plain code.
-- Test via HTTP and inspect CORS behavior in the browser.
+- Test valid, empty, malformed, non-OK, and schema-changed catalog responses.
+- Search by name, description, driver, path, and endpoint.
+- Verify flags, metadata, and copied code examples for each source.
 
-## Shared third-party runtime dependencies
+## Shared external dependencies
 
-| Service | Use | Pages |
-| --- | --- | --- |
-| Tailwind browser CDN | Generates utility CSS at runtime; loads `forms` and `container-queries` plugins. | All styled pages; not `docs.html`. |
-| Google Fonts | Geist, Inter, JetBrains Mono, and Material Symbols. | All styled pages. |
-| FlagCDN | Static country flags in coverage maps and generated dataset cards. | `home.html`, `contributing.html`, `data.html`. |
-| GitHub web/profile URLs | Repository links, organization links, issue fallback, and avatars. | Several pages. |
-| Slack, Microsoft Teams, Google Docs, `mailto:` | Outbound community actions only; no embedded widget or form submission. | Primarily `community.html`, `contributing.html`, and footers. |
+| Service | Use |
+| --- | --- |
+| GitHub REST API | Build-time repositories, contributor totals, and starter issues. |
+| GitHub profile images | Browser-loaded top-contributor avatars. |
+| Raw GitHub content | Browser-loaded precipitation YAML. |
+| Tailwind browser CDN | Runtime utility CSS with forms/container-query plugins. |
+| Google Fonts | Geist, Inter, JetBrains Mono, and Material Symbols. |
+| FlagCDN | Coverage-map and dataset country flags. |
+| Slack, Microsoft Teams, Google Docs, `mailto:` | Outbound community actions; no embedded widget or form submission. |
 
-If these resources fail, fonts/icons/flags or utility styling may degrade even
-when page HTML remains available.
+## Current non-integrations
 
-## Explicitly absent
-
-The audited HTML currently contains no analytics beacon, embedded iframe,
-WebSocket, EventSource, query-parameter reader, authenticated request, or native
-form submission script. The contribution-interest “form” is an outbound Google
-Docs link, and the newsletter action is a `mailto:` subscription link.
+- The dataset/repository/contributor placeholders in `contributing.html` are not
+  populated by a script.
+- There is no analytics beacon, iframe, WebSocket, EventSource, query-parameter
+  reader, authenticated browser request, or native form-submission script.
+- Generated `gh-stats.json` and `gh-issues.json` are deployment artifacts, not
+  repository source files.

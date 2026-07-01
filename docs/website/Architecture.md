@@ -2,140 +2,145 @@
 
 ## Purpose
 
-`mlcast-website-carbotti/` is a static, multi-page marketing website for MLCast.
-It uses plain HTML, one shared CSS file, page-local Tailwind configuration, and
-inline JavaScript. It does not contain an API server, database, package manifest,
-bundler, or shared JavaScript module.
+The MLCast repository combines two static outputs:
 
-The repository deployment workflow copies this directory to the GitHub Pages
-root and copies `home.html` to `index.html`. The separate MyST/Jupyter Book in
-the repository-level `docs/` directory is built into `/docs/`.
+- The marketing website consists of root-level HTML, CSS, and JavaScript.
+- The MyST/Jupyter Book source lives in `docs/` and is published under `/docs/`.
+
+There is no application server or client build system. Tailwind runs through its
+browser CDN. GitHub community data is generated during deployment, while the
+dataset catalog is fetched by the visitor's browser.
+
+## Deployment
+
+`.github/workflows/deploy.yml` assembles the GitHub Pages artifact on pushes to
+`main`, manual dispatches, and a daily schedule:
+
+1. Copy root `*.html`, `*.css`, `*.js`, `img/`, and `video/` into `dist/`.
+2. Copy `home.html` to `dist/index.html`.
+3. Run `scripts/fetch-gh-stats.sh` and `scripts/fetch-gh-issues.sh` with the
+   Actions `GITHUB_TOKEN`, producing `dist/gh-stats.json` and
+   `dist/gh-issues.json` when GitHub returns usable data.
+4. Build the MyST site and stage it in `dist/docs/`.
+5. Upload and deploy the combined artifact.
+
+The daily schedule refreshes GitHub-derived JSON even when the website source
+has not changed.
 
 ## Page map
 
 | Page | Responsibility |
 | --- | --- |
-| `home.html` | Landing page, coverage map, project overview, and live GitHub community summary. |
-| `software_and_data.html` | Landing page routing visitors to software and dataset detail pages. |
+| `home.html` | Landing page, coverage map, project overview, and community summary loaded from `gh-stats.json`. |
+| `software_and_data.html` | Landing page routing visitors to software and dataset details. |
 | `software.html` | Software ecosystem, copyable commands, step navigation, and client-side configuration preview. |
 | `data.html` | Dataset overview and remote precipitation catalog browser. |
 | `community.html` | Community introduction, scroll-linked story, testimonials, and contact links. |
-| `contributing.html` | Contributor paths, coverage map, live GitHub starter issues, and repository statistics. |
+| `contributing.html` | Contributor paths and starter issues loaded from `gh-issues.json`. |
 | `faq.html` | Static FAQ using native `<details>` elements. |
-| `docs.html` | Empty placeholder; it is not the deployed documentation site. |
 
-Navigation, mobile-menu markup, and footers are copied between pages rather than
-generated from a template. Changes to one page do not propagate automatically.
+## Shared files
 
-## Shared assets and styling
+- `header.js` injects the shared header, desktop/mobile navigation, footer,
+  mobile-menu behavior, and copy-on-select behavior for terminal windows. Pages
+  provide `#site-header` and `#site-footer` mount elements.
+- `tailwind-config.js` is the single source of truth for Tailwind theme colors,
+  spacing, radii, and font aliases.
+- `home.css` contains shared navigation, cards, focus states, terminal styling,
+  section navigation, responsive rules, and common interaction styles.
+- `img/` and `video/` contain published media.
+- Page-local `<style>` and `<script>` blocks own behavior that is not shared.
+- UI conventions are documented in [UI_UX_Instructions.md](UI_UX_Instructions.md).
 
-- `home.css` contains shared navigation, mobile menu, cards, focus states,
-  terminal styling, section navigation, and common interaction styles.
-- `img/` contains local maps, photographs, and testimonial portraits.
-- Page-local `<style>` blocks handle one-off components such as the community
-  stepper and contributor navigation.
-- Most pages load Tailwind's browser CDN and define `tailwind.config` inline.
-  There is no compiled Tailwind output. Classes are interpreted in the browser.
-- Google Fonts supplies Geist, Inter, JetBrains Mono, and Material Symbols.
-- Colors, spacing, and type conventions are documented in
-  [UI_UX_Instructions.md](UI_UX_Instructions.md).
+## Data flow
 
-## Runtime model and data flow
-
-All dynamic behavior executes after the HTML is loaded:
+### Build-time GitHub data
 
 ```text
-static HTML fallback
-    -> inline script finds DOM targets by ID/class
-    -> optional external fetch
-    -> validation/parsing/escaping
-    -> DOM text or generated markup update
-    -> fallback remains or is replaced on failure
+GitHub Actions GITHUB_TOKEN
+    -> scripts/fetch-gh-stats.sh / scripts/fetch-gh-issues.sh
+    -> GitHub REST API
+    -> dist/gh-stats.json / dist/gh-issues.json
+    -> browser fetches same-origin JSON
+    -> DOM update or static HTML fallback
 ```
 
-There is no shared script bundle. Cross-page state is limited to browser APIs;
-the main example is the `mlcast_gh_stats` `sessionStorage` value written by
-`home.html` and read by `contributing.html`.
+This design keeps credentials and high-volume GitHub API calls out of the
+browser. See [Integration.md](Integration.md).
 
-## Embedded-script inventory
+### Browser-side dataset catalog
+
+```text
+data.html
+    -> raw GitHub precipitation catalog YAML
+    -> narrow in-page parser
+    -> escaped dataset cards and generated code examples
+    -> local search filtering
+```
+
+## Script ownership by page
 
 ### `home.html`
 
-- Coverage map: local pointer, wheel, and zoom state; no remote map service.
-- Mobile menu: toggles shared menu classes and `aria-expanded`.
-- Hero canvas: draws and animates a local particle network.
-- Hero video: forces muted inline autoplay and adjusts playback rate.
-- Clipboard helper: copies visible command text.
-- Section navigation: scrollspy, progressive reveal, and moving position dot.
-- GitHub community data: fetches repositories and contributors, calculates
-  summary values, updates the community card, and caches the result per session.
-  See [Integration.md](Integration.md#home-page-community-summary).
+- Local coverage-map pan and zoom.
+- Hero canvas animation and muted inline video playback.
+- Clipboard helper and section-navigation scroll behavior.
+- Fetches same-origin `gh-stats.json` and updates community counts/avatars.
 
 ### `data.html`
 
-- Clipboard helper for generated dataset-opening examples.
-- Remote catalog loader: fetches YAML, parses selected source fields, adds
-  hard-coded display metadata, filters by search input, and renders cards.
-  See [Integration.md](Integration.md#dataset-catalog).
-- Section scrollspy and moving navigation dot.
+- Fetches and parses the remote precipitation catalog.
+- Builds searchable dataset cards and copyable `xarray` examples.
+- Section-navigation scroll behavior.
 
 ### `contributing.html`
 
 - Contributor-path navigation with click locking and scroll synchronization.
-- GitHub starter-issue loader and fallback search link.
-- GitHub repository/dataset counts plus reuse of the home-page session cache.
-  See [Integration.md](Integration.md#contributing-page-good-first-issues) and
-  [Integration.md](Integration.md#contributing-page-community-counts).
-- Local coverage-map pan/zoom behavior.
-- Section scrollspy, moving navigation dot, and mobile menu.
+- Fetches same-origin `gh-issues.json`, renders issue cards, and falls back to a
+  GitHub search link.
+
+The dataset/repository/contributor fields currently present in the support card
+have no updater and remain static placeholders.
 
 ### `software.html`
 
-- Clipboard helper for installation and training commands.
-- Step-tab state for the quick-start sequence.
-- Configuration preview that converts form control values into a displayed CLI
-  command. It does not submit data or run MLCast.
-- One inline click handler expands/collapses terminal output.
+- Copy helpers, quick-start step tabs, configuration preview, and terminal-output
+  expansion.
 
 ### `community.html`
 
-- Mobile menu behavior.
-- Who/What/Why stepper: uses `IntersectionObserver` to synchronize the active
-  text step and progress line with desktop photo panels; clicking a step scrolls
-  to its panel.
+- Who/What/Why stepper synchronized with desktop photo panels.
+- Small presentation-only helpers; shared navigation comes from `header.js`.
 
 ### `software_and_data.html`
 
-- A legacy sidebar toggle expects `#menu-btn`, but that element is absent; the
-  unguarded listener currently throws when this script runs.
-- A separate guarded mobile-menu script also finds no mobile menu/overlay markup
-  and returns. Treat this page's mobile control as incomplete until markup and
-  script ownership are reconciled.
+- Static routing content plus shared site chrome.
+- Retains an effectively empty page-local script block; shared behavior belongs
+  in `header.js`.
 
-### `faq.html` and `docs.html`
+### `faq.html`
 
-`faq.html` has no body JavaScript; FAQ disclosure uses native HTML and CSS.
-`docs.html` is empty and has no scripts. Both are included here to make the
-all-page audit explicit.
+No page-local body JavaScript; disclosure behavior is native HTML/CSS.
 
 ## Coupling and maintenance boundaries
 
-- Script behavior is coupled to DOM IDs, `data-*` attributes, and class names in
-  the same file.
-- Shared navigation behavior is copied into several pages. Fixes may need to be
-  repeated or deliberately centralized.
-- Tailwind design tokens are duplicated in page heads. Changing only one config
-  can create silent visual drift.
-- Dynamically generated markup must keep remote text escaped before assigning
-  `innerHTML`.
-- The live integrations are public, anonymous browser requests. They cannot rely
-  on secrets and must degrade safely.
+- Page scripts depend on DOM IDs, `data-*` attributes, and classes in the same
+  HTML file.
+- `header.js` owns site-wide navigation/footer links; do not copy that markup
+  back into individual pages.
+- `tailwind-config.js` must load after the Tailwind CDN script and before classes
+  are generated.
+- The build scripts require Bash, `curl`, and `jq`.
+- Generated JSON is deployment output and should not be edited as source.
+- Remote strings inserted through `innerHTML` must remain escaped.
+- Static fallback content must remain honest and useful when generated JSON or
+  the remote catalog is unavailable.
 
 ## Architecture-change checklist
 
-- Identify every page and selector affected with `rg`.
-- Decide whether behavior is page-specific or should move to a shared script.
-- Preserve static fallback content and accessible live/status regions.
-- Re-test direct page entry, not only navigation from `home.html`.
+- Search for every affected selector, mount, endpoint, and output filename.
+- Update shared behavior in the shared file rather than duplicating it.
+- Preserve static fallback and accessible loading/status behavior.
+- Test direct page entry and both generated-JSON success/failure paths.
 - Update [Integration.md](Integration.md) for endpoint or data-contract changes.
-- Update the UI guide for new tokens, shared components, or breakpoint rules.
+- Update the UI guide for new tokens, components, or responsive conventions.
