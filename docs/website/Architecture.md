@@ -92,6 +92,11 @@ data.html
 - Hero canvas animation and muted inline video playback.
 - Clipboard helper and section-navigation scroll behavior.
 - Fetches same-origin `gh-stats.json` and updates community counts/avatars.
+- A static `#networks` section ("Integrated into European Meteorological
+  Networks, Open to the world.") links out to EUMETNET, its Nowcasting and
+  E-AI Programmes, the European Weather Cloud, and EUMETSAT, and closes with a
+  note that contribution is open regardless of geography. It is included in
+  the section-nav panel; no fetch or DOM update is involved.
 
 ### `data.html`
 
