@@ -10,6 +10,7 @@
 
     var GITHUB_URL = "https://github.com/mlcast-community";
     var DOCS_URL = "https://webvalley2026.github.io/mlcast-website/docs/";
+    var SLACK_URL = "https://mlcast.slack.com/join/shared_invite/zt-42iu8odsi-lim6KkEULzZt_KbcxoiTZg#/shared-invite/email";
 
     // Single source of truth for the primary nav.
     var NAV_LINKS = [
@@ -94,7 +95,7 @@
         '      <h4 class="font-bold text-primary mb-md">Community</h4>' +
         '      <ul class="space-y-sm text-on-surface-variant">' +
         '        <li><a href="' + GITHUB_URL + '" class="hover:text-primary-fixed">GitHub</a></li>' +
-        '        <li><a href="https://mlcast.slack.com/join/shared_invite/zt-42iu8odsi-lim6KkEULzZt_KbcxoiTZg#/shared-invite/email" class="hover:text-primary-fixed">Discussions</a></li>' +
+        '        <li><a href="' + SLACK_URL + '" class="hover:text-primary-fixed">Discussions</a></li>' +
         '        <li><a href="mailto:mlcastcommunity%2Bsubscribe@googlegroups.com" class="hover:text-primary-fixed">Newsletter</a></li>' +
         '        <li><a href="https://github.com/orgs/mlcast-community/people" class="hover:text-primary-fixed">Contributors</a></li>' +
         "      </ul>" +
@@ -102,6 +103,23 @@
         "    <div>" +
         '      <h4 class="font-bold text-primary mb-md">Legal</h4>' +
         '      <p class="text-on-surface-variant text-xs italic">© 2026 MLCast Community. Released under MIT License.</p>' +
+        "    </div>" +
+        "  </div>" +
+        // Placeholder contact details pending a real inbox/address from the team.
+        '  <div class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop mt-xl pt-lg border-t border-outline-variant/20 flex flex-col md:flex-row md:items-center md:justify-end gap-md text-sm">' +
+        '    <div class="text-on-surface-variant md:text-right">' +
+        '      <p class="font-bold text-primary">Get in touch</p>' +
+        '      <p><a href="mailto:hello@mlcast-community.org" class="hover:text-primary-fixed">hello@mlcast-community.org</a></p>' +
+        "    </div>" +
+        '    <div class="flex flex-col sm:flex-row gap-sm">' +
+        '      <a class="flex items-center justify-center gap-2 bg-primary-fixed text-on-primary-fixed px-6 py-3 min-h-[44px] rounded-DEFAULT font-bold text-sm uppercase tracking-wider hover:opacity-90 transition-opacity" href="' + SLACK_URL + '" target="_blank" rel="noreferrer">' +
+        '        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">forum</span>' +
+        "        Join Slack" +
+        "      </a>" +
+        '      <a class="flex items-center justify-center gap-2 border border-outline-variant text-primary px-6 py-3 min-h-[44px] rounded-DEFAULT font-bold text-sm uppercase tracking-wider hover:border-primary-fixed hover:text-primary-fixed transition-colors" href="' + SLACK_URL + '" target="_blank" rel="noreferrer">' +
+        '        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">groups</span>' +
+        "        Slack Community" +
+        "      </a>" +
         "    </div>" +
         "  </div>" +
         "</footer>";
