@@ -55,11 +55,41 @@
 
         <!-- Hero Section: Data Catalog -->
         <section class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto text-center mb-20">
-            <span class="text-primary-fixed font-mono text-sm tracking-[0.3em] uppercase">[DATA_INFRASTRUCTURE]</span>
-            <h1 class="text-5xl md:text-7xl font-bold text-primary mt-6 tracking-tighter">Community Intake Catalog</h1>
+            <span class="text-primary-fixed font-mono text-sm tracking-[0.3em] uppercase">[MLCAST_DATASETS]</span>
+            <h1 class="text-5xl md:text-7xl font-bold text-primary mt-6 tracking-tighter">Community Dataset Catalog</h1>
             <p class="text-on-surface-variant text-lg mt-6 max-w-2xl mx-auto leading-relaxed">
-                A curated collection of meteorological datasets designed for machine learning workflows. ARCO-ready, cloud-optimized, and directly accessible via Python.
+                A curated collection of high resolution (sub-hourly, km scale) observational datasets designed for meteorological machine learning workflows.
+                Analysis Ready and Cloud-Optimized (ARCO), and directly accessible via Python thanks to the European Weather Cloud (EWC).
             </p>
+        </section>
+
+        <!-- Access Methods -->
+        <section id="access" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary-fixed text-2xl">cloud</span>
+                    <h3 class="text-xl font-bold text-primary">Option A: Direct GitHub Access</h3>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-6">Use the most recent version of the catalog directly from our source repository.</p>
+                <div class="terminal-window font-mono text-xs">
+                    pip install intake intake-xarray zarr jinja2<br><br>
+                    import intake<br>
+                    cat = intake.open_catalog("https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml")
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary-fixed text-2xl">package_2</span>
+                    <h3 class="text-xl font-bold text-primary">Option B: Python Package</h3>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-6">Install our stable <code class="text-primary-fixed">mlcast-datasets</code> package from PyPI for consistent versioning.</p>
+                <div class="terminal-window font-mono text-xs">
+                    pip install mlcast-datasets<br><br>
+                    import mlcast_datasets<br>
+                    cat = mlcast_datasets.open_catalog()
+                </div>
+            </div>
         </section>
 
         <section id="dataset-catalog" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto mb-16" aria-labelledby="dataset-catalog-heading">
@@ -119,35 +149,6 @@
                     </div>
                 </div>
                 <p id="dataset-catalog-status" class="sr-only" aria-live="polite">Loading catalog datasets.</p>
-            </div>
-        </section>
-
-        <!-- Access Methods -->
-        <section id="access" class="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="material-symbols-outlined text-primary-fixed text-2xl">cloud</span>
-                    <h3 class="text-xl font-bold text-primary">Option A: Direct GitHub Access</h3>
-                </div>
-                <p class="text-on-surface-variant text-sm mb-6">Use the most recent version of the catalog directly from our source repository.</p>
-                <div class="terminal-window font-mono text-xs">
-                    pip install intake intake-xarray zarr jinja2<br><br>
-                    import intake<br>
-                    cat = intake.open_catalog("https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/catalog.yml")
-                </div>
-            </div>
-
-            <div class="glass-card p-8 rounded-2xl border border-outline-variant/30 hover:border-primary-fixed/30 transition-all duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="material-symbols-outlined text-primary-fixed text-2xl">package_2</span>
-                    <h3 class="text-xl font-bold text-primary">Option B: Python Package</h3>
-                </div>
-                <p class="text-on-surface-variant text-sm mb-6">Install our stable <code class="text-primary-fixed">mlcast-datasets</code> package from PyPI for consistent versioning.</p>
-                <div class="terminal-window font-mono text-xs">
-                    pip install mlcast-datasets<br><br>
-                    import mlcast_datasets<br>
-                    cat = mlcast_datasets.open_catalog()
-                </div>
             </div>
         </section>
 

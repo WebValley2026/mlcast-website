@@ -14,7 +14,8 @@
 
     // Single source of truth for the primary nav.
     var NAV_LINKS = [
-        { href: "software_and_data.html", label: "Software and Data" },
+        { href: "software.html", label: "Software" },
+        { href: "data.html", label: "Data" },
         { href: "community.html", label: "Community" },
         { href: "contributing.html", label: "Contributing" },
         { href: "faq.html", label: "FAQ" }
