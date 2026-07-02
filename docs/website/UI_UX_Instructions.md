@@ -27,12 +27,12 @@ some literal color values. Search both files before changing the palette.
 
 ## Typography
 
-- Geist is the display/headline face through `font-headline-xl`.
-- JetBrains Mono is used for labels, code, statistics, and technical metadata
-  through `font-label-tag`, `font-mono`, and terminal styles.
-- Inter is imported and registered as `font-body-lg`, although body classes are
-  not fully standardized across pages. Preserve the existing local pattern or
-  normalize it across all pages deliberately.
+- DM Sans is the shared interface, body, and headline face. Load weights 400,
+  500, 600, and 700, and use the shared `font-sans`, `font-body-lg`, and
+  `font-headline-xl` families instead of page-local font declarations.
+- JetBrains Mono is reserved for labels, code, statistics, and technical
+  metadata through `font-label-tag`, `font-mono`, and terminal styles. Load
+  weights 500 and 600.
 - Headlines are bold with tight leading; body text uses comfortable line height.
 - Eyebrow labels are small, uppercase, orange, and often bracketed.
 - Do not use tiny or low-opacity text for essential instructions.

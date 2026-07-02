@@ -9,6 +9,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #FFFFFF;
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 canvas {

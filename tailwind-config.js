@@ -33,9 +33,11 @@ tailwind.config = {
                 "margin-desktop": "48px"
             },
             fontFamily: {
-                "headline-xl": ["Geist"],
-                "body-lg": ["Inter"],
-                "label-tag": ["JetBrains Mono"]
+                "sans": ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+                "headline-xl": ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+                "body-lg": ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+                "mono": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+                "label-tag": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"]
             }
         }
     }
