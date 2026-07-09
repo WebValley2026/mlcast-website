@@ -192,7 +192,8 @@
                                 <div id="contrib-coverage-map" class="absolute inset-0 origin-top-left will-change-transform" style="transform:translate(0px,0px) scale(1);">
                                 <img src="img/world.svg" alt="World map" class="absolute inset-0 h-full w-full rounded object-contain opacity-90" draggable="false" aria-hidden="true">
 
-                                <!-- Covered countries -->
+                                <!-- Covered countries — rebuilt from catalog-data.json by coverage-map.js; these static markers are the fallback -->
+                                <div data-coverage-markers data-coverage-variant="plain">
                                 <div class="absolute -translate-x-1/2 -translate-y-1/2" style="left:47.8%;top:27.7%">
                                     <span class="relative flex h-4 w-4 items-center justify-center">
                                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-fixed/40"></span>
@@ -224,6 +225,7 @@
                                     </span>
                                 </div>
                                 </div>
+                                </div>
 
                                 <div class="pointer-events-none absolute bottom-2 left-2 z-30 flex items-center gap-3 rounded bg-[#F0E8DE]/80 px-2.5 py-1.5 text-[10px] font-label-tag uppercase tracking-widest">
                                     <span class="flex items-center gap-1.5 text-primary-fixed"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span>Live</span>
@@ -233,15 +235,15 @@
                                 <div class="pointer-events-none absolute bottom-2 right-2 z-30 flex gap-1.5">
                                     <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-2.5 py-1.5 backdrop-blur-sm">
                                         <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">Countries</p>
-                                        <p class="mt-0.5 text-lg font-bold leading-none text-primary">5</p>
+                                        <p data-coverage-stat="countries" class="mt-0.5 text-lg font-bold leading-none text-primary">5</p>
                                     </div>
                                     <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-2.5 py-1.5 backdrop-blur-sm">
                                         <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">Years of rain</p>
-                                        <p class="mt-0.5 text-lg font-bold leading-none text-primary-fixed">~70</p>
+                                        <p data-coverage-stat="years" class="mt-0.5 text-lg font-bold leading-none text-primary-fixed">~70</p>
                                     </div>
                                     <div class="rounded border border-outline-variant/25 bg-[#F0E8DE]/85 px-2.5 py-1.5 backdrop-blur-sm">
                                         <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">Cadence</p>
-                                        <p class="mt-0.5 text-lg font-bold leading-none text-primary">5m</p>
+                                        <p data-coverage-stat="cadence" class="mt-0.5 text-lg font-bold leading-none text-primary">5m</p>
                                     </div>
                                 </div>
                             </div>
@@ -316,8 +318,8 @@
 
                             <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
                                 <div class="rounded border border-outline-variant/25 bg-background/45 p-3">
-                                    <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">CSI</p>
-                                    <p class="mt-2 text-2xl font-bold text-primary-fixed">+6.4%</p>
+                                    <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">CRPS</p>
+                                    <p class="mt-2 text-2xl font-bold text-primary-fixed">-0.09</p>
                                 </div>
                                 <div class="rounded border border-outline-variant/25 bg-background/45 p-3">
                                     <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">MAE</p>
@@ -404,7 +406,7 @@
                         <div class="min-w-0">
                             <h3 class="text-4xl md:text-5xl font-bold text-primary tracking-tight">Validate Results</h3>
                             <p class="mt-5 text-lg text-on-surface-variant leading-relaxed">Before any dataset reaches the public catalog, it passes through the <span class="font-semibold text-primary">dataset validator</span>: an automated check that verifies schema, spatial and temporal coverage, units, and missing-data ratios so every contribution stays consistent and reusable.</p>
-                            <p class="mt-3 text-lg text-on-surface-variant leading-relaxed">The same rigor applies to models. Forecasts are scored against shared baselines with standard nowcasting metrics — <span class="font-semibold text-primary">POD</span>, <span class="font-semibold text-primary">FAR</span>, <span class="font-semibold text-primary">CSI</span>, and <span class="font-semibold text-primary">RMSE</span> — across lead times and extreme-rainfall cases, so performance claims are reproducible and comparable.</p>
+                            <p class="mt-3 text-lg text-on-surface-variant leading-relaxed">The same rigor applies to models. Forecasts are scored against shared baselines with standard nowcasting metrics — <span class="font-semibold text-primary">MSE</span>, <span class="font-semibold text-primary">MAE</span>, <span class="font-semibold text-primary">CRPS</span>, and <span class="font-semibold text-primary">AFCRPS</span> — across lead times and extreme-rainfall cases, so performance claims are reproducible and comparable.</p>
                             <p class="mt-3 text-lg text-on-surface-variant leading-relaxed">Reviewing these checks, spotting edge cases, and improving the validator keeps the project on a stronger, more trustworthy foundation. Your critical eye helps the community understand what truly works and what needs improvement.</p>
                             <a href="https://github.com/mlcast-community/mlcast-benchmarks" target="_blank" rel="noreferrer" class="mt-6 inline-flex items-center justify-center gap-2 rounded bg-primary-fixed px-5 py-3 min-h-[44px] text-sm font-bold text-on-primary-fixed transition-opacity hover:opacity-90">
                                 View mlcast-benchmarks
@@ -457,20 +459,20 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
                                     <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
-                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">POD</p>
-                                        <p class="mt-1.5 text-xl font-bold text-primary">0.82</p>
+                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">MSE</p>
+                                        <p class="mt-1.5 text-xl font-bold text-primary">-11%</p>
                                     </div>
                                     <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
-                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">FAR</p>
-                                        <p class="mt-1.5 text-xl font-bold text-primary-fixed">0.18</p>
-                                    </div>
-                                    <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
-                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">CSI</p>
-                                        <p class="mt-1.5 text-xl font-bold text-primary">0.71</p>
-                                    </div>
-                                    <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
-                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">RMSE</p>
+                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">MAE</p>
                                         <p class="mt-1.5 text-xl font-bold text-primary-fixed">-9%</p>
+                                    </div>
+                                    <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
+                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">CRPS</p>
+                                        <p class="mt-1.5 text-xl font-bold text-primary">-7%</p>
+                                    </div>
+                                    <div class="rounded border border-outline-variant/25 bg-background/45 p-2.5 text-center">
+                                        <p class="font-label-tag text-[10px] uppercase tracking-widest text-on-surface-variant/60">AFCRPS</p>
+                                        <p class="mt-1.5 text-xl font-bold text-primary-fixed">-6%</p>
                                     </div>
                                 </div>
                             </div>
@@ -682,5 +684,8 @@
         requestPathSync();
 
     </script>
+<!-- Coverage map: markers + Countries/Years/Cadence from catalog-data.json -->
+<script src="coverage-map.js"></script>
+<script>renderCoverageMap("contrib-coverage-viewport");</script>
 </body>
 </html>

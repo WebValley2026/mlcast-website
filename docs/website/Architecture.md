@@ -4,7 +4,7 @@
 
 The MLCast repository combines two static outputs:
 
-- The marketing website consists of root-level HTML, CSS, and JavaScript.
+- The MLCast Community website consists of root-level HTML, CSS, and JavaScript.
 - The MyST/Jupyter Book source lives in `docs/` and is published under `/docs/`.
 
 There is no application server or client build system. Tailwind runs through its
@@ -22,7 +22,9 @@ dataset catalog is fetched by the visitor's browser.
    Actions `GITHUB_TOKEN`, producing `dist/gh-stats.json` and
    `dist/gh-issues.json` when GitHub returns usable data.
 4. Run `scripts/fetch-catalog-stats.py` (via `uv run`) to read the precipitation
-   catalog's Zarr metadata and produce `dist/catalog-stats.json`.
+   catalog plus its Zarr metadata and produce `dist/catalog-data.json` (dataset
+   list, per-country coverage-map markers computed from `img/world.svg`, and
+   impact stats).
 5. Build the MyST site and stage it in `dist/docs/`.
 6. Upload and deploy the combined artifact.
 
@@ -33,12 +35,12 @@ the website source has not changed.
 
 | Page | Responsibility |
 | --- | --- |
-| `home.html` | Landing page, coverage map, project overview, and community summary loaded from `gh-stats.json`. |
+| `home.html` | Landing page, coverage map (markers/overlays from `catalog-data.json` via `coverage-map.js`), project overview, and community summary loaded from `gh-stats.json`. |
 | `software.html` | Software ecosystem, copyable commands, step navigation, and client-side configuration preview. |
-| `data.html` | Dataset overview, remote precipitation catalog browser, and impact-spotlight counters loaded from `catalog-stats.json`. |
+| `data.html` | Dataset overview, catalog dataset list, and impact-spotlight counters — all loaded from `catalog-data.json`. |
 | `software_and_data.html` | Legacy combined overview for software and dataset details. Not linked from the primary header nav or from `software.html`/`data.html`; reachable only by direct URL. |
 | `community.html` | Community introduction, scroll-linked story, testimonials, and contact links. |
-| `contributing.html` | Contributor paths and current infrastructure-support credits. |
+| `contributing.html` | Contributor paths, coverage map (via `coverage-map.js`), and current infrastructure-support credits. |
 | `faq.html` | Static FAQ using native `<details>` elements. |
 
 ## Shared files
@@ -48,6 +50,11 @@ the website source has not changed.
   provide `#site-header` and `#site-footer` mount elements.
 - `tailwind-config.js` is the single source of truth for Tailwind theme colors,
   spacing, radii, and font aliases.
+- `coverage-map.js` renders the coverage-map flag markers and Countries/Years/
+  Cadence overlays from `catalog-data.json`. Pages call
+  `renderCoverageMap(viewportId)` and provide a `[data-coverage-markers]`
+  container plus `[data-coverage-stat]` nodes (see
+  [Integration.md](Integration.md)).
 - `home.css` contains shared navigation, cards, focus states, terminal styling,
   section navigation, responsive rules, and common interaction styles.
 - `img/` and `video/` contain published media.
@@ -89,6 +96,9 @@ data.html
   partially when zooming in and grow when zooming out, clamped at both ends. The
   dashed expansion ("Help us with your data!") markers are links to
   `contributing.html`.
+- `coverage-map.js` (`renderCoverageMap("coverage-viewport")`) rebuilds the live
+  flag markers and Countries/Years/Cadence overlays from `catalog-data.json`,
+  keeping the static markers/numbers on failure.
 - Hero canvas animation and muted inline video playback.
 - Clipboard helper and section-navigation scroll behavior.
 - Fetches same-origin `gh-stats.json` and updates community counts/avatars.
@@ -100,18 +110,22 @@ data.html
 
 ### `data.html`
 
-- Fetches and parses the remote precipitation catalog.
-- Builds searchable dataset cards and copyable `xarray` examples.
-- Fetches same-origin `catalog-stats.json` and updates the impact-spotlight
-  counters (`#stat-countries`, `#stat-years`, `#stat-timesteps`,
-  `#stat-cadence`), keeping the hard-coded card values on failure.
+- Fetches same-origin `catalog-data.json` (no client-side YAML parsing).
+- Builds searchable dataset cards and copyable `xarray` examples from its
+  `datasets[]` array.
+- Updates the impact-spotlight counters (`#stat-countries`, `#stat-years`,
+  `#stat-timesteps`, `#stat-cadence`) from the same file, keeping the hard-coded
+  card values on failure.
 - Section-navigation scroll behavior.
 
 ### `contributing.html`
 
 - Contributor-path navigation with click locking and scroll synchronization.
-- The "Share Data" coverage map is a static display (live-country flags only); it
-  has no pan/zoom script and no expansion markers.
+- The "Share Data" coverage map (live-country flags only, no pan/zoom or
+  expansion markers) has its markers and Countries/Years/Cadence overlays
+  rebuilt from `catalog-data.json` by `coverage-map.js`
+  (`renderCoverageMap("contrib-coverage-viewport")`), falling back to the static
+  markers on failure.
 - No longer renders a starter-issues section (removed as repetitive with the
   "Ways to Contribute" paths above it); see [Integration.md](Integration.md)
   for the now-orphaned `gh-issues.json` producer this left behind.

@@ -1,28 +1,43 @@
 #!/usr/bin/env python3
-"""Compute dataset-catalog impact stats at build time and write static JSON.
+"""Build the catalog-driven site data at deploy time and write static JSON.
 
-Reads the public precipitation catalog and, for every source, opens ONLY the
-Zarr metadata (consolidated `.zmetadata`, unconsolidated `.zarray`, or Zarr v3
-`zarr.json`) — never the array data. From that metadata plus the catalog source
-name it derives the four "Dataset Impact Spotlight" numbers shown on data.html:
+This is the single source of truth for everything the site derives from the
+public precipitation catalog:
 
-  * countries          — distinct countries inferred from source names
-  * cumulative_years    — sum of each dataset's date range (end - start), in years
-  * time_steps          — total length of every dataset's `time` dimension
-  * best_cadence_minutes — finest temporal resolution across datasets
+  * the dataset list rendered on data.html (name, description, driver, path…),
+  * the country inference / flag for each dataset,
+  * the coverage-map markers (data.html has none, but home.html and
+    contributing.html draw flag markers whose position is computed here),
+  * the four "Dataset Impact Spotlight" counters on data.html plus the
+    Countries / Years / Cadence overlays on the two coverage maps.
 
-A dataset's date range is derived from metadata alone: the start comes from the
-`time` variable's `units` attribute (e.g. "minutes since 2016-02-29"), and the
-span is `steps x cadence` — which equals end-start for these regular time axes.
-Cadence is read from the catalog source name (e.g. `*_5_minutes`, `*_hourly`),
-so no coordinate array data is downloaded (reading exact end timestamps would
-mean pulling whole time arrays — 16 MB for one source). A dataset that cannot be
-read is skipped; the file is only written when at least one dataset resolves, so
-the site keeps its hard-coded fallback on total failure.
+Two data sources are combined:
 
-Usage: fetch-catalog-stats.py [CATALOG_URL] [OUT_JSON]
+  1. `catalog.yml` (parsed in full with PyYAML) -> the dataset list and, from
+     each source name, an inferred country/flag and temporal cadence.
+  2. For every source, ONLY the Zarr metadata (consolidated `.zmetadata`,
+     unconsolidated `.zarray`, or Zarr v3 `zarr.json`) is opened — never the
+     array data — to read the `time` dimension length. Steps x cadence gives
+     each dataset's span in years (equals end-start for these regular time
+     axes; reading exact end timestamps would download whole time arrays —
+     16 MB for one source — so it is avoided).
+
+Marker positions are read straight from the geometry of `img/world.svg` (the
+Wikimedia "World map - low resolution", which ships a named `<path>` per
+country): the bounding-box centre of a country's path, expressed as a percent
+of the 950x620 viewBox, is exactly the `left`/`top` percent the maps use. A new
+covered country therefore places itself automatically once its ISO code is
+mapped to the SVG path id in SVG_COUNTRY_ID below.
+
+Every catalog source is always included in the dataset list; a source whose
+Zarr metadata cannot be read simply contributes no steps/years (its list entry
+and map marker still appear). If the catalog itself cannot be fetched/parsed the
+file is not written at all, so the site keeps its hard-coded fallbacks.
+
+Usage: fetch-catalog-stats.py [CATALOG_URL] [OUT_JSON] [WORLD_SVG]
 """
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -35,7 +50,25 @@ CATALOG_URL = (
     "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/"
     "src/mlcast_datasets/catalog/precipitation/catalog.yml"
 )
+# Repo-relative default; the world map lives next to the site HTML.
+DEFAULT_WORLD_SVG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "img", "world.svg"
+)
 YEAR_MINUTES = 60 * 24 * 365.25
+# world.svg viewBox — markers are positioned as a percent of these dimensions,
+# which matches the 95/62 aspect box the maps render the SVG into.
+SVG_VIEWBOX_W = 950.0
+SVG_VIEWBOX_H = 620.0
+
+# ISO 3166-1 alpha-2 (also the FlagCDN code) -> `<path id>` in img/world.svg.
+# Extend this as coverage grows; the position is then computed automatically.
+SVG_COUNTRY_ID = {
+    "gb": "britain",
+    "dk": "denmark",
+    "be": "belgium",
+    "de": "germany",
+    "it": "italy",
+}
 
 
 def cadence_minutes(name):
@@ -55,15 +88,15 @@ def country(name):
     """
     n = name.lower()
     if "dmi" in n:
-        return "DK"
+        return "dk"
     if "metoffice" in n or "uk" in n:
-        return "GB"
+        return "gb"
     if "dpc" in n or n.startswith("it"):
-        return "IT"
+        return "it"
     if "rmi" in n or "mfb" in n or ("be" in n and "radclim" in n):
-        return "BE"
+        return "be"
     if "radklim" in n:
-        return "DE"
+        return "de"
     return None
 
 
@@ -82,9 +115,49 @@ def time_steps(fs, base):
     return json.loads(fs.cat(base + "time/zarr.json"))["shape"][0]  # Zarr v3
 
 
+def svg_marker_positions(svg_path, codes):
+    """Map each covered ISO code to a {x, y} percent on the world map.
+
+    Reads the bounding-box centre of the country's `<path>` in world.svg. Codes
+    without an SVG mapping or a readable path are skipped (the maps then keep
+    their static fallback marker for that spot).
+    """
+    try:
+        from svgpathtools import svg2paths
+    except Exception as exc:  # noqa: BLE001 — markers are optional enrichment
+        print(f"svgpathtools unavailable, skipping markers: {exc}", file=sys.stderr)
+        return {}
+
+    try:
+        paths, attrs = svg2paths(svg_path)
+    except Exception as exc:  # noqa: BLE001
+        print(f"could not read {svg_path}: {exc}", file=sys.stderr)
+        return {}
+
+    by_id = {a.get("id"): p for p, a in zip(paths, attrs) if a.get("id")}
+    positions = {}
+    for code in codes:
+        svg_id = SVG_COUNTRY_ID.get(code)
+        path = by_id.get(svg_id) if svg_id else None
+        if path is None:
+            print(f"no SVG path for {code} (id={svg_id})", file=sys.stderr)
+            continue
+        try:
+            xmin, xmax, ymin, ymax = path.bbox()
+        except Exception as exc:  # noqa: BLE001
+            print(f"bbox failed for {code}: {exc}", file=sys.stderr)
+            continue
+        positions[code] = {
+            "x": round((xmin + xmax) / 2 / SVG_VIEWBOX_W * 100, 2),
+            "y": round((ymin + ymax) / 2 / SVG_VIEWBOX_H * 100, 2),
+        }
+    return positions
+
+
 def main():
     catalog_url = sys.argv[1] if len(sys.argv) > 1 else CATALOG_URL
-    out_path = sys.argv[2] if len(sys.argv) > 2 else "dist/catalog-stats.json"
+    out_path = sys.argv[2] if len(sys.argv) > 2 else "dist/catalog-data.json"
+    world_svg = sys.argv[3] if len(sys.argv) > 3 else DEFAULT_WORLD_SVG
 
     try:
         raw = urllib.request.urlopen(catalog_url, timeout=30).read()
@@ -93,53 +166,96 @@ def main():
         print(f"catalog fetch/parse failed: {exc}", file=sys.stderr)
         return  # exit 0 without writing -> site keeps hard-coded numbers
 
+    if not sources:
+        print("catalog has no sources; not writing", file=sys.stderr)
+        return
+
+    datasets = []
     total_steps = 0
     total_years = 0.0
     countries = set()
     cadences = []
     resolved = 0
 
-    for name, src in sources.items():
-        try:
-            args = src["args"]
-            opts = args.get("storage_options", {})
-            fs = fsspec.filesystem(
-                "s3",
-                anon=opts.get("anon", True),
-                client_kwargs={"endpoint_url": opts.get("endpoint_url")},
-            )
-            steps = time_steps(fs, args["urlpath"].replace("s3://", ""))
-        except Exception as exc:  # noqa: BLE001 — partial failure is tolerated
-            print(f"skip {name}: {exc}", file=sys.stderr)
-            continue
-
+    for name, src in sorted(sources.items()):
+        args = src.get("args", {}) or {}
+        opts = args.get("storage_options", {}) or {}
+        urlpath = args.get("urlpath")
         cad = cadence_minutes(name)
-        total_steps += steps
-        if cad:
-            total_years += steps * cad / YEAR_MINUTES
-            cadences.append(cad)
-        tag = country(name)
-        if tag:
-            countries.add(tag)
-        resolved += 1
-        print(f"ok {name}: steps={steps} cadence={cad}", file=sys.stderr)
+        code = country(name)
+        if code:
+            countries.add(code)
 
-    if not resolved or not cadences:
-        print("no datasets resolved; not writing", file=sys.stderr)
-        return
+        entry = {
+            "sourceName": name,
+            "description": src.get("description") or "",
+            "driver": src.get("driver"),
+            "urlpath": urlpath,
+            "endpointUrl": opts.get("endpoint_url"),
+            "consolidated": bool(args.get("consolidated"))
+            if "consolidated" in args
+            else None,
+            "flag": code,
+            "cadence_minutes": int(cad) if cad else None,
+            "steps": None,
+            "years": None,
+            "resolved": False,
+        }
 
-    stats = {
-        "countries": len(countries),
-        "cumulative_years": round(total_years),
-        "time_steps": total_steps,
-        "best_cadence_minutes": int(min(cadences)),
-        "datasets": resolved,
+        steps = None
+        if urlpath:
+            try:
+                fs = fsspec.filesystem(
+                    "s3",
+                    anon=opts.get("anon", True),
+                    client_kwargs={"endpoint_url": opts.get("endpoint_url")},
+                )
+                steps = time_steps(fs, urlpath.replace("s3://", ""))
+            except Exception as exc:  # noqa: BLE001 — partial failure tolerated
+                print(f"skip zarr {name}: {exc}", file=sys.stderr)
+
+        if steps is not None:
+            entry["steps"] = steps
+            total_steps += steps
+            if cad:
+                years = steps * cad / YEAR_MINUTES
+                entry["years"] = round(years, 1)
+                total_years += years
+                cadences.append(cad)
+            entry["resolved"] = True
+            resolved += 1
+            print(f"ok {name}: steps={steps} cadence={cad}", file=sys.stderr)
+
+        datasets.append(entry)
+
+    country_codes = sorted(countries)
+    positions = svg_marker_positions(world_svg, country_codes)
+    markers = [
+        {"country": code, "flag": code, **positions[code]}
+        for code in country_codes
+        if code in positions
+    ]
+
+    data = {
+        "countries": len(country_codes),
+        "country_codes": country_codes,
+        "cumulative_years": round(total_years) if cadences else None,
+        "time_steps": total_steps if resolved else None,
+        "best_cadence_minutes": int(min(cadences)) if cadences else None,
+        "datasets_count": len(datasets),
+        "resolved_count": resolved,
+        "markers": markers,
+        "datasets": datasets,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
     with open(out_path, "w", encoding="utf-8") as fh:
-        json.dump(stats, fh, indent=2)
+        json.dump(data, fh, indent=2)
         fh.write("\n")
-    print(f"wrote {out_path}: {stats}", file=sys.stderr)
+    print(
+        f"wrote {out_path}: {len(datasets)} datasets, {resolved} resolved, "
+        f"{len(markers)} markers",
+        file=sys.stderr,
+    )
 
 
 if __name__ == "__main__":

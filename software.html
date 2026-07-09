@@ -144,7 +144,7 @@
                 <div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dataset</span>
                 </div>
-                <h3 class="font-headline-md text-headline-md text-primary mt-2">Dataset Catalog</h3>
+                <h3 class="font-headline-md text-headline-md text-primary mt-2 min-h-[3.5rem]">Dataset Catalog</h3>
                 <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Standardized, high-res radar archives for ML. Access data streams via our Python interface with dask-backed xarray support.
                 </p>
@@ -156,7 +156,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="dataset-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
+                    <div id="dataset-install" class="terminal-window font-mono text-[12px] min-h-[124px]">
                         <span class="text-primary-fixed/50"># Install the catalog package</span><br>
                         pip install mlcast-datasets
                     </div>
@@ -169,7 +169,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="dataset-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
+                    <div id="dataset-use" class="terminal-window font-mono text-[12px] min-h-[148px]">
                         <span class="text-primary-fixed/50"># Open and list available sources</span><br>
                         import mlcast_datasets<br>
                         cat = mlcast_datasets.open_catalog()<br>
@@ -195,7 +195,7 @@
                 <div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
                 </div>
-                <h3 class="font-headline-md text-headline-md text-primary mt-2">Data Validator</h3>
+                <h3 class="font-headline-md text-headline-md text-primary mt-2 min-h-[3.5rem]">Data Validator</h3>
                 <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Verify dataset compliance. Automated checks for Zarr specs, metadata integrity, and geospatial tool-chain interoperability.
                 </p>
@@ -207,7 +207,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="validator-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
+                    <div id="validator-install" class="terminal-window font-mono text-[12px] min-h-[124px]">
                         <span class="text-primary-fixed/50"># Install the validator tool</span><br>
                         uv tool install mlcast-dataset-validator
                     </div>
@@ -220,7 +220,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="validator-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
+                    <div id="validator-use" class="terminal-window font-mono text-[12px] min-h-[148px]">
                         <span class="text-primary-fixed/50"># Validate a local Zarr dataset</span><br>
                         mlcast.validate_dataset source_data \<br>
                         radar_precipitation path/to/dataset.zarr
@@ -245,7 +245,7 @@
                 <div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary-fixed group-hover:bg-primary-fixed/10 transition-colors">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
                 </div>
-                <h3 class="font-headline-md text-headline-md text-primary mt-2">Model Training and Inference</h3>
+                <h3 class="font-headline-md text-headline-md text-primary mt-2 min-h-[3.5rem]">Model Training and Inference</h3>
                 <p class="font-body-sm text-body-sm text-on-surface-variant min-h-[96px]">
                     Streamlined Python package for building ML nowcasting models. Run training experiments using Fiddle-based configurations, with existing architectures or plug in your own.
                 </p>
@@ -257,7 +257,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="ml-install" class="terminal-window font-mono text-[12px] min-h-[104px]">
+                    <div id="ml-install" class="terminal-window font-mono text-[12px] min-h-[124px]">
                         <span class="text-primary-fixed/50"># Create venv &amp; install</span><br>
                         uv venv &amp;&amp; source .venv/bin/activate<br>
                         uv pip install mlcast
@@ -271,7 +271,7 @@
                             <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
                         </button>
                     </div>
-                    <div id="ml-use" class="terminal-window font-mono text-[12px] min-h-[140px]">
+                    <div id="ml-use" class="terminal-window font-mono text-[12px] min-h-[148px]">
                         <span class="text-primary-fixed/50"># Run initial training test</span><br>
                         mlcast train --config fiddler:use_random_sampler
                     </div>
@@ -589,19 +589,19 @@
                     </div>
                     <p class="text-sm text-on-surface-variant leading-relaxed">Generic GeoTIFF to mlcast-compliant Zarr v3 converter for ingesting new data sources.</p>
                 </a>
-                <a href="https://github.com/mlcast-community/mlcast-dataset-IT-DPC-SRI" target="_blank" rel="noreferrer" class="glass-card rounded-xl p-md block group hover:border-primary-fixed/40 transition-all">
+                <a href="https://github.com/orgs/mlcast-community/repositories?q=dataset" target="_blank" rel="noreferrer" class="glass-card rounded-xl p-md block group hover:border-primary-fixed/40 transition-all">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="material-symbols-outlined text-primary-fixed">map</span>
-                        <h3 class="text-lg font-bold text-primary group-hover:text-primary-fixed">IT-DPC Converter</h3>
+                        <h3 class="text-lg font-bold text-primary group-hover:text-primary-fixed">Dataset Converters</h3>
                     </div>
-                    <p class="text-sm text-on-surface-variant leading-relaxed">Convert Italian radar composite TIFFs to Zarr format.</p>
+                    <p class="text-sm text-on-surface-variant leading-relaxed">Source-specific converters that turn provider radar archives into mlcast-compliant Zarr — one per dataset, growing as new sources join.</p>
                 </a>
-                <a href="https://github.com/mlcast-community/mlcast-dataset-metoffice-nimrod" target="_blank" rel="noreferrer" class="glass-card rounded-xl p-md block group hover:border-primary-fixed/40 transition-all">
+                <a href="https://github.com/mlcast-community/mlcast" target="_blank" rel="noreferrer" class="glass-card rounded-xl p-md block group hover:border-primary-fixed/40 transition-all">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="material-symbols-outlined text-primary-fixed">map</span>
-                        <h3 class="text-lg font-bold text-primary group-hover:text-primary-fixed">UK Met Office Converter</h3>
+                        <span class="material-symbols-outlined text-primary-fixed">model_training</span>
+                        <h3 class="text-lg font-bold text-primary group-hover:text-primary-fixed">Model Training</h3>
                     </div>
-                    <p class="text-sm text-on-surface-variant leading-relaxed">Download and convert UK Met Office NIMROD radar data to mlcast-compliant GeoTIFF.</p>
+                    <p class="text-sm text-on-surface-variant leading-relaxed">Core package to build, train, and run ML nowcasting models with Fiddle-based configs and pluggable architectures.</p>
                 </a>
             </div>
         </div>

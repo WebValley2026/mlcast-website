@@ -210,7 +210,10 @@
         });
     }
 
-    const CATALOG_RAW_URL = "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
+    // Build-time catalog data (producer: scripts/fetch-catalog-stats.py). The
+    // full dataset list, per-dataset country/flag, and impact stats all come
+    // from this same-origin JSON — no client-side YAML parsing.
+    const CATALOG_DATA_URL = "catalog-data.json";
     const CATALOG_PAGE_URL = "https://github.com/mlcast-community/mlcast-datasets/blob/main/src/mlcast_datasets/catalog/precipitation/catalog.yml";
     const datasetSearch = document.getElementById("dataset-search");
     const datasetCatalogList = document.getElementById("dataset-catalog-list");
@@ -218,25 +221,6 @@
     const datasetCatalogStatus = document.getElementById("dataset-catalog-status");
     let datasetCatalogLinks = [];
     window.datasetCatalogLinks = datasetCatalogLinks;
-
-    const stripYamlScalar = (value = "") => {
-        const trimmed = value.trim();
-        const hasDoubleQuotes = trimmed.startsWith("\"") && trimmed.endsWith("\"");
-        const hasSingleQuotes = trimmed.startsWith("'") && trimmed.endsWith("'");
-        const unquoted = hasDoubleQuotes || hasSingleQuotes ? trimmed.slice(1, -1) : trimmed;
-
-        return unquoted.replace(/\\"/g, "\"").replace(/\\'/g, "'");
-    };
-
-    const getDatasetFlagCode = (sourceName) => {
-        const s = sourceName.toLowerCase();
-        if (s.includes("radklim") || s.includes("radclim")) return "de";
-        if (s.includes("dmi")) return "dk";
-        if (s.includes("metoffice") || s.includes("uk")) return "gb";
-        if (s.includes("dpc") || s.includes("it")) return "it";
-        if (s.includes("rmi") || s.includes("be") || s.includes("mfb")) return "be";
-        return null;
-    };
 
     const formatDatasetName = (sourceName) => sourceName
         .replace(/(\d+)min\b/g, "$1 min")
@@ -256,74 +240,37 @@
         })
         .join(" ");
 
-    const parseCatalogSources = (catalogText) => {
-        const sources = [];
-        const lines = catalogText.replace(/\r\n/g, "\n").split("\n");
-        let inSources = false;
-        let currentSource = null;
-
-        lines.forEach((line) => {
-            if (/^sources:\s*$/.test(line)) {
-                inSources = true;
-                return;
-            }
-
-            if (!inSources) return;
-            if (line.trim() && !line.startsWith(" ") && !/^sources:\s*$/.test(line)) {
-                currentSource = null;
-                inSources = false;
-                return;
-            }
-
-            const sourceMatch = line.match(/^ {2}([A-Za-z0-9_-]+):\s*$/);
-            if (sourceMatch) {
-                const sourceName = sourceMatch[1];
-                currentSource = {
-                    name: formatDatasetName(sourceName),
-                    label: formatDatasetName(sourceName),
-                    sourceName,
-                    description: "No description available.",
-                    driver: null,
-                    urlpath: null,
-                    endpointUrl: null,
-                    consolidated: null,
-                    href: CATALOG_PAGE_URL,
-                    url: CATALOG_PAGE_URL
-                };
-                sources.push(currentSource);
-                return;
-            }
-
-            if (!currentSource) return;
-
-            const scalarMatch = line.match(/^ {4,}([A-Za-z_]+)\s*:\s*(.*)$/);
-            if (!scalarMatch) return;
-
-            const key = scalarMatch[1];
-            const value = stripYamlScalar(scalarMatch[2]);
-
-            if (key === "description") currentSource.description = value || currentSource.description;
-            if (key === "driver") currentSource.driver = value || null;
-            if (key === "urlpath") currentSource.urlpath = value || null;
-            if (key === "endpoint_url") currentSource.endpointUrl = value || null;
-            if (key === "consolidated") currentSource.consolidated = value === "true";
-        });
-
-        if (!sources.length) {
-            throw new Error("Catalog did not contain any sources");
-        }
-
-        return sources.sort((a, b) => a.name.localeCompare(b.name));
-    };
+    const mapCatalogDataset = (dataset) => ({
+        name: formatDatasetName(dataset.sourceName),
+        label: formatDatasetName(dataset.sourceName),
+        sourceName: dataset.sourceName,
+        description: dataset.description || "No description available.",
+        driver: dataset.driver || null,
+        urlpath: dataset.urlpath || null,
+        endpointUrl: dataset.endpointUrl || null,
+        consolidated: dataset.consolidated === true,
+        flag: dataset.flag || null,
+        href: CATALOG_PAGE_URL,
+        url: CATALOG_PAGE_URL
+    });
 
     const getDatasetCatalogLinks = async () => {
-        const response = await fetch(CATALOG_RAW_URL);
+        const response = await fetch(CATALOG_DATA_URL, { cache: "no-cache" });
 
         if (!response.ok) {
             throw new Error(`Catalog request failed with status ${response.status}`);
         }
 
-        return parseCatalogSources(await response.text());
+        const data = await response.json();
+        const datasets = Array.isArray(data.datasets) ? data.datasets : [];
+
+        if (!datasets.length) {
+            throw new Error("Catalog data did not contain any datasets");
+        }
+
+        return datasets
+            .map(mapCatalogDataset)
+            .sort((a, b) => a.name.localeCompare(b.name));
     };
 
     const getDatasetSearchText = (dataset) => [
@@ -411,7 +358,7 @@
 
         datasetCatalogList.innerHTML = visibleDatasets.map((dataset) => {
             const icon = getDatasetIcon(dataset.sourceName);
-            const flagCode = getDatasetFlagCode(dataset.sourceName);
+            const flagCode = dataset.flag;
             const impacts = getDatasetImpacts(dataset.sourceName);
             const driverMeta = dataset.driver ? escapeHtml(dataset.driver) : "";
             const consolidatedMeta = dataset.consolidated === true ? "Consolidated" : "";
@@ -546,7 +493,7 @@
     })();
 </script>
 <!-- Dataset Impact Spotlight: build-time stats from catalog Zarr metadata.
-     Producer: scripts/fetch-catalog-stats.py -> catalog-stats.json.
+     Producer: scripts/fetch-catalog-stats.py -> catalog-data.json.
      On any failure the hard-coded fallback values in the cards are kept. -->
 <script>
     (function () {
@@ -563,7 +510,7 @@
             ? (min / 60) + (min === 60 ? " hr" : " hrs")
             : min + " min";
 
-        fetch("catalog-stats.json", { cache: "no-cache" })
+        fetch("catalog-data.json", { cache: "no-cache" })
             .then((r) => r.ok ? r.json() : Promise.reject())
             .then((s) => {
                 setStat("stat-countries", s.countries);

@@ -6,8 +6,10 @@ The site uses two data-delivery patterns:
 
 - GitHub community statistics and starter issues are fetched during GitHub Pages
   deployment and served to browsers as same-origin JSON.
-- The precipitation catalog is fetched directly by `data.html` from raw GitHub
-  content.
+- The precipitation catalog is read at deploy time (catalog YAML plus Zarr
+  metadata) into a single same-origin `catalog-data.json` that drives the
+  `data.html` dataset list and impact spotlight and the coverage-map markers on
+  `home.html` and `contributing.html`.
 
 Secrets are allowed only in the deployment environment. Never put a token in
 HTML, `header.js`, `tailwind-config.js`, or other published JavaScript.
@@ -103,95 +105,108 @@ indefinitely.
 - Render an explicit fallback (e.g. a GitHub search link) for missing, non-OK,
   malformed, or empty JSON.
 
-## Dataset catalog
+## Dataset catalog list
 
 ### Purpose
 
-Render the current public precipitation catalog from its source repository so
-dataset cards track upstream catalog changes without manual duplication.
+Render the current public precipitation catalog so dataset cards track upstream
+catalog changes without manual duplication.
 
 ### Locations
 
-- Consumer and parser: `data.html`
-- Remote source:
-  `https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml`
+- Consumer: `data.html`
+- Data source: same-origin `catalog-data.json` (see "Catalog data producer"
+  below); the browser no longer fetches or parses the raw catalog YAML.
 - DOM targets: `#dataset-search`, `#dataset-catalog-list`,
   `#dataset-catalog-count`, and `#dataset-catalog-status`
 - Debug/state hook: `window.datasetCatalogLinks`
 
 ### How it works
 
-1. Fetch raw YAML in the visitor's browser and require an OK response.
-2. Use an indentation-based parser to find `sources`.
-3. Read `description`, `driver`, `urlpath`, `endpoint_url`, and `consolidated`.
-4. Normalize names and add hard-coded flag/provider/range/cadence metadata based
-   on source-name patterns.
-5. Escape upstream values and generate dataset cards and `xarray` examples.
-6. Filter the in-memory results as the user types.
+1. Fetch `catalog-data.json` with `cache: "no-cache"` and require an OK response.
+2. Map its `datasets[]` array (each entry: `sourceName`, `description`,
+   `driver`, `urlpath`, `endpointUrl`, `consolidated`, `flag`, …) to card view
+   models; the country/flag is precomputed by the producer, not re-inferred here.
+3. Format the display name from the source name.
+4. Escape all values and generate dataset cards and `xarray` examples.
+5. Filter the in-memory results as the user types.
 
-The parser is not a general YAML implementation. Multiline scalars, aliases,
-changed indentation, nested structures, or renamed fields can break it.
+The producer parses the catalog with a real YAML library, so the previous
+fragile indentation parser (and its `getDatasetFlagCode`/`stripYamlScalar`
+helpers) is gone. Every catalog source appears in the list even if its Zarr
+metadata could not be read.
 
 ### Dependencies and connections
 
-- Raw GitHub content and its CORS behavior.
-- FlagCDN SVGs inferred from source names.
+- Same-origin `catalog-data.json`; no browser CORS dependency on raw GitHub.
+- FlagCDN SVGs, using the `flag` code supplied per dataset.
 - The visible catalog link targets the published `mlcast-datasets` site.
 - A static Intake example in `data.html` references `catalog/catalog.yml`,
-  whereas the live UI fetches `catalog/precipitation/catalog.yml`; verify both
+  whereas the producer reads `catalog/precipitation/catalog.yml`; verify both
   paths when upstream changes.
-- Provider/range/cadence details are hard-coded presentation data, not read from
-  YAML.
+- Provider/range details shown in cards (`getDatasetImpacts`) are still
+  hard-coded presentation data, not read from the catalog.
 
 ### Failure handling
 
-Fetch, HTTP, or parser errors are logged. The count, accessible status, and list
-change to an explicit “Unable to load” state. There is no retry or cache.
+Fetch, HTTP, or empty-data errors are logged. The count, accessible status, and
+list change to an explicit “Unable to load” state. There is no retry or cache.
 
 ### Safe modification notes
 
-- Prefer prebuilt JSON or a real parser if the YAML schema becomes complex.
-- Keep `escapeHtml` around all upstream values used in HTML/code.
-- Update the hard-coded source-name metadata with upstream naming changes.
+- Version the producer schema and this consumer together.
+- Keep `escapeHtml` around all values used in HTML/code.
+- Update the hard-coded card presentation metadata with upstream naming changes.
 - Keep loading, empty search, empty catalog, and error states distinct.
 
 ### Testing checklist
 
-- Test valid, empty, malformed, non-OK, and schema-changed catalog responses.
+- Test valid, empty, malformed, and non-OK `catalog-data.json` responses.
 - Search by name, description, driver, path, and endpoint.
 - Verify flags, metadata, and copied code examples for each source.
 
-## Dataset impact spotlight
+## Catalog data producer
 
 ### Purpose
 
-Keep the four "Dataset Impact Spotlight" counters on `data.html` (countries,
-cumulative years, time steps, best cadence) in sync with the actual catalog
-instead of maintaining hard-coded numbers by hand.
+Produce, at deploy time, the one JSON that feeds the dataset list, the four
+"Dataset Impact Spotlight" counters, and the coverage-map markers/overlays —
+instead of maintaining any of that by hand.
 
 ### Locations
 
 - Producer: `scripts/fetch-catalog-stats.py`
 - Deployment call: `.github/workflows/deploy.yml` (`uv run --with s3fs --with
-  pyyaml`)
-- Generated artifact: `dist/catalog-stats.json`
-- Consumer: impact-spotlight script in `data.html`
-- DOM targets: `#stat-countries`, `#stat-years`, `#stat-timesteps`,
-  `#stat-cadence`
+  pyyaml --with svgpathtools`), passed the catalog URL, `dist/catalog-data.json`,
+  and `img/world.svg`.
+- Generated artifact: `dist/catalog-data.json`
+- Consumers: the dataset list + impact spotlight in `data.html`; `coverage-map.js`
+  on `home.html` and `contributing.html`.
+- Impact DOM targets: `#stat-countries`, `#stat-years`, `#stat-timesteps`,
+  `#stat-cadence`.
 
 ### How it works
 
-1. The producer fetches the same precipitation `catalog.yml` the browser reads
-   and iterates its `sources`.
-2. For each source it reads **only the Zarr metadata** — consolidated
+1. The producer fetches the precipitation `catalog.yml` and parses it with
+   PyYAML, building a `datasets[]` entry for **every** source (name, description,
+   driver, urlpath, endpoint, consolidated).
+2. From each source name it infers the country/`flag` (single source of truth;
+   the browser no longer infers this) and the cadence (`*_hourly`, `*_5_minutes`,
+   …).
+3. For each source it reads **only the Zarr metadata** — consolidated
    `.zmetadata`, unconsolidated `.zarray`, or Zarr v3 `zarr.json` — never the
-   array data. The `time` array shape gives the step count.
-3. Cadence is parsed from the source name (`*_hourly`, `*_5_minutes`, …) and the
-   country is inferred from the source name, so no coordinate values are read.
-4. It writes `{countries, cumulative_years, time_steps, best_cadence_minutes,
-   datasets, generated}` to `dist/catalog-stats.json`.
-5. `data.html` fetches `catalog-stats.json` with `cache: "no-cache"`, formats the
-   raw numbers (e.g. `6959729` → `6.9M+`, `5` → `5 min`), and updates the cards.
+   array data. The `time` array shape gives the step count; a source whose Zarr
+   cannot be read still appears in the list with `null` steps/years.
+4. For each covered country it computes a map marker position from
+   `img/world.svg`: the bounding-box centre of that country's named `<path>`
+   (via `svgpathtools`) as a percent of the `950×620` viewBox — exactly the
+   `left`/`top` percent the maps use. The ISO→SVG-path-id map is `SVG_COUNTRY_ID`
+   in the script.
+5. It writes `{countries, country_codes, cumulative_years, time_steps,
+   best_cadence_minutes, datasets_count, resolved_count, markers[], datasets[],
+   generated}` to `dist/catalog-data.json`.
+6. `data.html` reads the numbers (formatting e.g. `6959729` → `6.9M+`, `5` →
+   `5 min`); `coverage-map.js` reads `markers[]` and the aggregate counters.
 
 `cumulative_years` is the sum of each dataset's date range. The start comes from
 the `time` variable's `units` attribute and the span is `steps × cadence`, which
@@ -200,18 +215,57 @@ require downloading whole time arrays (16 MB for one source), so it is avoided.
 
 ### Failure handling
 
-A source that cannot be read is skipped. If the catalog fetch fails or no source
-resolves, the producer exits without writing the file, and `data.html` keeps the
-hard-coded fallback values baked into the cards (mirroring `gh-stats.json`).
+A source whose Zarr cannot be read is skipped from the aggregates but kept in the
+list/markers. If the catalog fetch/parse fails or yields no sources, the producer
+exits without writing the file; all consumers then keep their hard-coded
+fallbacks (mirroring `gh-stats.json`). Stats fields are `null` when nothing
+resolved, and consumers leave those specific numbers on their fallback.
 
 ### Safe modification notes
 
-- The cadence and country heuristics are keyed on source names; update them when
-  upstream renames sources or adds new countries.
-- Version the producer and the `data.html` consumer/formatters together if the
-  JSON schema changes.
-- Keep reads metadata-only; do not switch to `xarray.open_dataset(...).time`
+- The cadence and country heuristics are keyed on source names; update them, and
+  add an `SVG_COUNTRY_ID` entry for any new country, when upstream changes.
+- Version the producer schema and all consumers (`data.html`, `coverage-map.js`)
+  together.
+- Keep Zarr reads metadata-only; do not switch to `xarray.open_dataset(...).time`
   values, which downloads coordinate arrays.
+
+## Coverage maps
+
+### Purpose
+
+Draw the flag markers and the Countries / Years / Cadence overlays on the
+"Dataset Catalog" world maps of `home.html` and `contributing.html` from the same
+catalog data, so the maps track coverage without editing three HTML files.
+
+### Locations
+
+- Renderer: `coverage-map.js` (shared, staged by deploy's `cp *.js`)
+- Data source: same-origin `catalog-data.json`
+- Consumers: `home.html` (`renderCoverageMap("coverage-viewport")`, rich markers
+  with hover tooltips) and `contributing.html`
+  (`renderCoverageMap("contrib-coverage-viewport")`, plain markers).
+- DOM contract: one `[data-coverage-markers]` container per map (its
+  `data-coverage-variant` is `rich` or `plain`; its static children are the
+  fallback), plus `[data-coverage-stat="countries|years|cadence"]` value nodes.
+
+### How it works
+
+1. `renderCoverageMap` fetches `catalog-data.json`; on an OK response it rebuilds
+   the marker container from `markers[]` and sets the three overlay counters.
+2. Marker positions and flags come from the JSON; tooltip presentation detail
+   (provider, resolution, data range) comes from `COUNTRY_META` in the script — a
+   covered country missing from `COUNTRY_META` still renders, with a reduced
+   tooltip.
+3. On any failure the static HTML markers and numbers are left untouched.
+
+### Safe modification notes
+
+- Preserve the `[data-coverage-markers]` / `[data-coverage-stat]` contract and
+  keep the static fallback markers in the HTML.
+- `COUNTRY_META` is presentation-only; the covered set, positions, and flags are
+  data-driven.
+- Marker HTML is generated with `escapeHtml`; keep it around all injected values.
 
 ## Shared external dependencies
 
@@ -219,16 +273,16 @@ hard-coded fallback values baked into the cards (mirroring `gh-stats.json`).
 | --- | --- |
 | GitHub REST API | Build-time repositories and contributor totals; the starter-issues fetch still runs but is currently unconsumed (see "Good-first issues" above). |
 | GitHub profile images | Browser-loaded top-contributor avatars. |
-| Raw GitHub content | Browser-loaded precipitation YAML; build-time catalog read. |
+| Raw GitHub content | Build-time precipitation catalog read (no longer browser-fetched). |
 | ECMWF S3 (object store) | Build-time Zarr metadata reads for catalog impact stats. |
 | Tailwind browser CDN | Runtime utility CSS with forms/container-query plugins. |
-| Google Fonts | Geist, Inter, JetBrains Mono, and Material Symbols. |
+| Google Fonts | DM Sans, JetBrains Mono, and Material Symbols. |
 | FlagCDN | Coverage-map and dataset country flags. |
-| Slack, Microsoft Teams, Google Docs, `mailto:` | Outbound community actions; no embedded widget or form submission. |
+| Slack, Google Docs, `mailto:` email | Outbound community actions; no embedded widget or form submission. A Microsoft Teams monthly-meeting link is mentioned in text but not linked from the site. |
 
 ## Current non-integrations
 
 - There is no analytics beacon, iframe, WebSocket, EventSource, query-parameter
   reader, authenticated browser request, or native form-submission script.
-- Generated `gh-stats.json`, `gh-issues.json`, and `catalog-stats.json` are
+- Generated `gh-stats.json`, `gh-issues.json`, and `catalog-data.json` are
   deployment artifacts, not repository source files.
