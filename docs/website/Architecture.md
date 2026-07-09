@@ -47,7 +47,10 @@ the website source has not changed.
 
 - `header.js` injects the shared header, desktop/mobile navigation, footer,
   mobile-menu behavior, and copy-on-select behavior for terminal windows. Pages
-  provide `#site-header` and `#site-footer` mount elements.
+  provide `#site-header` and `#site-footer` mount elements. The header "Docs"
+  link uses the relative `docs/` path (not a hardcoded origin) so it resolves
+  against whatever base serves the site — matching the inline `docs/...` links
+  in `software.html`/`contributing.html`.
 - `tailwind-config.js` is the single source of truth for Tailwind theme colors,
   spacing, radii, and font aliases.
 - `coverage-map.js` renders the coverage-map flag markers and Countries/Years/
