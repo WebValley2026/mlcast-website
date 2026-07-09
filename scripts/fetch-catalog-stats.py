@@ -17,10 +17,13 @@ Two data sources are combined:
      each source name, an inferred country/flag and temporal cadence.
   2. For every source, ONLY the Zarr metadata (consolidated `.zmetadata`,
      unconsolidated `.zarray`, or Zarr v3 `zarr.json`) is opened — never the
-     array data — to read the `time` dimension length. Steps x cadence gives
-     each dataset's span in years (equals end-start for these regular time
-     axes; reading exact end timestamps would download whole time arrays —
-     16 MB for one source — so it is avoided).
+     bulk array data — to read the `time` dimension length. Steps x cadence
+     gives each dataset's span in years (equals end-start for these regular
+     time axes; reading exact end timestamps would download whole time arrays —
+     16 MB for one source — so it is avoided). The horizontal grid resolution
+     is read the same way: only the small 1-D `x`/`y` coordinate arrays are
+     touched and the step between their first two samples (normalised to metres
+     via the coordinate `units`) is the pixel size. Works for Zarr v2 and v3.
 
 Marker positions are read straight from the geometry of `img/world.svg` (the
 Wikimedia "World map - low resolution", which ships a named `<path>` per
@@ -45,6 +48,7 @@ from datetime import datetime, timezone
 
 import fsspec
 import yaml
+import zarr
 
 CATALOG_URL = (
     "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/"
@@ -113,6 +117,52 @@ def time_steps(fs, base):
     except Exception:
         pass
     return json.loads(fs.cat(base + "time/zarr.json"))["shape"][0]  # Zarr v3
+
+
+# Coordinate names probed for the horizontal grid spacing, in priority order.
+GRID_COORDS = ("x", "y", "xc", "yc")
+# Length-unit -> metres. A missing/blank unit is treated as metres (these
+# projected radar grids default to metres); an unknown unit aborts (return
+# None) rather than reporting a wrong number.
+UNIT_TO_M = {
+    "": 1.0, "m": 1.0, "metre": 1.0, "metres": 1.0, "meter": 1.0, "meters": 1.0,
+    "km": 1000.0, "kilometre": 1000.0, "kilometres": 1000.0,
+    "kilometer": 1000.0, "kilometers": 1000.0,
+}
+
+
+def spatial_resolution_m(store):
+    """Grid spacing in metres from a coordinate axis; None if not derivable.
+
+    Opens ONLY the small 1-D x/y coordinate arrays (never the data) and takes
+    the step between the first two samples, normalised to metres via the
+    coordinate `units` attribute. Works for both Zarr v2 and v3 stores.
+    """
+    group = zarr.open_group(store, mode="r")
+    for name in GRID_COORDS:
+        if name not in group:
+            continue
+        arr = group[name]
+        if not arr.shape or arr.shape[0] < 2:
+            continue
+        step = abs(float(arr[1]) - float(arr[0]))
+        if step <= 0:
+            continue
+        unit = str(arr.attrs.get("units", "") or "").strip().lower()
+        factor = UNIT_TO_M.get(unit)
+        if factor is None:  # unknown unit -> don't trust the number
+            return None
+        return step * factor
+    return None
+
+
+def format_resolution(metres):
+    """Human label for a metre resolution: '1 km', '500 m'; None if falsy."""
+    if not metres:
+        return None
+    if metres >= 1000:
+        return f"{metres / 1000:g} km"
+    return f"{round(metres):g} m"
 
 
 def svg_marker_positions(svg_path, codes):
@@ -197,6 +247,8 @@ def main():
             else None,
             "flag": code,
             "cadence_minutes": int(cad) if cad else None,
+            "resolution_m": None,
+            "resolution": None,
             "steps": None,
             "years": None,
             "resolved": False,
@@ -204,15 +256,30 @@ def main():
 
         steps = None
         if urlpath:
+            zbase = urlpath.replace("s3://", "")
             try:
                 fs = fsspec.filesystem(
                     "s3",
                     anon=opts.get("anon", True),
                     client_kwargs={"endpoint_url": opts.get("endpoint_url")},
                 )
-                steps = time_steps(fs, urlpath.replace("s3://", ""))
+                steps = time_steps(fs, zbase)
             except Exception as exc:  # noqa: BLE001 — partial failure tolerated
                 print(f"skip zarr {name}: {exc}", file=sys.stderr)
+
+            try:  # resolution is optional enrichment; never fail the entry
+                store = fsspec.get_mapper(
+                    urlpath,
+                    anon=opts.get("anon", True),
+                    client_kwargs={"endpoint_url": opts.get("endpoint_url")},
+                )
+                res_m = spatial_resolution_m(store)
+                if res_m:
+                    entry["resolution_m"] = round(res_m, 2)
+                    entry["resolution"] = format_resolution(res_m)
+                    print(f"res {name}: {entry['resolution']}", file=sys.stderr)
+            except Exception as exc:  # noqa: BLE001 — partial failure tolerated
+                print(f"skip resolution {name}: {exc}", file=sys.stderr)
 
         if steps is not None:
             entry["steps"] = steps

@@ -250,6 +250,7 @@
         endpointUrl: dataset.endpointUrl || null,
         consolidated: dataset.consolidated === true,
         flag: dataset.flag || null,
+        resolution: dataset.resolution || null,
         href: CATALOG_PAGE_URL,
         url: CATALOG_PAGE_URL
     });
@@ -360,6 +361,7 @@
             const icon = getDatasetIcon(dataset.sourceName);
             const flagCode = dataset.flag;
             const impacts = getDatasetImpacts(dataset.sourceName);
+            if (dataset.resolution) impacts.push({ label: "Resolution", value: dataset.resolution });
             const driverMeta = dataset.driver ? escapeHtml(dataset.driver) : "";
             const consolidatedMeta = dataset.consolidated === true ? "Consolidated" : "";
             const endpointMeta = dataset.endpointUrl ? "ECMWF S3" : "";

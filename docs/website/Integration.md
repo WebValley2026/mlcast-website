@@ -177,8 +177,8 @@ instead of maintaining any of that by hand.
 
 - Producer: `scripts/fetch-catalog-stats.py`
 - Deployment call: `.github/workflows/deploy.yml` (`uv run --with s3fs --with
-  pyyaml --with svgpathtools`), passed the catalog URL, `dist/catalog-data.json`,
-  and `img/world.svg`.
+  pyyaml --with svgpathtools --with zarr`), passed the catalog URL,
+  `dist/catalog-data.json`, and `img/world.svg`.
 - Generated artifact: `dist/catalog-data.json`
 - Consumers: the dataset list + impact spotlight in `data.html`; `coverage-map.js`
   on `home.html` and `contributing.html`.
@@ -195,8 +195,13 @@ instead of maintaining any of that by hand.
    …).
 3. For each source it reads **only the Zarr metadata** — consolidated
    `.zmetadata`, unconsolidated `.zarray`, or Zarr v3 `zarr.json` — never the
-   array data. The `time` array shape gives the step count; a source whose Zarr
-   cannot be read still appears in the list with `null` steps/years.
+   bulk array data. The `time` array shape gives the step count; a source whose
+   Zarr cannot be read still appears in the list with `null` steps/years. It also
+   opens the small 1-D `x`/`y` coordinate arrays (via `zarr`, v2 or v3) and takes
+   the step between their first two samples, normalised to metres through the
+   coordinate `units` (`km`→×1000, `m`/blank→×1, unknown→skip), yielding
+   `resolution_m` and a formatted `resolution` (`"1 km"`, `"500 m"`); both are
+   `null` when not derivable.
 4. For each covered country it computes a map marker position from
    `img/world.svg`: the bounding-box centre of that country's named `<path>`
    (via `svgpathtools`) as a percent of the `950×620` viewBox — exactly the
@@ -206,7 +211,8 @@ instead of maintaining any of that by hand.
    best_cadence_minutes, datasets_count, resolved_count, markers[], datasets[],
    generated}` to `dist/catalog-data.json`.
 6. `data.html` reads the numbers (formatting e.g. `6959729` → `6.9M+`, `5` →
-   `5 min`); `coverage-map.js` reads `markers[]` and the aggregate counters.
+   `5 min`) and shows each dataset's `resolution` as a "Resolution" chip in its
+   card; `coverage-map.js` reads `markers[]` and the aggregate counters.
 
 `cumulative_years` is the sum of each dataset's date range. The start comes from
 the `time` variable's `units` attribute and the span is `steps × cadence`, which
@@ -227,8 +233,10 @@ resolved, and consumers leave those specific numbers on their fallback.
   add an `SVG_COUNTRY_ID` entry for any new country, when upstream changes.
 - Version the producer schema and all consumers (`data.html`, `coverage-map.js`)
   together.
-- Keep Zarr reads metadata-only; do not switch to `xarray.open_dataset(...).time`
-  values, which downloads coordinate arrays.
+- Keep the `time` read metadata-only; do not switch to
+  `xarray.open_dataset(...).time` values, which downloads the whole time array.
+  Resolution deliberately reads just the first two samples of the tiny `x`/`y`
+  coordinate arrays — keep it to those, never the data variables.
 
 ## Coverage maps
 

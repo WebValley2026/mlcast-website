@@ -50,12 +50,13 @@ jobs:
           python-version: '3.13'
 
       # --- Catalog data: dataset list, per-country map markers, and impact
-      #     stats (Zarr metadata only, no array download). Feeds data.html's
-      #     dataset list + spotlight and the home/contributing coverage maps.
+      #     stats (Zarr metadata + the tiny x/y coord arrays for resolution;
+      #     never the bulk data). Feeds data.html's dataset list + spotlight
+      #     and the home/contributing coverage maps.
       #     Marker positions are read from img/world.svg via svgpathtools. ---
       - name: Compute catalog data
         run: |
-          uv run --with s3fs --with pyyaml --with svgpathtools \
+          uv run --with s3fs --with pyyaml --with svgpathtools --with zarr \
             python scripts/fetch-catalog-stats.py \
             "https://raw.githubusercontent.com/mlcast-community/mlcast-datasets/main/src/mlcast_datasets/catalog/precipitation/catalog.yml" \
             dist/catalog-data.json \

@@ -54,6 +54,8 @@
       "consolidated": true,
       "flag": "be",
       "cadence_minutes": 5,
+      "resolution_m": 1000.0,
+      "resolution": "1 km",
       "steps": 726332,
       "years": 6.9,
       "resolved": true
@@ -67,6 +69,8 @@
       "consolidated": true,
       "flag": "dk",
       "cadence_minutes": 10,
+      "resolution_m": 500.0,
+      "resolution": "500 m",
       "steps": 517536,
       "years": 9.8,
       "resolved": true
@@ -80,6 +84,8 @@
       "consolidated": true,
       "flag": "it",
       "cadence_minutes": 5,
+      "resolution_m": 1000.0,
+      "resolution": "1 km",
       "steps": 1039785,
       "years": 9.9,
       "resolved": true
@@ -93,6 +99,8 @@
       "consolidated": true,
       "flag": "de",
       "cadence_minutes": 5,
+      "resolution_m": 1000.0,
+      "resolution": "1 km",
       "steps": 2419200,
       "years": 23.0,
       "resolved": true
@@ -106,6 +114,8 @@
       "consolidated": true,
       "flag": "de",
       "cadence_minutes": 60,
+      "resolution_m": 1000.0,
+      "resolution": "1 km",
       "steps": 201600,
       "years": 23.0,
       "resolved": true
@@ -119,10 +129,12 @@
       "consolidated": true,
       "flag": "gb",
       "cadence_minutes": 5,
+      "resolution_m": 1000.0,
+      "resolution": "1 km",
       "steps": 2055276,
       "years": 19.5,
       "resolved": true
     }
   ],
-  "generated": "2026-07-09T08:23:37+00:00"
+  "generated": "2026-07-09T08:53:21+00:00"
 }
